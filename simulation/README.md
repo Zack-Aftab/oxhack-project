@@ -51,7 +51,13 @@ Node.js 24; no npm packages required. Use server-only environment variables `SUP
    NODE_USE_ENV_PROXY=1 node --env-file-if-exists=.env.local simulation/database.mjs --import simulation/results/month-v5/dataset.json.gz --summary simulation/results/month-v5/summary.json
    ```
 
-The import validates every record before writes, refuses unrelated existing IDs, batches upserts and checks exact counts plus sample averages/arrays. A failed import can leave partial new rows; rerun the same command after fixing the failure. The old data remains archived. Metadata is written to `simulation_datasets` only after table counts and samples verify.
+The import validates every record before writes, refuses unrelated existing IDs, batches upserts and checks exact counts plus sample averages/arrays. Raw sample comparisons allow only a 1e-9 minute tolerance for PostgREST JSON rounding; integer averages and flags are checked exactly. To verify every stored visit and finish metadata registration after an interrupted final check, use:
+
+```sh
+NODE_USE_ENV_PROXY=1 node --env-file-if-exists=.env.local simulation/database.mjs --verify simulation/results/month-v5/dataset.json.gz --summary simulation/results/month-v5/summary.json
+```
+
+A failed import can leave partial new rows; rerun the same command after fixing the failure. The old data remains archived. Metadata is written to `simulation_datasets` only after table counts and samples verify.
 
 ## Schema and integration boundary
 

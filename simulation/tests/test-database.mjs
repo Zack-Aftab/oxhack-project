@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { gunzipSync } from 'node:zlib';
-import { validate, importRows } from '../database.mjs';
+import { validate, importRows, assertRawWaits } from '../database.mjs';
 const data=JSON.parse(gunzipSync(await readFile(new URL('../results/month-v5/dataset.json.gz',import.meta.url))));
 test('selected monthly dataset has valid identities, five samples, integer means and hourly snapshots',()=>{
   assert.deepEqual(validate(data),{hospitals:5,visits:68705,staffing_snapshots:3600});
@@ -20,4 +20,11 @@ test('database mapping retains samples and excludes unmodelled specialty fields'
   const row=importRows(data,'visits')[0];assert.deepEqual(row.simulation_waits_minutes,data.visits[0].simulation_waits_minutes);
   assert.equal(Object.hasOwn(row,'wait_doctor_referral_to_diagnosis_minutes'),false);
   const snap=importRows(data,'staffing_snapshots')[0];assert.equal(Object.hasOwn(snap,'specialty_doctors_available'),false);assert.equal(Object.hasOwn(snap,'mean_waiting_for_specialist'),false);
+});
+
+test('API sample comparison allows JSON rounding but rejects material changes and nonfinite values',()=>{
+  assert.doesNotThrow(()=>assertRawWaits([307.69372793436],[307.6937279343605]));
+  assert.throws(()=>assertRawWaits([307.7],[307.6937279343605]));
+  assert.throws(()=>assertRawWaits([NaN],[1]));
+  assert.throws(()=>assertRawWaits([],[1]));
 });

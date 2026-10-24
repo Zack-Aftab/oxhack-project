@@ -99,9 +99,17 @@ export function importRows(data,table) {
   }[table];
   return data[table].map(row=>Object.fromEntries(fields.map(f=>[f,row[f]])));
 }
+export function assertRawWaits(actual, expected) {
+  assert(Array.isArray(actual) && actual.length === expected.length, 'Wrong sample count');
+  for (let i=0; i<expected.length; i++) {
+    // PostgREST JSON may round double-precision samples. One nanominute tolerance
+    // applies ONLY to raw samples; stored integer averages remain exact checks.
+    assert(Number.isFinite(actual[i]) && Math.abs(actual[i]-expected[i]) <= 1e-9, `Raw wait sample ${i+1} mismatch`);
+  }
+}
 async function main() {
-  const {values}=parseArgs({options:{backup:{type:'string'},validate:{type:'string'},import:{type:'string'},summary:{type:'string'}}});
-  assert.equal([values.backup,values.validate,values.import].filter(Boolean).length,1,'Choose --backup PATH, --validate DATASET, or --import DATASET --summary SUMMARY');
+  const {values}=parseArgs({options:{backup:{type:'string'},validate:{type:'string'},import:{type:'string'},verify:{type:'string'},summary:{type:'string'}}});
+  assert.equal([values.backup,values.validate,values.import,values.verify].filter(Boolean).length,1,'Choose --backup PATH, --validate DATASET, --import DATASET --summary SUMMARY, or --verify DATASET --summary SUMMARY');
   if(values.validate) {const data=JSON.parse(await datasetBytes(values.validate));console.log('Validated:',validate(data));return;}
   const request=client();
   if(values.backup) {
@@ -112,11 +120,12 @@ async function main() {
     assert.equal(createHash('sha256').update(check).digest('hex'),createHash('sha256').update(payload).digest('hex'));
     console.log(`Backup saved and read-back verified: ${values.backup}`);return;
   }
-  assert(values.summary,'--summary is required for import');
-  const bytes=await datasetBytes(values.import);const data=JSON.parse(bytes);const expected=validate(data);
+  assert(values.summary,'--summary is required for import/verification');
+  const bytes=await datasetBytes(values.import ?? values.verify);const data=JSON.parse(bytes);const expected=validate(data);
   const summary=JSON.parse(await readFile(values.summary,'utf8'));
   assert.equal(summary.patients,expected.visits);assert.equal(summary.patient_runs,expected.visits*5);
   const marker=await request('simulation_datasets?select=dataset_id');await marker.json(); // Fails before writes if migration is absent.
+  if(values.import) {
   for(const table of TABLES) {
     const allowed=new Set(data[table].map(r=>r[KEYS[table]]));
     for(const row of await allRows(request,table,KEYS[table])) assert(allowed.has(row[KEYS[table]]),`${table} has unrelated rows; refusing replacement`);
@@ -129,10 +138,27 @@ async function main() {
     assert.equal(await count(request,table),expected[table],`${table} count mismatch`);
     console.log(`Imported and counted ${table}: ${expected[table]}`);
   }
+  } else {
+    for(const table of TABLES) {
+      assert.equal(await count(request,table),expected[table],`${table} count mismatch`);
+      console.log(`Verified ${table}: ${expected[table]}`);
+    }
+  }
   for(const visit of [data.visits[0],data.visits[Math.floor(data.visits.length/2)],data.visits.at(-1)]) {
     const r=await request(`visits?visit_id=eq.${encodeURIComponent(visit.visit_id)}&select=mean_wait_to_first_doctor_minutes,likely_bed_occupancy,simulation_waits_minutes`);
     const [row]=await r.json();assert.equal(row.mean_wait_to_first_doctor_minutes,visit.mean_wait_to_first_doctor_minutes);
-    assert.equal(row.likely_bed_occupancy,visit.likely_bed_occupancy);assert.deepEqual(row.simulation_waits_minutes,visit.simulation_waits_minutes);
+    assert.equal(row.likely_bed_occupancy,visit.likely_bed_occupancy);assertRawWaits(row.simulation_waits_minutes,visit.simulation_waits_minutes);
+  }
+  if(values.verify) {
+    const expectedById=new Map(data.visits.map(row=>[row.visit_id,row]));
+    const actualRows=await allRows(request,'visits','visit_id,mean_wait_to_first_doctor_minutes,likely_bed_occupancy,simulation_waits_minutes');
+    for(const row of actualRows) {
+      const expectedRow=expectedById.get(row.visit_id);assert(expectedRow,'Unknown visit ID');
+      assert.equal(row.mean_wait_to_first_doctor_minutes,expectedRow.mean_wait_to_first_doctor_minutes);
+      assert.equal(row.likely_bed_occupancy,expectedRow.likely_bed_occupancy);
+      assertRawWaits(row.simulation_waits_minutes,expectedRow.simulation_waits_minutes);
+    }
+    console.log(`Verified all ${actualRows.length} stored integer averages, flags and five raw samples each`);
   }
   const metadata={dataset_id:'month-v5',model_version:data.dataset_metadata.model_version,metadata:{...data.dataset_metadata,dataset_file_sha256:createHash('sha256').update(bytes).digest('hex')},summary};
   await request('simulation_datasets?on_conflict=dataset_id',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify([metadata])});
