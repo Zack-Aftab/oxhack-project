@@ -17,3 +17,7 @@ coverage/
 AGENTS.override.md
 CLAUDE.local.md
 .claude/settings.local.json
+
+# Reproduce locally; selected compressed simulation data is committed separately.
+simulation/generated/
+simulation/backups/

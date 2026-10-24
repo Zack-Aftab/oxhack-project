@@ -1,6 +1,8 @@
 # Run the app
 
-We have not chosen the application stack yet. This file must be filled in when the first runnable version is built.
+The selected stack is Next.js App Router, TypeScript, Tailwind CSS, Next.js Route Handlers, Supabase Postgres, and Vercel, using Node.js 24 LTS and npm. The application scaffold is still pending.
+
+Database schema, import commands, credential setup, and verification are documented in [DATABASE.md](DATABASE.md). Database tooling uses Node.js built-ins and needs no npm install.
 
 ## The scaffold owner's checklist
 
@@ -40,3 +42,7 @@ Not configured yet. Once a real workflow has run successfully, record its exact 
 ## Demo deployment
 
 Not chosen yet. Decide who owns deployment configuration and which services or database each environment uses.
+
+## Selected simulation and database workflow
+
+Use [simulation/README.md](../simulation/README.md). Python standard library runs the simulator; Node.js 24 built-ins back up and import Supabase data. These tools do not require an application scaffold or running web server. The chosen 30-day compressed dataset and its summaries are committed under `simulation/results/month-v5/`.

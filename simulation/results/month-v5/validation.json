@@ -1,0 +1,9 @@
+{
+  "patients": 68705,
+  "patient_runs": 343525,
+  "verified_integer_averages": 68705,
+  "warmup_patients_excluded": 6895,
+  "measured_days": 30,
+  "hourly_snapshots": 3600,
+  "no_wait_floor": true
+}

@@ -92,3 +92,7 @@ Copy this into a new task session, filling in the brackets:
 - We will choose a license together before publishing or submitting the project.
 
 **Need to add someone later?** Follow [the invitation instructions](docs/JOIN-THE-TEAM.md#for-the-repository-owner-adding-someone-later).
+
+## QueueCare simulation and Supabase data
+
+The selected 30-day, five-run simulation, reproducible input, generated dataset, tests and database migration instructions are in [simulation/README.md](simulation/README.md). All operational data is invented for demonstration. The frontend and API scaffold remain separate work.

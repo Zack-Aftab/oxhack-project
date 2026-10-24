@@ -1,0 +1,1254 @@
+{
+  "scenario": "one_more_doctor_control",
+  "patients": 68705,
+  "warmup_patients": 6895,
+  "runs": 5,
+  "patient_runs": 343525,
+  "pooled_run_waits": {
+    "mean": 24.417972712320385,
+    "median": 9.842992715040843,
+    "p90": 60.97958218415579,
+    "p95": 98.00149068991342,
+    "max": 476.0404548168182,
+    "fraction_over_60_minutes": 0.10191106906338694,
+    "fraction_over_240_minutes": 0.0065060767047522014
+  },
+  "unrounded_patient_means": {
+    "mean": 24.417972712320385,
+    "median": 11.019898075262706,
+    "p90": 58.00346439727147,
+    "p95": 93.11576709906244,
+    "max": 329.7729411013921,
+    "fraction_over_60_minutes": 0.09526235354049924,
+    "fraction_over_240_minutes": 0.0056036678553234845
+  },
+  "stored_integer_patient_means": {
+    "mean": 24.918550323848336,
+    "median": 12,
+    "p90": 59.0,
+    "p95": 94.0,
+    "max": 330,
+    "fraction_over_60_minutes": 0.09526235354049924,
+    "fraction_over_240_minutes": 0.0056036678553234845
+  },
+  "triage_elapsed_minutes": {
+    "mean": 6.1475746033867615,
+    "median": 5.138010056813558,
+    "p90": 10.675174209276838,
+    "p95": 13.355356697241465,
+    "max": 67.14098657766978,
+    "fraction_over_60_minutes": 2.910996288479732e-06,
+    "fraction_over_240_minutes": 0.0
+  },
+  "specialist_wait_after_referral_minutes": null,
+  "doctor_utilisation": 0.8489176636508114,
+  "bed_utilisation": 0.57096688725971,
+  "triage_utilisation": 0.572792030427085,
+  "specialist_slot_utilisation": null,
+  "fraction_of_time_beds_full": 0.03203942243978565,
+  "runs_summary": [
+    {
+      "run": 1,
+      "mean": 24.432567819807318,
+      "median": 9.913759803771972,
+      "p90": 59.97713274002075,
+      "p95": 98.30097674608224,
+      "max": 421.8800964713097,
+      "fraction_over_60_minutes": 0.09990539262062441,
+      "fraction_over_240_minutes": 0.006185867113019431,
+      "last_departure_at": "2026-10-22T22:59:47.307863+01:00",
+      "doctor_utilisation": 0.850248885357765,
+      "bed_utilisation": 0.5755620445080654
+    },
+    {
+      "run": 2,
+      "mean": 24.726552023942464,
+      "median": 9.837055949370066,
+      "p90": 62.83479833920796,
+      "p95": 99.81809840281804,
+      "max": 410.7964775403341,
+      "fraction_over_60_minutes": 0.10645513426970381,
+      "fraction_over_240_minutes": 0.00608398224292264,
+      "last_departure_at": "2026-10-22T12:32:56.431779+01:00",
+      "doctor_utilisation": 0.8488518710174261,
+      "bed_utilisation": 0.5611805961504799
+    },
+    {
+      "run": 3,
+      "mean": 24.997162261732747,
+      "median": 9.904187325636546,
+      "p90": 62.26683214505513,
+      "p95": 101.33039980491,
+      "max": 476.0404548168182,
+      "fraction_over_60_minutes": 0.10449021177497998,
+      "fraction_over_240_minutes": 0.007670475220144094,
+      "last_departure_at": "2026-10-22T14:24:21.447624+01:00",
+      "doctor_utilisation": 0.8481591006700615,
+      "bed_utilisation": 0.5722397251963726
+    },
+    {
+      "run": 4,
+      "mean": 23.748266183500153,
+      "median": 9.829380174477896,
+      "p90": 58.68798853953679,
+      "p95": 91.76516801198306,
+      "max": 424.5178876280785,
+      "fraction_over_60_minutes": 0.09751837566407102,
+      "fraction_over_240_minutes": 0.006607961574848992,
+      "last_departure_at": "2026-10-21T22:54:39.238813+01:00",
+      "doctor_utilisation": 0.8489897252731583,
+      "bed_utilisation": 0.570334013103359
+    },
+    {
+      "run": 5,
+      "mean": 24.18531527261924,
+      "median": 9.747313960393269,
+      "p90": 60.615528186162294,
+      "p95": 98.48233793814975,
+      "max": 417.9603574514389,
+      "fraction_over_60_minutes": 0.1011862309875555,
+      "fraction_over_240_minutes": 0.00598209737282585,
+      "last_departure_at": "2026-10-24T00:16:06.015019+01:00",
+      "doctor_utilisation": 0.8483387359356463,
+      "bed_utilisation": 0.5755180573402732
+    }
+  ],
+  "daily_counts": [
+    {
+      "hospital_id": "H001",
+      "date": "2026-09-21",
+      "arrivals": 500,
+      "priority_bed_cases": 22,
+      "expected_priority_bed_cases": 25.275836973983214
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-09-22",
+      "arrivals": 391,
+      "priority_bed_cases": 15,
+      "expected_priority_bed_cases": 19.456054218835504
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-09-23",
+      "arrivals": 445,
+      "priority_bed_cases": 24,
+      "expected_priority_bed_cases": 22.436918556838
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-09-24",
+      "arrivals": 454,
+      "priority_bed_cases": 21,
+      "expected_priority_bed_cases": 22.439284322185603
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-09-25",
+      "arrivals": 463,
+      "priority_bed_cases": 23,
+      "expected_priority_bed_cases": 23.196329233424336
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-09-26",
+      "arrivals": 556,
+      "priority_bed_cases": 27,
+      "expected_priority_bed_cases": 27.70311222064238
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-09-27",
+      "arrivals": 456,
+      "priority_bed_cases": 28,
+      "expected_priority_bed_cases": 21.684605176294504
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-09-28",
+      "arrivals": 495,
+      "priority_bed_cases": 21,
+      "expected_priority_bed_cases": 25.420148660188072
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-09-29",
+      "arrivals": 573,
+      "priority_bed_cases": 23,
+      "expected_priority_bed_cases": 28.869434537019526
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-09-30",
+      "arrivals": 451,
+      "priority_bed_cases": 28,
+      "expected_priority_bed_cases": 22.13646635769012
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-10-01",
+      "arrivals": 489,
+      "priority_bed_cases": 29,
+      "expected_priority_bed_cases": 24.7459055361161
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-10-02",
+      "arrivals": 480,
+      "priority_bed_cases": 30,
+      "expected_priority_bed_cases": 24.3981380300158
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-10-03",
+      "arrivals": 411,
+      "priority_bed_cases": 11,
+      "expected_priority_bed_cases": 21.474052060356232
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-10-04",
+      "arrivals": 439,
+      "priority_bed_cases": 21,
+      "expected_priority_bed_cases": 21.82418533180415
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-10-05",
+      "arrivals": 427,
+      "priority_bed_cases": 15,
+      "expected_priority_bed_cases": 22.216902379509236
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-10-06",
+      "arrivals": 487,
+      "priority_bed_cases": 19,
+      "expected_priority_bed_cases": 24.13317231108226
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-10-07",
+      "arrivals": 478,
+      "priority_bed_cases": 27,
+      "expected_priority_bed_cases": 23.80669669311055
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-10-08",
+      "arrivals": 458,
+      "priority_bed_cases": 29,
+      "expected_priority_bed_cases": 22.157758245818698
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-10-09",
+      "arrivals": 401,
+      "priority_bed_cases": 20,
+      "expected_priority_bed_cases": 19.61692626247373
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-10-10",
+      "arrivals": 479,
+      "priority_bed_cases": 17,
+      "expected_priority_bed_cases": 24.651274922211254
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-10-11",
+      "arrivals": 460,
+      "priority_bed_cases": 18,
+      "expected_priority_bed_cases": 23.02126259770038
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-10-12",
+      "arrivals": 443,
+      "priority_bed_cases": 31,
+      "expected_priority_bed_cases": 21.147576442384526
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-10-13",
+      "arrivals": 442,
+      "priority_bed_cases": 27,
+      "expected_priority_bed_cases": 22.514988813309472
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-10-14",
+      "arrivals": 512,
+      "priority_bed_cases": 25,
+      "expected_priority_bed_cases": 25.465098201792888
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-10-15",
+      "arrivals": 458,
+      "priority_bed_cases": 26,
+      "expected_priority_bed_cases": 23.35956704241019
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-10-16",
+      "arrivals": 510,
+      "priority_bed_cases": 21,
+      "expected_priority_bed_cases": 25.304226158154655
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-10-17",
+      "arrivals": 519,
+      "priority_bed_cases": 31,
+      "expected_priority_bed_cases": 25.491121620616713
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-10-18",
+      "arrivals": 521,
+      "priority_bed_cases": 30,
+      "expected_priority_bed_cases": 26.470548474531824
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-10-19",
+      "arrivals": 484,
+      "priority_bed_cases": 14,
+      "expected_priority_bed_cases": 23.702603017815225
+    },
+    {
+      "hospital_id": "H001",
+      "date": "2026-10-20",
+      "arrivals": 391,
+      "priority_bed_cases": 21,
+      "expected_priority_bed_cases": 19.072800232520898
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-09-21",
+      "arrivals": 540,
+      "priority_bed_cases": 24,
+      "expected_priority_bed_cases": 26.28601877741737
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-09-22",
+      "arrivals": 469,
+      "priority_bed_cases": 21,
+      "expected_priority_bed_cases": 22.88404820753836
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-09-23",
+      "arrivals": 429,
+      "priority_bed_cases": 22,
+      "expected_priority_bed_cases": 20.880244958103354
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-09-24",
+      "arrivals": 443,
+      "priority_bed_cases": 31,
+      "expected_priority_bed_cases": 22.17195283790443
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-09-25",
+      "arrivals": 546,
+      "priority_bed_cases": 28,
+      "expected_priority_bed_cases": 26.754440316246345
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-09-26",
+      "arrivals": 485,
+      "priority_bed_cases": 24,
+      "expected_priority_bed_cases": 24.60159384991122
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-09-27",
+      "arrivals": 431,
+      "priority_bed_cases": 21,
+      "expected_priority_bed_cases": 20.735933271898467
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-09-28",
+      "arrivals": 479,
+      "priority_bed_cases": 27,
+      "expected_priority_bed_cases": 23.74045526337716
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-09-29",
+      "arrivals": 389,
+      "priority_bed_cases": 14,
+      "expected_priority_bed_cases": 19.377983962364006
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-09-30",
+      "arrivals": 535,
+      "priority_bed_cases": 15,
+      "expected_priority_bed_cases": 26.986285320313193
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-10-01",
+      "arrivals": 503,
+      "priority_bed_cases": 20,
+      "expected_priority_bed_cases": 24.502231705311125
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-10-02",
+      "arrivals": 422,
+      "priority_bed_cases": 25,
+      "expected_priority_bed_cases": 21.433834049446663
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-10-03",
+      "arrivals": 432,
+      "priority_bed_cases": 24,
+      "expected_priority_bed_cases": 22.15066094977585
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-10-04",
+      "arrivals": 472,
+      "priority_bed_cases": 17,
+      "expected_priority_bed_cases": 23.891864245624916
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-10-05",
+      "arrivals": 477,
+      "priority_bed_cases": 19,
+      "expected_priority_bed_cases": 24.208876802206124
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-10-06",
+      "arrivals": 413,
+      "priority_bed_cases": 24,
+      "expected_priority_bed_cases": 21.672776349556415
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-10-07",
+      "arrivals": 449,
+      "priority_bed_cases": 22,
+      "expected_priority_bed_cases": 22.12227176560438
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-10-08",
+      "arrivals": 408,
+      "priority_bed_cases": 17,
+      "expected_priority_bed_cases": 20.53011168665545
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-10-09",
+      "arrivals": 541,
+      "priority_bed_cases": 27,
+      "expected_priority_bed_cases": 27.23705644716102
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-10-10",
+      "arrivals": 463,
+      "priority_bed_cases": 23,
+      "expected_priority_bed_cases": 23.82798858123913
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-10-11",
+      "arrivals": 417,
+      "priority_bed_cases": 15,
+      "expected_priority_bed_cases": 20.563232401522143
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-10-12",
+      "arrivals": 452,
+      "priority_bed_cases": 18,
+      "expected_priority_bed_cases": 22.708981571814398
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-10-13",
+      "arrivals": 461,
+      "priority_bed_cases": 27,
+      "expected_priority_bed_cases": 23.98886062487737
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-10-14",
+      "arrivals": 442,
+      "priority_bed_cases": 21,
+      "expected_priority_bed_cases": 21.788698851589814
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-10-15",
+      "arrivals": 450,
+      "priority_bed_cases": 24,
+      "expected_priority_bed_cases": 23.025994128395624
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-10-16",
+      "arrivals": 376,
+      "priority_bed_cases": 18,
+      "expected_priority_bed_cases": 18.8930020661017
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-10-17",
+      "arrivals": 449,
+      "priority_bed_cases": 21,
+      "expected_priority_bed_cases": 22.817806777804968
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-10-18",
+      "arrivals": 415,
+      "priority_bed_cases": 23,
+      "expected_priority_bed_cases": 21.220915168160786
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-10-19",
+      "arrivals": 449,
+      "priority_bed_cases": 19,
+      "expected_priority_bed_cases": 22.17195283790443
+    },
+    {
+      "hospital_id": "H002",
+      "date": "2026-10-20",
+      "arrivals": 450,
+      "priority_bed_cases": 15,
+      "expected_priority_bed_cases": 22.96684999470509
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-09-21",
+      "arrivals": 489,
+      "priority_bed_cases": 25,
+      "expected_priority_bed_cases": 24.301141650763327
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-09-22",
+      "arrivals": 416,
+      "priority_bed_cases": 20,
+      "expected_priority_bed_cases": 20.986704398746316
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-09-23",
+      "arrivals": 463,
+      "priority_bed_cases": 30,
+      "expected_priority_bed_cases": 23.46602648305314
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-09-24",
+      "arrivals": 459,
+      "priority_bed_cases": 28,
+      "expected_priority_bed_cases": 22.990507648181303
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-09-25",
+      "arrivals": 479,
+      "priority_bed_cases": 24,
+      "expected_priority_bed_cases": 25.008505489702035
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-09-26",
+      "arrivals": 427,
+      "priority_bed_cases": 18,
+      "expected_priority_bed_cases": 20.07351897456458
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-09-27",
+      "arrivals": 403,
+      "priority_bed_cases": 21,
+      "expected_priority_bed_cases": 20.830563885803322
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-09-28",
+      "arrivals": 428,
+      "priority_bed_cases": 17,
+      "expected_priority_bed_cases": 21.315545782065612
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-09-29",
+      "arrivals": 483,
+      "priority_bed_cases": 26,
+      "expected_priority_bed_cases": 25.072381154087804
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-09-30",
+      "arrivals": 471,
+      "priority_bed_cases": 29,
+      "expected_priority_bed_cases": 23.972300267444034
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-10-01",
+      "arrivals": 377,
+      "priority_bed_cases": 16,
+      "expected_priority_bed_cases": 18.751056145244448
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-10-02",
+      "arrivals": 465,
+      "priority_bed_cases": 27,
+      "expected_priority_bed_cases": 23.165574283905254
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-10-03",
+      "arrivals": 442,
+      "priority_bed_cases": 22,
+      "expected_priority_bed_cases": 22.50552575191899
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-10-04",
+      "arrivals": 418,
+      "priority_bed_cases": 24,
+      "expected_priority_bed_cases": 20.72173867981273
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-10-05",
+      "arrivals": 379,
+      "priority_bed_cases": 21,
+      "expected_priority_bed_cases": 19.224209214768642
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-10-06",
+      "arrivals": 453,
+      "priority_bed_cases": 21,
+      "expected_priority_bed_cases": 22.92190045310029
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-10-07",
+      "arrivals": 477,
+      "priority_bed_cases": 23,
+      "expected_priority_bed_cases": 23.603240873215146
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-10-08",
+      "arrivals": 472,
+      "priority_bed_cases": 21,
+      "expected_priority_bed_cases": 23.208158060162447
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-10-09",
+      "arrivals": 533,
+      "priority_bed_cases": 26,
+      "expected_priority_bed_cases": 25.88857019901705
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-10-10",
+      "arrivals": 512,
+      "priority_bed_cases": 19,
+      "expected_priority_bed_cases": 25.216692840292676
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-10-11",
+      "arrivals": 390,
+      "priority_bed_cases": 20,
+      "expected_priority_bed_cases": 18.999461506744648
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-10-12",
+      "arrivals": 418,
+      "priority_bed_cases": 20,
+      "expected_priority_bed_cases": 20.26987749841713
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-10-13",
+      "arrivals": 428,
+      "priority_bed_cases": 26,
+      "expected_priority_bed_cases": 21.017459348265362
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-10-14",
+      "arrivals": 460,
+      "priority_bed_cases": 20,
+      "expected_priority_bed_cases": 22.73973652133348
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-10-15",
+      "arrivals": 423,
+      "priority_bed_cases": 14,
+      "expected_priority_bed_cases": 21.237475525594125
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-10-16",
+      "arrivals": 402,
+      "priority_bed_cases": 21,
+      "expected_priority_bed_cases": 20.333753162802907
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-10-17",
+      "arrivals": 427,
+      "priority_bed_cases": 26,
+      "expected_priority_bed_cases": 21.201989045379808
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-10-18",
+      "arrivals": 501,
+      "priority_bed_cases": 33,
+      "expected_priority_bed_cases": 24.76719742424469
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-10-19",
+      "arrivals": 388,
+      "priority_bed_cases": 23,
+      "expected_priority_bed_cases": 19.51519835252604
+    },
+    {
+      "hospital_id": "H003",
+      "date": "2026-10-20",
+      "arrivals": 421,
+      "priority_bed_cases": 21,
+      "expected_priority_bed_cases": 22.252388859723546
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-09-21",
+      "arrivals": 475,
+      "priority_bed_cases": 18,
+      "expected_priority_bed_cases": 24.2514605784633
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-09-22",
+      "arrivals": 546,
+      "priority_bed_cases": 34,
+      "expected_priority_bed_cases": 26.69766194790344
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-09-23",
+      "arrivals": 447,
+      "priority_bed_cases": 17,
+      "expected_priority_bed_cases": 21.575779970303937
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-09-24",
+      "arrivals": 427,
+      "priority_bed_cases": 26,
+      "expected_priority_bed_cases": 21.73665201394217
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-09-25",
+      "arrivals": 416,
+      "priority_bed_cases": 25,
+      "expected_priority_bed_cases": 20.778517048155642
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-09-26",
+      "arrivals": 477,
+      "priority_bed_cases": 17,
+      "expected_priority_bed_cases": 23.269667959200582
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-09-27",
+      "arrivals": 428,
+      "priority_bed_cases": 22,
+      "expected_priority_bed_cases": 21.888060996189907
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-09-28",
+      "arrivals": 480,
+      "priority_bed_cases": 32,
+      "expected_priority_bed_cases": 24.180487618034693
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-09-29",
+      "arrivals": 368,
+      "priority_bed_cases": 23,
+      "expected_priority_bed_cases": 19.33303442075922
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-09-30",
+      "arrivals": 418,
+      "priority_bed_cases": 25,
+      "expected_priority_bed_cases": 21.315545782065634
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-10-01",
+      "arrivals": 456,
+      "priority_bed_cases": 17,
+      "expected_priority_bed_cases": 22.83673290058595
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-10-02",
+      "arrivals": 407,
+      "priority_bed_cases": 35,
+      "expected_priority_bed_cases": 20.20127030333613
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-10-03",
+      "arrivals": 513,
+      "priority_bed_cases": 27,
+      "expected_priority_bed_cases": 25.874375606931338
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-10-04",
+      "arrivals": 407,
+      "priority_bed_cases": 31,
+      "expected_priority_bed_cases": 20.80217470163188
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-10-05",
+      "arrivals": 450,
+      "priority_bed_cases": 22,
+      "expected_priority_bed_cases": 22.78941759363353
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-10-06",
+      "arrivals": 487,
+      "priority_bed_cases": 18,
+      "expected_priority_bed_cases": 24.445453336968246
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-10-07",
+      "arrivals": 494,
+      "priority_bed_cases": 25,
+      "expected_priority_bed_cases": 23.986494859529774
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-10-08",
+      "arrivals": 425,
+      "priority_bed_cases": 24,
+      "expected_priority_bed_cases": 21.410176395970463
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-10-09",
+      "arrivals": 554,
+      "priority_bed_cases": 20,
+      "expected_priority_bed_cases": 27.816668957328194
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-10-10",
+      "arrivals": 450,
+      "priority_bed_cases": 24,
+      "expected_priority_bed_cases": 22.261851921114026
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-10-11",
+      "arrivals": 382,
+      "priority_bed_cases": 23,
+      "expected_priority_bed_cases": 18.580721040215728
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-10-12",
+      "arrivals": 543,
+      "priority_bed_cases": 22,
+      "expected_priority_bed_cases": 27.13769430256096
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-10-13",
+      "arrivals": 415,
+      "priority_bed_cases": 20,
+      "expected_priority_bed_cases": 20.03566672900265
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-10-14",
+      "arrivals": 468,
+      "priority_bed_cases": 23,
+      "expected_priority_bed_cases": 22.505525751918988
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-10-15",
+      "arrivals": 402,
+      "priority_bed_cases": 25,
+      "expected_priority_bed_cases": 20.527745921307826
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-10-16",
+      "arrivals": 552,
+      "priority_bed_cases": 27,
+      "expected_priority_bed_cases": 28.114755391128433
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-10-17",
+      "arrivals": 402,
+      "priority_bed_cases": 20,
+      "expected_priority_bed_cases": 20.430749542055363
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-10-18",
+      "arrivals": 501,
+      "priority_bed_cases": 26,
+      "expected_priority_bed_cases": 25.431977486926183
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-10-19",
+      "arrivals": 457,
+      "priority_bed_cases": 27,
+      "expected_priority_bed_cases": 22.846195961976438
+    },
+    {
+      "hospital_id": "H004",
+      "date": "2026-10-20",
+      "arrivals": 463,
+      "priority_bed_cases": 21,
+      "expected_priority_bed_cases": 23.39032199192924
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-09-21",
+      "arrivals": 507,
+      "priority_bed_cases": 23,
+      "expected_priority_bed_cases": 25.361004526497556
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-09-22",
+      "arrivals": 418,
+      "priority_bed_cases": 20,
+      "expected_priority_bed_cases": 21.22801246420366
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-09-23",
+      "arrivals": 441,
+      "priority_bed_cases": 30,
+      "expected_priority_bed_cases": 21.883329465494665
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-09-24",
+      "arrivals": 462,
+      "priority_bed_cases": 22,
+      "expected_priority_bed_cases": 23.45419765631502
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-09-25",
+      "arrivals": 403,
+      "priority_bed_cases": 20,
+      "expected_priority_bed_cases": 20.766688221417557
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-09-26",
+      "arrivals": 454,
+      "priority_bed_cases": 29,
+      "expected_priority_bed_cases": 23.16557428390526
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-09-27",
+      "arrivals": 513,
+      "priority_bed_cases": 33,
+      "expected_priority_bed_cases": 25.382296414626136
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-09-28",
+      "arrivals": 441,
+      "priority_bed_cases": 24,
+      "expected_priority_bed_cases": 21.788698851589828
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-09-29",
+      "arrivals": 518,
+      "priority_bed_cases": 18,
+      "expected_priority_bed_cases": 26.132244029822022
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-09-30",
+      "arrivals": 403,
+      "priority_bed_cases": 10,
+      "expected_priority_bed_cases": 19.44185962674978
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-10-01",
+      "arrivals": 419,
+      "priority_bed_cases": 23,
+      "expected_priority_bed_cases": 20.84712424323665
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-10-02",
+      "arrivals": 512,
+      "priority_bed_cases": 27,
+      "expected_priority_bed_cases": 25.313689219545125
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-10-03",
+      "arrivals": 546,
+      "priority_bed_cases": 24,
+      "expected_priority_bed_cases": 26.444525055707977
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-10-04",
+      "arrivals": 443,
+      "priority_bed_cases": 24,
+      "expected_priority_bed_cases": 22.119906000256776
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-10-05",
+      "arrivals": 456,
+      "priority_bed_cases": 21,
+      "expected_priority_bed_cases": 22.858024788714527
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-10-06",
+      "arrivals": 467,
+      "priority_bed_cases": 22,
+      "expected_priority_bed_cases": 22.940826575881264
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-10-07",
+      "arrivals": 484,
+      "priority_bed_cases": 22,
+      "expected_priority_bed_cases": 23.887132714929663
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-10-08",
+      "arrivals": 379,
+      "priority_bed_cases": 22,
+      "expected_priority_bed_cases": 18.954511965139833
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-10-09",
+      "arrivals": 496,
+      "priority_bed_cases": 16,
+      "expected_priority_bed_cases": 24.577936196434994
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-10-10",
+      "arrivals": 587,
+      "priority_bed_cases": 35,
+      "expected_priority_bed_cases": 29.370976790715197
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-10-11",
+      "arrivals": 478,
+      "priority_bed_cases": 29,
+      "expected_priority_bed_cases": 24.39813803001583
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-10-12",
+      "arrivals": 510,
+      "priority_bed_cases": 14,
+      "expected_priority_bed_cases": 25.155182941254527
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-10-13",
+      "arrivals": 413,
+      "priority_bed_cases": 19,
+      "expected_priority_bed_cases": 20.04986132108838
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-10-14",
+      "arrivals": 455,
+      "priority_bed_cases": 21,
+      "expected_priority_bed_cases": 23.0685779046528
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-10-15",
+      "arrivals": 484,
+      "priority_bed_cases": 24,
+      "expected_priority_bed_cases": 23.98412909418212
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-10-16",
+      "arrivals": 489,
+      "priority_bed_cases": 23,
+      "expected_priority_bed_cases": 24.076393942739344
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-10-17",
+      "arrivals": 495,
+      "priority_bed_cases": 26,
+      "expected_priority_bed_cases": 24.906777579754323
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-10-18",
+      "arrivals": 377,
+      "priority_bed_cases": 22,
+      "expected_priority_bed_cases": 19.49154069904982
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-10-19",
+      "arrivals": 432,
+      "priority_bed_cases": 30,
+      "expected_priority_bed_cases": 21.74138354463739
+    },
+    {
+      "hospital_id": "H005",
+      "date": "2026-10-20",
+      "arrivals": 449,
+      "priority_bed_cases": 15,
+      "expected_priority_bed_cases": 22.264217686461645
+    }
+  ],
+  "by_hospital": [
+    {
+      "hospital_id": "H001",
+      "name": "The Royal London Hospital",
+      "patients": 14073,
+      "mean": 27.1234667384278,
+      "median": 14.097345607280731,
+      "p90": 62.55539863586432,
+      "p95": 94.88568944327032,
+      "max": 329.7729411013921,
+      "fraction_over_60_minutes": 0.107866126625453,
+      "fraction_over_240_minutes": 0.006182050735450863
+    },
+    {
+      "hospital_id": "H002",
+      "name": "St Mary\u2019s Hospital",
+      "patients": 13687,
+      "mean": 26.28978182320576,
+      "median": 11.260160173575082,
+      "p90": 58.95516297769546,
+      "p95": 98.45639215397833,
+      "max": 322.64718373298643,
+      "fraction_over_60_minutes": 0.09717249945203478,
+      "fraction_over_240_minutes": 0.012712793161394023
+    },
+    {
+      "hospital_id": "H003",
+      "name": "University College Hospital",
+      "patients": 13304,
+      "mean": 18.088169382648946,
+      "median": 9.199597700834275,
+      "p90": 43.902453804810875,
+      "p95": 67.24557847925018,
+      "max": 193.10666549046834,
+      "fraction_over_60_minutes": 0.060733613950691524,
+      "fraction_over_240_minutes": 0.0
+    },
+    {
+      "hospital_id": "H004",
+      "name": "St Thomas\u2019 Hospital",
+      "patients": 13710,
+      "mean": 25.71989940066399,
+      "median": 10.462047790288926,
+      "p90": 63.98717291235924,
+      "p95": 104.35818440123396,
+      "max": 297.36873056809105,
+      "fraction_over_60_minutes": 0.11064916119620714,
+      "fraction_over_240_minutes": 0.00787746170678337
+    },
+    {
+      "hospital_id": "H005",
+      "name": "King\u2019s College Hospital",
+      "patients": 13931,
+      "mean": 24.609518177158524,
+      "median": 11.212637311617533,
+      "p90": 59.166860704422,
+      "p95": 98.85687466700871,
+      "max": 260.63873214642206,
+      "fraction_over_60_minutes": 0.09848539229057497,
+      "fraction_over_240_minutes": 0.0011485176943507285
+    }
+  ],
+  "by_priority": [
+    {
+      "likely_bed_occupancy": true,
+      "patients": 3426,
+      "mean": 9.583609196299545,
+      "median": 6.390753754377364,
+      "p90": 11.065217104752858,
+      "p95": 24.828234513203302,
+      "max": 193.10666549046834,
+      "fraction_over_60_minutes": 0.017513134851138354,
+      "fraction_over_240_minutes": 0.0
+    },
+    {
+      "likely_bed_occupancy": false,
+      "patients": 65279,
+      "mean": 25.196516032620746,
+      "median": 11.666255668004354,
+      "p90": 59.663060906728134,
+      "p95": 95.33227071992556,
+      "max": 329.7729411013921,
+      "fraction_over_60_minutes": 0.09934282081526984,
+      "fraction_over_240_minutes": 0.00589776191424501
+    }
+  ]
+}
