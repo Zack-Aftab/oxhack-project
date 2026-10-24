@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "queuecare.v1",
+  "syntheticData": true,
+  "notice": "Synthetic demonstration. Real hospital names; invented operational data. Not clinical guidance.",
+  "timezone": "Europe/London",
+  "dateRange": {
+    "start": "2026-09-21",
+    "end": "2026-10-18",
+    "inclusive": true
+  },
+  "hospitals": [
+    {
+      "hospitalId": "H001",
+      "name": "The Royal London Hospital",
+      "address": "Whitechapel Road, Whitechapel, London E1 1FR",
+      "latitude": 51.518,
+      "longitude": -0.0588
+    },
+    {
+      "hospitalId": "H002",
+      "name": "St Mary’s Hospital",
+      "address": "Praed Street, London W2 1NY",
+      "latitude": 51.51722,
+      "longitude": -0.17306
+    },
+    {
+      "hospitalId": "H003",
+      "name": "University College Hospital",
+      "address": "235 Euston Road, London NW1 2BU",
+      "latitude": 51.52524,
+      "longitude": -0.1344
+    },
+    {
+      "hospitalId": "H004",
+      "name": "St Thomas’ Hospital",
+      "address": "Westminster Bridge Road, London SE1 7EH",
+      "latitude": 51.49802,
+      "longitude": -0.11801
+    },
+    {
+      "hospitalId": "H005",
+      "name": "King’s College Hospital",
+      "address": "Denmark Hill, London SE5 9RS",
+      "latitude": 51.46867,
+      "longitude": -0.09233
+    }
+  ],
+  "complaintCategories": [
+    {
+      "id": "abdominal_or_stomach_problems",
+      "label": "Abdominal or stomach problems",
+      "demoSpecialty": "general_surgery_or_gastroenterology"
+    },
+    {
+      "id": "breathing_problems",
+      "label": "Breathing problems",
+      "demoSpecialty": "respiratory_medicine"
+    },
+    {
+      "id": "chest_pain_or_heart_symptoms",
+      "label": "Chest pain or heart symptoms",
+      "demoSpecialty": "cardiology"
+    },
+    {
+      "id": "cuts_or_wounds",
+      "label": "Cuts or wounds",
+      "demoSpecialty": "wound_care_or_plastics"
+    },
+    {
+      "id": "fracture_sprain_or_dislocation",
+      "label": "Fracture, sprain or dislocation",
+      "demoSpecialty": "orthopaedics"
+    },
+    {
+      "id": "head_injury_or_neurological_symptoms",
+      "label": "Head injury or neurological symptoms",
+      "demoSpecialty": "neurology_or_neurosurgery"
+    },
+    {
+      "id": "other_or_uncategorised",
+      "label": "Other/uncategorised",
+      "demoSpecialty": "emergency_medicine"
+    },
+    {
+      "id": "unknown",
+      "label": "Unknown",
+      "demoSpecialty": "emergency_medicine"
+    }
+  ],
+  "demoOrigin": {
+    "originId": "london-demo",
+    "label": "Illustrative London origin; journeys are invented"
+  },
+  "defaultComparison": {
+    "scenarioId": "demo-1",
+    "simulationAt": "2026-09-25T18:00:00+01:00",
+    "complaintCategory": "fracture_sprain_or_dislocation",
+    "originId": "london-demo",
+    "travelMode": "demo"
+  }
+}

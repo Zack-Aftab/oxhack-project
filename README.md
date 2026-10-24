@@ -2,7 +2,9 @@
 
 One project. Three people. Everyone can use their own coding tools and work at the same time.
 
-**Start here:** this repo is our shared home for the hackathon. We have set up the instructions and templates. We still need to choose what to build and add the application.
+**Start here:** QueueCare is our synthetic hospital-comparison and capacity-scenario demo. The shared instructions, API agreement and frontend samples are ready. The application still needs to be built.
+
+**Building QueueCare now?** Read the [shared API agreement](docs/INTERFACES.md), use the [small frontend samples](fixtures/queuecare/README.md), and check the [short dataset review](docs/DATASET-REVIEW.md). The application and API routes still need implementing.
 
 ## Our team
 
@@ -86,9 +88,9 @@ Copy this into a new task session, filling in the brackets:
 
 ## Current setup
 
-- This repository is private.
+- This repository is public.
 - Collaboration instructions and GitHub task/PR templates are included.
-- The application, stack, automated checks and deployment are not chosen yet.
+- Chosen stack: Next.js App Router with React, TypeScript and Tailwind; Next.js API routes; Supabase Postgres; npm and Node.js 24 LTS; Vercel deployment. The application, checks and service connections are not implemented yet.
 - We will choose a license together before publishing or submitting the project.
 
 **Need to add someone later?** Follow [the invitation instructions](docs/JOIN-THE-TEAM.md#for-the-repository-owner-adding-someone-later).

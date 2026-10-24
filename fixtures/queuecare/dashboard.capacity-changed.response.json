@@ -1,0 +1,370 @@
+{
+  "schemaVersion": "queuecare.v1",
+  "syntheticData": true,
+  "notice": "Synthetic demonstration. Real hospital names; invented operational data. Not clinical guidance.",
+  "scenarioId": "demo-1",
+  "stateVersion": 1,
+  "simulationAt": "2026-09-25T18:00:00+01:00",
+  "hospitals": [
+    {
+      "hospitalId": "H001",
+      "name": "The Royal London Hospital",
+      "snapshotId": "H001-D05-B05",
+      "windowStart": "2026-09-25T16:00:00+01:00",
+      "windowEnd": "2026-09-25T20:00:00+01:00",
+      "generalDoctorsAvailable": 8,
+      "baselineGeneralDoctorsAvailable": 16,
+      "specialtyDoctorsAvailable": {
+        "orthopaedics": 3,
+        "wound_care_or_plastics": 3,
+        "neurology_or_neurosurgery": 3,
+        "respiratory_medicine": 2,
+        "cardiology": 2,
+        "general_surgery_or_gastroenterology": 3
+      },
+      "bedsAvailable": 18,
+      "waitingForReferral": 9,
+      "waitingForDiagnosis": 18,
+      "historicalArrivalsInWindow": 110,
+      "baselineStaffingStatus": "understaffed",
+      "waitBaselineByCategory": {
+        "abdominal_or_stomach_problems": {
+          "sampleCount": 39,
+          "meanWaitToReferralMinutes": 92.43589743589743,
+          "meanReferralToDiagnosisMinutes": 156.76923076923077,
+          "meanArrivalToDiagnosisMinutes": 249.2051282051282
+        },
+        "breathing_problems": {
+          "sampleCount": 34,
+          "meanWaitToReferralMinutes": 87.5,
+          "meanReferralToDiagnosisMinutes": 129.35294117647058,
+          "meanArrivalToDiagnosisMinutes": 216.85294117647058
+        },
+        "chest_pain_or_heart_symptoms": {
+          "sampleCount": 34,
+          "meanWaitToReferralMinutes": 98.52941176470588,
+          "meanReferralToDiagnosisMinutes": 150.7941176470588,
+          "meanArrivalToDiagnosisMinutes": 249.3235294117647
+        },
+        "cuts_or_wounds": {
+          "sampleCount": 47,
+          "meanWaitToReferralMinutes": 94.44680851063829,
+          "meanReferralToDiagnosisMinutes": 84.34042553191489,
+          "meanArrivalToDiagnosisMinutes": 178.7872340425532
+        },
+        "fracture_sprain_or_dislocation": {
+          "sampleCount": 66,
+          "meanWaitToReferralMinutes": 96.07575757575758,
+          "meanReferralToDiagnosisMinutes": 124.96969696969697,
+          "meanArrivalToDiagnosisMinutes": 221.04545454545453
+        },
+        "head_injury_or_neurological_symptoms": {
+          "sampleCount": 69,
+          "meanWaitToReferralMinutes": 99.73913043478261,
+          "meanReferralToDiagnosisMinutes": 132.36231884057972,
+          "meanArrivalToDiagnosisMinutes": 232.1014492753623
+        },
+        "other_or_uncategorised": {
+          "sampleCount": 77,
+          "meanWaitToReferralMinutes": 94.32467532467533,
+          "meanReferralToDiagnosisMinutes": 127.72727272727273,
+          "meanArrivalToDiagnosisMinutes": 222.05194805194805
+        },
+        "unknown": {
+          "sampleCount": 21,
+          "meanWaitToReferralMinutes": 99.52380952380952,
+          "meanReferralToDiagnosisMinutes": 139.95238095238096,
+          "meanArrivalToDiagnosisMinutes": 239.47619047619048
+        }
+      }
+    },
+    {
+      "hospitalId": "H002",
+      "name": "St Mary’s Hospital",
+      "snapshotId": "H002-D05-B05",
+      "windowStart": "2026-09-25T16:00:00+01:00",
+      "windowEnd": "2026-09-25T20:00:00+01:00",
+      "generalDoctorsAvailable": 21,
+      "baselineGeneralDoctorsAvailable": 21,
+      "specialtyDoctorsAvailable": {
+        "orthopaedics": 3,
+        "wound_care_or_plastics": 4,
+        "neurology_or_neurosurgery": 3,
+        "respiratory_medicine": 3,
+        "cardiology": 3,
+        "general_surgery_or_gastroenterology": 4
+      },
+      "bedsAvailable": 24,
+      "waitingForReferral": 10,
+      "waitingForDiagnosis": 10,
+      "historicalArrivalsInWindow": 97,
+      "baselineStaffingStatus": "understaffed",
+      "waitBaselineByCategory": {
+        "abdominal_or_stomach_problems": {
+          "sampleCount": 35,
+          "meanWaitToReferralMinutes": 89.62857142857143,
+          "meanReferralToDiagnosisMinutes": 129.57142857142858,
+          "meanArrivalToDiagnosisMinutes": 219.2
+        },
+        "breathing_problems": {
+          "sampleCount": 54,
+          "meanWaitToReferralMinutes": 82.46296296296296,
+          "meanReferralToDiagnosisMinutes": 111.5925925925926,
+          "meanArrivalToDiagnosisMinutes": 194.05555555555554
+        },
+        "chest_pain_or_heart_symptoms": {
+          "sampleCount": 57,
+          "meanWaitToReferralMinutes": 91.35087719298245,
+          "meanReferralToDiagnosisMinutes": 130.05263157894737,
+          "meanArrivalToDiagnosisMinutes": 221.40350877192984
+        },
+        "cuts_or_wounds": {
+          "sampleCount": 60,
+          "meanWaitToReferralMinutes": 84.93333333333334,
+          "meanReferralToDiagnosisMinutes": 67.93333333333334,
+          "meanArrivalToDiagnosisMinutes": 152.86666666666667
+        },
+        "fracture_sprain_or_dislocation": {
+          "sampleCount": 65,
+          "meanWaitToReferralMinutes": 85.78461538461538,
+          "meanReferralToDiagnosisMinutes": 105.52307692307693,
+          "meanArrivalToDiagnosisMinutes": 191.30769230769232
+        },
+        "head_injury_or_neurological_symptoms": {
+          "sampleCount": 46,
+          "meanWaitToReferralMinutes": 89.80434782608695,
+          "meanReferralToDiagnosisMinutes": 117.41304347826087,
+          "meanArrivalToDiagnosisMinutes": 207.2173913043478
+        },
+        "other_or_uncategorised": {
+          "sampleCount": 74,
+          "meanWaitToReferralMinutes": 85.66216216216216,
+          "meanReferralToDiagnosisMinutes": 111.89189189189189,
+          "meanArrivalToDiagnosisMinutes": 197.55405405405406
+        },
+        "unknown": {
+          "sampleCount": 18,
+          "meanWaitToReferralMinutes": 94.66666666666667,
+          "meanReferralToDiagnosisMinutes": 119.72222222222223,
+          "meanArrivalToDiagnosisMinutes": 214.38888888888889
+        }
+      }
+    },
+    {
+      "hospitalId": "H003",
+      "name": "University College Hospital",
+      "snapshotId": "H003-D05-B05",
+      "windowStart": "2026-09-25T16:00:00+01:00",
+      "windowEnd": "2026-09-25T20:00:00+01:00",
+      "generalDoctorsAvailable": 19,
+      "baselineGeneralDoctorsAvailable": 19,
+      "specialtyDoctorsAvailable": {
+        "orthopaedics": 3,
+        "wound_care_or_plastics": 4,
+        "neurology_or_neurosurgery": 4,
+        "respiratory_medicine": 4,
+        "cardiology": 4,
+        "general_surgery_or_gastroenterology": 2
+      },
+      "bedsAvailable": 29,
+      "waitingForReferral": 11,
+      "waitingForDiagnosis": 17,
+      "historicalArrivalsInWindow": 91,
+      "baselineStaffingStatus": "understaffed",
+      "waitBaselineByCategory": {
+        "abdominal_or_stomach_problems": {
+          "sampleCount": 36,
+          "meanWaitToReferralMinutes": 77.25,
+          "meanReferralToDiagnosisMinutes": 120.5,
+          "meanArrivalToDiagnosisMinutes": 197.75
+        },
+        "breathing_problems": {
+          "sampleCount": 58,
+          "meanWaitToReferralMinutes": 73.94827586206897,
+          "meanReferralToDiagnosisMinutes": 90.29310344827586,
+          "meanArrivalToDiagnosisMinutes": 164.24137931034483
+        },
+        "chest_pain_or_heart_symptoms": {
+          "sampleCount": 54,
+          "meanWaitToReferralMinutes": 72.46296296296296,
+          "meanReferralToDiagnosisMinutes": 109.22222222222223,
+          "meanArrivalToDiagnosisMinutes": 181.6851851851852
+        },
+        "cuts_or_wounds": {
+          "sampleCount": 54,
+          "meanWaitToReferralMinutes": 73.79629629629629,
+          "meanReferralToDiagnosisMinutes": 62.0,
+          "meanArrivalToDiagnosisMinutes": 135.7962962962963
+        },
+        "fracture_sprain_or_dislocation": {
+          "sampleCount": 37,
+          "meanWaitToReferralMinutes": 73.32432432432432,
+          "meanReferralToDiagnosisMinutes": 86.78378378378379,
+          "meanArrivalToDiagnosisMinutes": 160.1081081081081
+        },
+        "head_injury_or_neurological_symptoms": {
+          "sampleCount": 57,
+          "meanWaitToReferralMinutes": 79.0,
+          "meanReferralToDiagnosisMinutes": 96.80701754385964,
+          "meanArrivalToDiagnosisMinutes": 175.80701754385964
+        },
+        "other_or_uncategorised": {
+          "sampleCount": 58,
+          "meanWaitToReferralMinutes": 75.0,
+          "meanReferralToDiagnosisMinutes": 98.98275862068965,
+          "meanArrivalToDiagnosisMinutes": 173.98275862068965
+        },
+        "unknown": {
+          "sampleCount": 16,
+          "meanWaitToReferralMinutes": 73.0,
+          "meanReferralToDiagnosisMinutes": 110.375,
+          "meanArrivalToDiagnosisMinutes": 183.375
+        }
+      }
+    },
+    {
+      "hospitalId": "H004",
+      "name": "St Thomas’ Hospital",
+      "snapshotId": "H004-D05-B05",
+      "windowStart": "2026-09-25T16:00:00+01:00",
+      "windowEnd": "2026-09-25T20:00:00+01:00",
+      "generalDoctorsAvailable": 16,
+      "baselineGeneralDoctorsAvailable": 16,
+      "specialtyDoctorsAvailable": {
+        "orthopaedics": 3,
+        "wound_care_or_plastics": 2,
+        "neurology_or_neurosurgery": 4,
+        "respiratory_medicine": 4,
+        "cardiology": 4,
+        "general_surgery_or_gastroenterology": 4
+      },
+      "bedsAvailable": 23,
+      "waitingForReferral": 17,
+      "waitingForDiagnosis": 15,
+      "historicalArrivalsInWindow": 91,
+      "baselineStaffingStatus": "understaffed",
+      "waitBaselineByCategory": {
+        "abdominal_or_stomach_problems": {
+          "sampleCount": 43,
+          "meanWaitToReferralMinutes": 91.27906976744185,
+          "meanReferralToDiagnosisMinutes": 141.95348837209303,
+          "meanArrivalToDiagnosisMinutes": 233.2325581395349
+        },
+        "breathing_problems": {
+          "sampleCount": 46,
+          "meanWaitToReferralMinutes": 89.1086956521739,
+          "meanReferralToDiagnosisMinutes": 115.30434782608695,
+          "meanArrivalToDiagnosisMinutes": 204.41304347826087
+        },
+        "chest_pain_or_heart_symptoms": {
+          "sampleCount": 51,
+          "meanWaitToReferralMinutes": 86.62745098039215,
+          "meanReferralToDiagnosisMinutes": 133.76470588235293,
+          "meanArrivalToDiagnosisMinutes": 220.3921568627451
+        },
+        "cuts_or_wounds": {
+          "sampleCount": 51,
+          "meanWaitToReferralMinutes": 85.17647058823529,
+          "meanReferralToDiagnosisMinutes": 75.11764705882354,
+          "meanArrivalToDiagnosisMinutes": 160.2941176470588
+        },
+        "fracture_sprain_or_dislocation": {
+          "sampleCount": 53,
+          "meanWaitToReferralMinutes": 92.30188679245283,
+          "meanReferralToDiagnosisMinutes": 107.35849056603773,
+          "meanArrivalToDiagnosisMinutes": 199.66037735849056
+        },
+        "head_injury_or_neurological_symptoms": {
+          "sampleCount": 49,
+          "meanWaitToReferralMinutes": 89.83673469387755,
+          "meanReferralToDiagnosisMinutes": 124.83673469387755,
+          "meanArrivalToDiagnosisMinutes": 214.6734693877551
+        },
+        "other_or_uncategorised": {
+          "sampleCount": 60,
+          "meanWaitToReferralMinutes": 85.53333333333333,
+          "meanReferralToDiagnosisMinutes": 113.73333333333333,
+          "meanArrivalToDiagnosisMinutes": 199.26666666666668
+        },
+        "unknown": {
+          "sampleCount": 24,
+          "meanWaitToReferralMinutes": 90.29166666666667,
+          "meanReferralToDiagnosisMinutes": 130.45833333333334,
+          "meanArrivalToDiagnosisMinutes": 220.75
+        }
+      }
+    },
+    {
+      "hospitalId": "H005",
+      "name": "King’s College Hospital",
+      "snapshotId": "H005-D05-B05",
+      "windowStart": "2026-09-25T16:00:00+01:00",
+      "windowEnd": "2026-09-25T20:00:00+01:00",
+      "generalDoctorsAvailable": 18,
+      "baselineGeneralDoctorsAvailable": 18,
+      "specialtyDoctorsAvailable": {
+        "orthopaedics": 4,
+        "wound_care_or_plastics": 4,
+        "neurology_or_neurosurgery": 4,
+        "respiratory_medicine": 4,
+        "cardiology": 3,
+        "general_surgery_or_gastroenterology": 3
+      },
+      "bedsAvailable": 26,
+      "waitingForReferral": 9,
+      "waitingForDiagnosis": 14,
+      "historicalArrivalsInWindow": 106,
+      "baselineStaffingStatus": "understaffed",
+      "waitBaselineByCategory": {
+        "abdominal_or_stomach_problems": {
+          "sampleCount": 47,
+          "meanWaitToReferralMinutes": 77.68085106382979,
+          "meanReferralToDiagnosisMinutes": 127.36170212765957,
+          "meanArrivalToDiagnosisMinutes": 205.04255319148936
+        },
+        "breathing_problems": {
+          "sampleCount": 39,
+          "meanWaitToReferralMinutes": 80.94871794871794,
+          "meanReferralToDiagnosisMinutes": 109.28205128205128,
+          "meanArrivalToDiagnosisMinutes": 190.23076923076923
+        },
+        "chest_pain_or_heart_symptoms": {
+          "sampleCount": 38,
+          "meanWaitToReferralMinutes": 84.92105263157895,
+          "meanReferralToDiagnosisMinutes": 118.76315789473684,
+          "meanArrivalToDiagnosisMinutes": 203.68421052631578
+        },
+        "cuts_or_wounds": {
+          "sampleCount": 63,
+          "meanWaitToReferralMinutes": 87.63492063492063,
+          "meanReferralToDiagnosisMinutes": 60.82539682539682,
+          "meanArrivalToDiagnosisMinutes": 148.46031746031747
+        },
+        "fracture_sprain_or_dislocation": {
+          "sampleCount": 78,
+          "meanWaitToReferralMinutes": 85.42307692307692,
+          "meanReferralToDiagnosisMinutes": 98.21794871794872,
+          "meanArrivalToDiagnosisMinutes": 183.64102564102564
+        },
+        "head_injury_or_neurological_symptoms": {
+          "sampleCount": 60,
+          "meanWaitToReferralMinutes": 82.3,
+          "meanReferralToDiagnosisMinutes": 106.23333333333333,
+          "meanArrivalToDiagnosisMinutes": 188.53333333333333
+        },
+        "other_or_uncategorised": {
+          "sampleCount": 47,
+          "meanWaitToReferralMinutes": 83.23404255319149,
+          "meanReferralToDiagnosisMinutes": 102.93617021276596,
+          "meanArrivalToDiagnosisMinutes": 186.17021276595744
+        },
+        "unknown": {
+          "sampleCount": 24,
+          "meanWaitToReferralMinutes": 82.04166666666667,
+          "meanReferralToDiagnosisMinutes": 114.79166666666667,
+          "meanArrivalToDiagnosisMinutes": 196.83333333333334
+        }
+      }
+    }
+  ]
+}

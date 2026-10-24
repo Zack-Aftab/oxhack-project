@@ -1,0 +1,26 @@
+{
+  "sourceFile": "QueueCare Mock Dataset.json",
+  "sourceSha256": "b25f8250d941f7ce6f1a3cd88b7740838f8724ff95a66b608c12c100051c3f05",
+  "sourceCounts": {
+    "hospitals": 5,
+    "visits": 42000,
+    "staffingSnapshots": 840
+  },
+  "defaultSimulationAt": "2026-09-25T18:00:00+01:00",
+  "baselineMethod": "Mean for hospital + weekday + four-hour arrival bucket + complaint category, across the full synthetic dataset",
+  "travelSource": "ADDED DEMO VALUES, NOT PRESENT IN THE SOURCE DATASET OR A ROUTING API",
+  "demoTravelMinutesByHospital": {
+    "H001": 24,
+    "H002": 18,
+    "H003": 12,
+    "H004": 20,
+    "H005": 32
+  },
+  "capacityChange": {
+    "hospitalId": "H001",
+    "snapshotId": "H001-D05-B05",
+    "fromGeneralDoctors": 16,
+    "toGeneralDoctors": 8
+  },
+  "checks": "Unique IDs, hospital references, visit durations and timestamps, 300 daily visits per hospital, four-hour windows, nonnegative counts and exact window arrivals passed"
+}

@@ -2,17 +2,17 @@
 
 Complete this together before splitting implementation. Keep it short and current.
 
-- Product in one sentence: UNDECIDED.
+- Product in one sentence: QueueCare compares simulated hospital options and shows the effect of a capacity change on the same scenario.
 - Intended user and their problem: UNDECIDED.
-- Demo journey, from first screen/input to useful result: UNDECIDED.
-- Three must-have capabilities: UNDECIDED.
-- Explicitly deferred ideas: UNDECIDED.
-- Repository: https://github.com/ajjarm/oxhack-project — owned by ajjarm, private.
+- Demo journey, from first screen/input to useful result: choose a demo complaint and origin → compare hospitals → change general-doctor capacity → compare again. See docs/INTERFACES.md for the selected v1 wire contract and proposed toy demo model.
+- Three must-have capabilities: patient comparison, hospital snapshot dashboard, shared capacity scenario.
+- Explicitly deferred ideas: native phone app, clinical triage, real live hospital feeds, real routing, voice/photo intake, advanced forecasting and hospital-quality ratings.
+- Repository: https://github.com/ajjarm/oxhack-project — owned by ajjarm, public.
 - Team GitHub accounts: ajjarm, smsfm598, Zack-Aftab.
-- Stack and runtime versions: UNDECIDED.
-- Package manager: UNDECIDED.
-- Deployment target: UNDECIDED.
-- Data source and external services; mock/live status: UNDECIDED.
+- Stack and runtime versions: Next.js App Router with React, TypeScript and Tailwind; backend Route Handlers in the same app; Node.js 24 LTS. Exact dependency versions must be pinned with the first scaffold.
+- Package manager: npm, with a committed package-lock.json once the app is scaffolded.
+- Deployment target: Vercel for the Next.js app; Supabase Postgres for shared scenario state. Neither service is configured yet.
+- Data source and external services; mock/live status: QueueCare Mock Dataset.json — 5 hospitals, 42,000 synthetic visits, 840 staffing snapshots. Operational values are invented. The original input remains external; fixtures/queuecare/manifest.json records its checksum and the separately added demo journey/model assumptions. No live provider integration exists.
 - Integration coordinator for the current period: UNASSIGNED; this person also builds features.
 - Shared database/migration and dependency-change coordinator: UNASSIGNED.
 - Development data isolation and port allocation: UNDECIDED.

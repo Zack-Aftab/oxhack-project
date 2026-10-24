@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "queuecare.v1",
+  "syntheticData": true,
+  "notice": "Synthetic demonstration. Real hospital names; invented operational data. Not clinical guidance.",
+  "scenarioId": "demo-1",
+  "stateVersion": 0,
+  "simulationAt": "2026-09-25T18:00:00+01:00",
+  "complaintCategory": "fracture_sprain_or_dislocation",
+  "requiredSpecialty": "orthopaedics",
+  "travelSource": "demo_fixture",
+  "estimateMethod": "demo_baseline_scaling_v1",
+  "hospitals": [
+    {
+      "hospitalId": "H003",
+      "name": "University College Hospital",
+      "suitability": "demo_match",
+      "travelMinutes": 12,
+      "estimatedArrivalAt": "2026-09-25T18:12:00+01:00",
+      "predictedWaitToReferralOnArrivalMinutes": 74,
+      "totalToReferralMinutes": 86,
+      "staffingSnapshotId": "H003-D05-B05",
+      "historicalBaseline": {
+        "sampleCount": 37,
+        "meanWaitToReferralMinutes": 73.32432432432432,
+        "meanReferralToDiagnosisMinutes": 86.78378378378379,
+        "meanArrivalToDiagnosisMinutes": 160.1081081081081
+      },
+      "explanation": "Retrospective synthetic baseline with a demo staffing multiplier; not a clinical forecast."
+    },
+    {
+      "hospitalId": "H002",
+      "name": "St Mary’s Hospital",
+      "suitability": "demo_match",
+      "travelMinutes": 18,
+      "estimatedArrivalAt": "2026-09-25T18:18:00+01:00",
+      "predictedWaitToReferralOnArrivalMinutes": 86,
+      "totalToReferralMinutes": 104,
+      "staffingSnapshotId": "H002-D05-B05",
+      "historicalBaseline": {
+        "sampleCount": 65,
+        "meanWaitToReferralMinutes": 85.78461538461538,
+        "meanReferralToDiagnosisMinutes": 105.52307692307693,
+        "meanArrivalToDiagnosisMinutes": 191.30769230769232
+      },
+      "explanation": "Retrospective synthetic baseline with a demo staffing multiplier; not a clinical forecast."
+    },
+    {
+      "hospitalId": "H004",
+      "name": "St Thomas’ Hospital",
+      "suitability": "demo_match",
+      "travelMinutes": 20,
+      "estimatedArrivalAt": "2026-09-25T18:20:00+01:00",
+      "predictedWaitToReferralOnArrivalMinutes": 93,
+      "totalToReferralMinutes": 113,
+      "staffingSnapshotId": "H004-D05-B05",
+      "historicalBaseline": {
+        "sampleCount": 53,
+        "meanWaitToReferralMinutes": 92.30188679245283,
+        "meanReferralToDiagnosisMinutes": 107.35849056603773,
+        "meanArrivalToDiagnosisMinutes": 199.66037735849056
+      },
+      "explanation": "Retrospective synthetic baseline with a demo staffing multiplier; not a clinical forecast."
+    },
+    {
+      "hospitalId": "H005",
+      "name": "King’s College Hospital",
+      "suitability": "demo_match",
+      "travelMinutes": 32,
+      "estimatedArrivalAt": "2026-09-25T18:32:00+01:00",
+      "predictedWaitToReferralOnArrivalMinutes": 86,
+      "totalToReferralMinutes": 118,
+      "staffingSnapshotId": "H005-D05-B05",
+      "historicalBaseline": {
+        "sampleCount": 78,
+        "meanWaitToReferralMinutes": 85.42307692307692,
+        "meanReferralToDiagnosisMinutes": 98.21794871794872,
+        "meanArrivalToDiagnosisMinutes": 183.64102564102564
+      },
+      "explanation": "Retrospective synthetic baseline with a demo staffing multiplier; not a clinical forecast."
+    },
+    {
+      "hospitalId": "H001",
+      "name": "The Royal London Hospital",
+      "suitability": "demo_match",
+      "travelMinutes": 24,
+      "estimatedArrivalAt": "2026-09-25T18:24:00+01:00",
+      "predictedWaitToReferralOnArrivalMinutes": 97,
+      "totalToReferralMinutes": 121,
+      "staffingSnapshotId": "H001-D05-B05",
+      "historicalBaseline": {
+        "sampleCount": 66,
+        "meanWaitToReferralMinutes": 96.07575757575758,
+        "meanReferralToDiagnosisMinutes": 124.96969696969697,
+        "meanArrivalToDiagnosisMinutes": 221.04545454545453
+      },
+      "explanation": "Retrospective synthetic baseline with a demo staffing multiplier; not a clinical forecast."
+    }
+  ]
+}

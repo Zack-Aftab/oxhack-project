@@ -1,0 +1,7 @@
+{
+  "scenarioId": "demo-1",
+  "simulationAt": "2026-09-25T18:00:00+01:00",
+  "complaintCategory": "fracture_sprain_or_dislocation",
+  "originId": "london-demo",
+  "travelMode": "demo"
+}

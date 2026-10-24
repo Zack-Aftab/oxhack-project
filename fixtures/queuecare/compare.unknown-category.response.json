@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "queuecare.v1",
+  "syntheticData": true,
+  "notice": "Synthetic demonstration. Real hospital names; invented operational data. Not clinical guidance.",
+  "scenarioId": "demo-1",
+  "stateVersion": 0,
+  "simulationAt": "2026-09-25T18:00:00+01:00",
+  "complaintCategory": "unknown",
+  "requiredSpecialty": "emergency_medicine",
+  "travelSource": "demo_fixture",
+  "estimateMethod": "demo_baseline_scaling_v1",
+  "hospitals": [
+    {
+      "hospitalId": "H001",
+      "name": "The Royal London Hospital",
+      "suitability": "unknown",
+      "travelMinutes": 24,
+      "estimatedArrivalAt": "2026-09-25T18:24:00+01:00",
+      "predictedWaitToReferralOnArrivalMinutes": null,
+      "totalToReferralMinutes": null,
+      "staffingSnapshotId": "H001-D05-B05",
+      "historicalBaseline": {
+        "sampleCount": 21,
+        "meanWaitToReferralMinutes": 99.52380952380952,
+        "meanReferralToDiagnosisMinutes": 139.95238095238096,
+        "meanArrivalToDiagnosisMinutes": 239.47619047619048
+      },
+      "explanation": "No comparable estimate is available under the demo resource rules."
+    },
+    {
+      "hospitalId": "H002",
+      "name": "St Mary’s Hospital",
+      "suitability": "unknown",
+      "travelMinutes": 18,
+      "estimatedArrivalAt": "2026-09-25T18:18:00+01:00",
+      "predictedWaitToReferralOnArrivalMinutes": null,
+      "totalToReferralMinutes": null,
+      "staffingSnapshotId": "H002-D05-B05",
+      "historicalBaseline": {
+        "sampleCount": 18,
+        "meanWaitToReferralMinutes": 94.66666666666667,
+        "meanReferralToDiagnosisMinutes": 119.72222222222223,
+        "meanArrivalToDiagnosisMinutes": 214.38888888888889
+      },
+      "explanation": "No comparable estimate is available under the demo resource rules."
+    },
+    {
+      "hospitalId": "H003",
+      "name": "University College Hospital",
+      "suitability": "unknown",
+      "travelMinutes": 12,
+      "estimatedArrivalAt": "2026-09-25T18:12:00+01:00",
+      "predictedWaitToReferralOnArrivalMinutes": null,
+      "totalToReferralMinutes": null,
+      "staffingSnapshotId": "H003-D05-B05",
+      "historicalBaseline": {
+        "sampleCount": 16,
+        "meanWaitToReferralMinutes": 73.0,
+        "meanReferralToDiagnosisMinutes": 110.375,
+        "meanArrivalToDiagnosisMinutes": 183.375
+      },
+      "explanation": "No comparable estimate is available under the demo resource rules."
+    },
+    {
+      "hospitalId": "H004",
+      "name": "St Thomas’ Hospital",
+      "suitability": "unknown",
+      "travelMinutes": 20,
+      "estimatedArrivalAt": "2026-09-25T18:20:00+01:00",
+      "predictedWaitToReferralOnArrivalMinutes": null,
+      "totalToReferralMinutes": null,
+      "staffingSnapshotId": "H004-D05-B05",
+      "historicalBaseline": {
+        "sampleCount": 24,
+        "meanWaitToReferralMinutes": 90.29166666666667,
+        "meanReferralToDiagnosisMinutes": 130.45833333333334,
+        "meanArrivalToDiagnosisMinutes": 220.75
+      },
+      "explanation": "No comparable estimate is available under the demo resource rules."
+    },
+    {
+      "hospitalId": "H005",
+      "name": "King’s College Hospital",
+      "suitability": "unknown",
+      "travelMinutes": 32,
+      "estimatedArrivalAt": "2026-09-25T18:32:00+01:00",
+      "predictedWaitToReferralOnArrivalMinutes": null,
+      "totalToReferralMinutes": null,
+      "staffingSnapshotId": "H005-D05-B05",
+      "historicalBaseline": {
+        "sampleCount": 24,
+        "meanWaitToReferralMinutes": 82.04166666666667,
+        "meanReferralToDiagnosisMinutes": 114.79166666666667,
+        "meanArrivalToDiagnosisMinutes": 196.83333333333334
+      },
+      "explanation": "No comparable estimate is available under the demo resource rules."
+    }
+  ]
+}

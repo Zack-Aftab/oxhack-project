@@ -1,0 +1,7 @@
+{
+  "schemaVersion": "queuecare.v1",
+  "error": {
+    "code": "INVALID_REQUEST",
+    "message": "complaintCategory must be a catalog ID"
+  }
+}
