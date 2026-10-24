@@ -9,8 +9,8 @@ One project. Three people. Everyone can use their own coding tools and work at t
 | GitHub account | Coding tools |
 | --- | --- |
 | [ajjarm](https://github.com/ajjarm) | Codex and Claude Code |
-| [smsfm598](https://github.com/smsfm598) | To confirm |
-| [Zack-Aftab](https://github.com/Zack-Aftab) | To confirm |
+| [smsfm598](https://github.com/smsfm598) | Gemini |
+| [Zack-Aftab](https://github.com/Zack-Aftab) | Codex and Gemini |
 
 Between us we use Antigravity, Codex and Claude Code. Everyone can choose the tool that helps with their task.
 
