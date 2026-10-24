@@ -6,6 +6,8 @@ One project. Three people. Everyone can use their own coding tools and work at t
 
 **Starting development with Claude Code?** Open the [build handoff](docs/build/START-HERE.md), then use the [Claude starting prompt](docs/build/CLAUDE-START-PROMPT.md) with your exported design file. It includes the scope and the backend teammate's report. The [API proposal](docs/INTERFACES.md) and [small samples](fixtures/queuecare/README.md) let UI work begin before a backend is available; backend-owner agreement is still needed.
 
+**What should each person build next?** Use the [ordered build checklist](docs/build/BUILD-PLAN.md): patient UI, shared data/API, Gemini intake, hospital ranking, evaluated forecasting, dashboard integration and presentation. [Models and data](docs/build/MODELS-AND-DATA.md) explains the proposed calculations and extra samples needed.
+
 ## Our team
 
 | GitHub account | Coding tools |

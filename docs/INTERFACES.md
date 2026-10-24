@@ -6,6 +6,8 @@ You can build the UI now using [the sample responses](../fixtures/queuecare/READ
 
 The [backend handoff](build/inputs/BACKEND-HANDOFF.md) could not inspect this proposal and verifies no core API or database. It does not establish a competing core contract. Give the backend owner this file and reconcile any newer code before connecting the UI. Change the documentation, types and affected fixtures together if the agreement changes. The toy model below is an assistant-authored demo option, not a validated predictor or an algorithm the teammate has already adopted. The database import does not need restructuring to match response objects. The app is unnamed; `queuecare.v1` is a temporary schema identifier.
 
+**Expanded build, 25 October:** this four-route model is the first integration checkpoint. [BUILD-PLAN.md](build/BUILD-PLAN.md) requires subsequent Gemini intake, a shared time-dependent ranking/queue engine and evaluated forecasting. [MODELS-AND-DATA.md](build/MODELS-AND-DATA.md#backend-changes-to-agree) lists the proposed extensions. Those are not yet part of these wire types; agree changes and update this file/types/fixtures before implementing them. The current full-history toy fixtures are not past-only forecast-validation evidence.
+
 ## One instruction for each coding assistant
 
 > Read docs/build/START-HERE.md, docs/INTERFACES.md, contracts/queuecare.ts and fixtures/queuecare/README.md. Use the proposal consistently for fixture UI work. Confirm or reconcile it with the backend owner before connected integration. After agreement, the backend maps the dataset into that contract and validates requests at runtime. Record a needed contract change before implementing a conflicting shape.

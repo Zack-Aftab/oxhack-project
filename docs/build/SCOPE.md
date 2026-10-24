@@ -16,8 +16,10 @@ The app has no product name. `queuecare` filenames and `queuecare.v1` currently 
 | P2 | Understand missing data and request failures | Loading, validation, no-match/unavailable, unknown complaint, missing travel, and retry states work. Unknown values never display as zero. |
 | H1 | View the same scenario on a hospital dashboard | Hospital IDs, simulation clock, scenario/version, queues and capacity correspond to patient data. Historical arrivals are labelled historical. |
 | H2 | Change a hospital's general-doctor count and compare again | A saved server-side scenario override updates dashboard and comparison consistently; another browser sees it after refresh/Compare. Stale saves show a conflict and refresh option. |
+| P3 | Upload a photo and/or describe the problem, confirm the category, and select an intended destination | Server-side Gemini suggests an exact catalog category; user can change it; selection appears as an intention on the hospital side, separate from check-in. |
+| F1 | Explore hospital demand and capacity with an evaluated forecast | Historical-data forecast, category mix, projected queue/wait and staffing what-if use the same engine as patient ranking; chronological evaluation versus a baseline is reproducible. |
 
-Start with **P1 and P2 in explicit sample mode** using the exported patient designs. Connect the first real comparison as soon as available, before polishing all screens. Then build H1/H2 and test the combined loop. A working sample UI completes the UI milestone; it does not complete connected integration.
+Start with **P1 and P2 in explicit sample mode** using the exported patient designs. Connect the first real comparison as soon as available, before polishing all screens. Complete P3/H1/H2/F1 through the parallel lanes in [BUILD-PLAN.md](BUILD-PLAN.md). A working sample UI completes the first UI milestone; it does not complete connected integration or the final demo. The simple v1 fixture formula is an early checkpoint; shared time-dependent ranking and evaluated forecasting are required technical work in the expanded demo.
 
 ## What the UI means
 
@@ -26,9 +28,9 @@ Start with **P1 and P2 in explicit sample mode** using the exported patient desi
 - Show a visible synthetic-data notice. Travel fixtures are invented demo travel; waits use an illustrative model. These are not current hospital estimates.
 - Referral is not proof a doctor has seen the patient. Travel plus wait to referral is separate from arrival-to-diagnosis time.
 - The frontend displays the backend's estimates and ordering; it does not develop a second ranking formula.
-- Category selection is sufficient for P1. If designs include voice, text, photos, maps, forecasts or scores beyond available APIs, record them as later integrations. Do not make decorative controls appear functional or fabricate their results.
+- Category selection is sufficient for the first P1 checkpoint. Photo/description intake and data-backed forecasts are now required follow-on work, with contracts still to agree. Speech-to-text comes last. Do not make decorative controls appear functional or fabricate unsupported scores.
 
-The wider idea includes assisted intake, confirmed extracted information and richer hospital demand views. Optional image classification is specifically discussed in the backend report. Implement these after the first loop when time and real interfaces allow. A category suggestion requires user confirmation/change; it is not a diagnosis or clinical-priority score. Native apps, live feeds, real routing and advanced forecasting are outside the first loop. Intended destination is not a confirmed hospital arrival.
+The expanded demo includes assisted intake, confirmed category and richer hospital demand views. A category suggestion requires user confirmation/change; it is not a diagnosis or clinical-priority score. Native apps and live hospital feeds remain outside this build. Real routing is optional; explicit demo travel can support the complete flow. Intended destination is not a confirmed hospital arrival. See [MODELS-AND-DATA.md](MODELS-AND-DATA.md) for ranking, forecast evaluation and the missing source fields that require small dashboard label/control changes.
 
 ## How the pieces fit
 
@@ -52,8 +54,8 @@ These are proposed paths for the first scaffold, not existing folders. Inspect n
 | Owner | Files / responsibility |
 | --- | --- |
 | Frontend: user | Patient and later hospital pages/components, styling/assets, typed API client; e.g. `src/app/(patient)/`, `src/app/(hospital)/`, `src/components/`, `src/lib/api-client.ts` |
-| Backend/database teammate | `src/app/api/`, `src/lib/server/`, Supabase schema/migrations/import and shared scenario state; optional classifier route later |
-| Third teammate | Data verification, fixture maintenance and end-to-end checks; coordinate changes to `fixtures/`, `scripts/` and contract files |
+| Backend/database teammate | `src/app/api/`, server integration, Supabase schema/migrations/import, shared scenario state and classifier route; coordinate the model boundary with Data |
+| Third teammate | Data verification, fixtures, forecasting/model module (suggested `src/lib/server/models/`) and end-to-end checks; coordinate its function inputs/outputs and contract changes with API |
 | One named owner at a time | Root scaffold, package/lock files, layout/global CSS, environment examples, deployment/CI and contract changes |
 
 Recommendation: the frontend owner makes the first minimal Next.js scaffold because patient work is starting now. Tell the backend owner before starting so they extend that scaffold rather than generating another app. If they already made one, reuse it. After the foundation is shared, everyone works on separate branches/folders in parallel. See [WORKING-TOGETHER.md](../WORKING-TOGETHER.md) for save, push, review and merge steps.
@@ -73,7 +75,7 @@ sequenceDiagram
     A-->>P: Changed H001 estimate, stateVersion 1
 ```
 
-If the proposed model is accepted, its fixture expectation is H001 wait **97 → 193 minutes**, total **121 → 217**; other hospitals stay unchanged. If the backend owner chooses a different documented model, update contract/model notes and fixtures before asserting those numbers. Do not call fixture switching an end-to-end backend test.
+For the initial simple model only, the fixture expectation is H001 wait **97 → 193 minutes**, total **121 → 217**; other hospitals stay unchanged. The expanded shared engine needs regenerated fixture expectations and a model identifier. Update contract/model notes and fixtures before asserting new numbers. Do not call fixture switching an end-to-end backend test.
 
 Test the loop in two browsers against the same scenario. Also check failed requests, unavailable values, zero doctors and a stale version save. Record actual results and the database/environment used.
 
@@ -81,12 +83,8 @@ Test the loop in two browsers against the same scenario. Also check failed reque
 
 **Now:** designate the one scaffold owner; backend owner confirms/revises the four routes and sample shapes; agree the simulation clock, wait/model meanings, demo travel and shared scenario storage. Decide access controls before enabling a publicly writable capacity route. UI fixture work can proceed while these are resolved.
 
-**Later:** final name, voice/photo integration, real routing, automatic refresh/realtime, advanced forecasts, hospital performance features, native packaging. Do not delay P1 for them.
+**Required after the first comparison:** photo/description categorization with confirmation, shared queue/ranking model, evaluated demand forecasts and supported hospital metrics. **Later:** final name, speech-to-text (last), real routing, automatic realtime, Monte Carlo refinements and native packaging. Do not delay P1 for these later refinements.
 
 ## Next actions, in order
 
-1. **User:** share the exported patient design with Claude and send the short backend message in [BACKEND-ALIGNMENT.md](BACKEND-ALIGNMENT.md) to your teammate. Confirm who scaffolds.
-2. **Backend teammate:** inspect the proposal; return acceptance or exact changes; share any new code on a branch. Start the core comparison/data routes before optional classification.
-3. **User + Claude:** inspect repo/design, complete the implementation spec, scaffold once if needed, implement P1/P2 with fixtures and document actual setup.
-4. **Third teammate:** compare source checksum with the manifest, maintain matching samples and help test the first connected comparison.
-5. **All three:** share the foundation, connect Compare, then capacity change, test in two browsers, and merge small reviewed PRs. Keep progress and evidence on the relevant task/PR.
+Follow [the ordered build checklist](BUILD-PLAN.md) for current tasks, parallel owners, model/data work, integration, deployment and presentation. It supersedes the earlier recommendation to defer all forecasting/photo work. The backend reply is still pending; no new API shape is agreed by this scope update alone.

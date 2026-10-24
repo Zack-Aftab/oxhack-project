@@ -30,3 +30,7 @@ Copy this message yourself; no message has been sent on your behalf:
 > We're recommending one Next.js app, not separate frontend and Express apps. Please confirm who creates the initial scaffold so we don't both generate one. Let's connect Compare first, then shared capacity changes. Image classification can follow; any suggestion must use the catalog category IDs and allow user confirmation. If you can't access the PR, say so and we'll send the contract files directly.
 
 The developer must know the contract even if someone else wrote it. This short acknowledgement prevents parallel implementations from quietly diverging.
+
+## Expanded work requested 25 October
+
+The user confirms no backend branch has been pushed and the above reply is still pending. They now require photo/description categorization, technical ranking depth, evaluated hospital forecasting, a functional demo and presentation. Send the backend owner [BUILD-PLAN.md](BUILD-PLAN.md) and [the extension proposals](MODELS-AND-DATA.md#backend-changes-to-agree) alongside the original message. Classification is now required follow-on demo work; Compare remains the first connection to get working. Do not wait for all later endpoints to begin fixture UI/data work.

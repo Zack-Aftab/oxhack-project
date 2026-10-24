@@ -5,8 +5,8 @@ Use [the build handoff](build/START-HERE.md) for the implementation scope and la
 - Product in one sentence: Our unnamed app compares simulated hospital options and shows the effect of a capacity change on the same scenario.
 - Intended users: a patient comparing demo options on a phone, and a hospital user exploring capacity on a dashboard.
 - Demo journey, from first screen/input to useful result: choose a demo complaint and origin → compare hospitals → change general-doctor capacity → compare again. See [INTERFACES.md](INTERFACES.md) for the proposed wire contract and toy demo model; the backend owner has not confirmed them.
-- Three must-have capabilities: patient comparison, hospital snapshot dashboard, shared capacity scenario.
-- First milestone excludes native development, clinical triage, live hospital feeds, real routing, voice/photo intake, advanced forecasting and hospital-quality ratings. Optional photo-assisted category suggestion is discussed in the backend report, but remains untested and comes after the core flow. These are sequencing recommendations, not a claim that all later features were rejected.
+- Demo capabilities: confirmed photo/description category, patient hospital comparison, shared capacity scenario, hospital dashboard with evaluated demand forecasting and supported performance metrics. Follow [the build checklist](build/BUILD-PLAN.md) for sequencing.
+- First checkpoint is a connected comparison with manual category fallback. Native development, clinical triage and live feeds remain out of scope. Real routing and Monte Carlo refinements are optional; speech-to-text comes last. Photo/Gemini intake and forecasting are required follow-on demo tasks, not indefinitely deferred.
 - Repository: https://github.com/ajjarm/oxhack-project — owned by ajjarm, public.
 - Team GitHub accounts: ajjarm, smsfm598, Zack-Aftab.
 - Stack and runtime versions: Next.js App Router with React, TypeScript and Tailwind; backend Route Handlers in the same app; Node.js 24 LTS. Exact dependency versions must be pinned with the first scaffold.

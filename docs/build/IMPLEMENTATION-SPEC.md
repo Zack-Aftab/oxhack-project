@@ -1,6 +1,6 @@
 # Implementation spec — to be completed by Claude
 
-**Status: not written.** No design export or app scaffold was inspected for this template. The core contract is still proposed. This page is a starting outline, not evidence of implementation or backend-owner agreement.
+**Status: not written.** The hospital HTML/design has been inspected and is preserved under `inputs/`; the patient export and app scaffold have not been inspected for this template. The core contract and expanded model/API extensions are still proposed. This page is a starting outline, not evidence of implementation or backend-owner agreement. Follow [BUILD-PLAN.md](BUILD-PLAN.md) for the current expanded target.
 
 Claude: inspect the supplied design and actual repo, then replace this outline with a concise plan and start the authorized patient UI work. See [SCOPE.md](SCOPE.md) for behaviour and [INTERFACES.md](../INTERFACES.md) for the owning contract; do not duplicate JSON schemas here.
 

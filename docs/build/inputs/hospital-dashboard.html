@@ -1,0 +1,1864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Triage — Hospital operations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* =========================================================================
+   1. DESIGN TOKENS — from DESIGN.md ("Soft glass"). Every colour, radius,
+      shadow and size below is used through these variables. Do not write
+      raw values further down; add a token here instead.
+   ========================================================================= */
+:root {
+  /* Ink and text */
+  --ink: #0B0B0C;
+  --ink-2: #3A3A3F;
+  --muted: #6E6E73;
+  --muted-2: #8A8A90;
+
+  /* Lines */
+  --hairline: #D9D9DE;
+  --hairline-2: #C9C9CE;
+  --chevron: #B5B5BA;
+
+  /* Dot-matrix */
+  --dot-off: #E2E2E6;
+  --dot-past: #A3A3A9;
+
+  /* Ground and surfaces */
+  --ground: #F2F2F4;
+  --ground-tint: #E2EBF8;
+  --surface: #FFFFFF;
+
+  /* Accent: the one blue */
+  --accent: #005EB8;
+  --accent-soft: #7FAEE0;
+  --accent-rgb: 0,94,184;
+
+  /* Severity: yellow → orange → deep orange. Never red. */
+  --sev-1: #E9B949;
+  --sev-2: #F28C28;
+  --sev-3: #D9661F;
+  --sev-2-bg: #FDEBD9;
+  --sev-2-fg: #8A4410;
+  /* Derived chip colours for sev-1 and sev-3 (same tint depth as sev-2's) */
+  --sev-1-bg: #FBF1D1;
+  --sev-1-fg: #6E5410;
+  --sev-3-bg: #F8DFD0;
+  --sev-3-fg: #7A3410;
+
+  /* Emergency: 999 surfaces and destructive actions only */
+  --emergency: #D12E2E;
+  --emergency-text: #B3261E;
+
+  /* Needs-attention tints (founder choice, 24 Oct) and the green used with them */
+  --attn-red-bg: #FBE4DF;
+  --attn-amber-bg: #F8EDD7;
+  --attn-green-bg: #D9EFE8;
+  --ok: #1F6B4F;
+
+  /* Radius */
+  --r-pill: 999px;
+  --r-card-lg: 26px;
+  --r-card: 22px;
+  --r-inset: 16px;
+  --r-tile: 14px;
+  --r-badge: 10px;
+
+  /* Elevation */
+  --shadow-glass: 0 1px 0 rgba(255,255,255,.9) inset, 0 8px 24px rgba(20,30,50,.06);
+  --shadow-glass-lg: 0 1px 0 rgba(255,255,255,.9) inset, 0 16px 40px rgba(20,30,50,.1);
+  --shadow-button: 0 12px 30px rgba(0,0,0,.2);
+  --shadow-white-inset: 0 2px 8px rgba(0,0,0,.06);
+  --glow-accent: 0 0 16px rgba(0,94,184,.5);
+
+  /* Glass material (header and floating controls only) */
+  --glass-bg: rgba(255,255,255,.62);
+  --glass-bg-hover: rgba(255,255,255,.72);
+  --glass-border: rgba(255,255,255,.85);
+  --glass-blur: blur(24px);
+
+  /* Hatching for shortfall / unstaffed regions */
+  --hatch: repeating-linear-gradient(135deg, var(--hairline-2) 0 1.5px, transparent 1.5px 5px);
+
+  /* Spacing scale: 2 4 6 8 10 12 14 16 20 24 32 40 */
+  --s-2: 2px; --s-4: 4px; --s-6: 6px; --s-8: 8px; --s-10: 10px; --s-12: 12px;
+  --s-14: 14px; --s-16: 16px; --s-20: 20px; --s-24: 24px; --s-32: 32px; --s-40: 40px;
+
+  /* Type scale (size / line-height) */
+  --t-display: 48px; --t-display-lh: 52px;
+  --t-h1: 34px; --t-h1-lh: 38px;
+  --t-card-title: 19px; --t-card-title-lh: 24px;
+  --t-hero: 40px;
+  --t-hero-sm: 26px;
+  --t-row: 16px; --t-row-lh: 22px;
+  --t-body: 15px; --t-body-lh: 21px;
+  --t-caption: 12.5px; --t-caption-lh: 17px;
+  --t-small: 11.5px; --t-small-lh: 16px;
+  --t-eyebrow: 11px;
+  --t-axis: 9.5px;
+
+  /* Layout */
+  --sidebar-w: 240px;
+  --gutter: 32px;
+  --col-gap: 24px;
+  --card-pad: 20px;
+  --header-h: 64px;
+
+  /* Dot-matrix geometry */
+  --dot: 7px;
+  --dot-gap: 3px;
+
+  font-family: Inter, system-ui, sans-serif;
+  font-size: var(--t-body);
+  line-height: var(--t-body-lh);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* =========================================================================
+   2. BASE
+   ========================================================================= */
+* { box-sizing: border-box; }
+html { background: var(--ground); }
+body {
+  margin: 0; min-height: 100vh;
+  display: grid; grid-template-columns: var(--sidebar-w) 1fr;
+  background:
+    radial-gradient(90% 40% at 50% 0%, var(--ground-tint) 0%, transparent 70%),
+    var(--ground);
+}
+button, input, select, textarea { font: inherit; letter-spacing: inherit; color: inherit; }
+button, select { cursor: pointer; }
+h1, h2, h3, p { margin: 0; }
+.num { font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); }
+.eyebrow {
+  font-size: var(--t-eyebrow); line-height: 1; font-weight: 600;
+  letter-spacing: .05em; text-transform: uppercase; color: var(--muted-2);
+}
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: var(--r-badge); }
+svg.i { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+/* =========================================================================
+   3. SIDEBAR — solid white, mark + wordmark, nav with ink active pill,
+      facility and profile at the bottom.
+   ========================================================================= */
+.sidebar {
+  position: sticky; top: 0; height: 100vh;
+  background: var(--surface); border-right: 1px solid var(--hairline);
+  padding: var(--s-24) var(--s-16); display: flex; flex-direction: column; gap: var(--s-24);
+}
+.brand { display: flex; align-items: center; gap: var(--s-10); padding: 0 var(--s-8); font-weight: 700; font-size: 17px; letter-spacing: -.02em; }
+.mark {
+  position: relative; width: 30px; height: 30px; flex: none;
+  background: var(--ink); border-radius: var(--r-badge); display: grid; place-items: center;
+}
+.mark svg { width: 16px; height: 16px; stroke: var(--surface); stroke-width: 2.6; stroke-linecap: round; fill: none; }
+.mark::after {
+  content: ""; position: absolute; top: -3px; right: -3px; width: 10px; height: 10px;
+  border-radius: 50%; background: var(--accent); border: 2px solid var(--surface);
+}
+.brand small { display: block; font-size: var(--t-small); font-weight: 500; color: var(--muted-2); letter-spacing: 0; }
+.search {
+  display: flex; align-items: center; gap: var(--s-8); height: 38px; padding: 0 var(--s-12);
+  background: var(--ground); border-radius: var(--r-badge); color: var(--muted); font-size: 13px; font-weight: 500;
+}
+.search input { flex: 1; border: 0; background: transparent; min-width: 0; height: 100%; padding: 0; }
+.search kbd { font-family: inherit; font-size: 10.5px; color: var(--muted-2); border: 1px solid var(--hairline); border-radius: 6px; padding: 1px 5px; }
+nav.side { display: grid; gap: var(--s-4); }
+nav.side button {
+  display: flex; align-items: center; gap: var(--s-12);
+  height: 44px; padding: 0 var(--s-14); border: 0; border-radius: var(--r-pill);
+  background: transparent; color: var(--ink-2); font-size: 14px; font-weight: 500; text-align: left;
+  transition: background .15s, color .15s;
+}
+nav.side button:hover { background: var(--ground); color: var(--ink); }
+nav.side button.active { background: var(--ink); color: var(--surface); font-weight: 600; }
+nav.side button .count {
+  margin-left: auto; min-width: 22px; height: 22px; padding: 0 7px; border-radius: var(--r-pill);
+  background: var(--sev-2-bg); color: var(--sev-2-fg); font-size: 11.5px; font-weight: 700;
+  display: grid; place-items: center; font-variant-numeric: tabular-nums;
+}
+nav.side button.active .count { background: rgba(255,255,255,.18); color: var(--surface); }
+.side-bottom { margin-top: auto; display: grid; gap: var(--s-12); }
+.facility { padding: var(--s-14); background: var(--ground); border-radius: var(--r-inset); font-size: 13px; }
+.facility strong { display: block; font-weight: 600; }
+.facility span { font-size: var(--t-small); color: var(--muted); display: block; margin-top: 2px; }
+.facility .live { display: inline-flex; align-items: center; gap: var(--s-8); margin-top: var(--s-10); font-size: var(--t-small); font-weight: 600; color: var(--ink-2); }
+.live-dot { position: relative; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex: none; }
+.live-dot::after {
+  content: ""; position: absolute; inset: -3px; border-radius: 50%;
+  border: 1.5px solid var(--accent); animation: pulseC 2s ease-out infinite;
+}
+.profile { display: flex; align-items: center; gap: var(--s-10); padding: 0 var(--s-8); }
+.initials {
+  width: 34px; height: 34px; border-radius: var(--r-badge); display: grid; place-items: center;
+  background: var(--ground); border: 1px solid var(--hairline); font-size: 12px; font-weight: 700; flex: none;
+}
+.profile strong { display: block; font-size: 13px; font-weight: 600; line-height: 1.2; }
+.profile span { font-size: var(--t-small); color: var(--muted); }
+.side-note { padding: 0 var(--s-8); font-size: var(--t-small); color: var(--muted-2); font-weight: 500; }
+
+/* =========================================================================
+   4. MAIN FRAME — slim glass topbar, page heading, content, footer
+   ========================================================================= */
+.main { min-width: 0; }
+.topbar {
+  position: sticky; top: 0; z-index: 20; height: var(--header-h);
+  padding: 0 var(--gutter); display: flex; align-items: center; justify-content: space-between; gap: var(--s-16);
+  background: var(--glass-bg); backdrop-filter: var(--glass-blur) saturate(160%); -webkit-backdrop-filter: var(--glass-blur) saturate(160%);
+  border-bottom: 1px solid var(--glass-border);
+}
+.crumbs { display: flex; align-items: center; gap: var(--s-8); font-size: 13px; font-weight: 500; color: var(--muted); }
+.crumbs strong { color: var(--ink); font-weight: 600; }
+.crumbs svg { width: 14px; height: 14px; stroke: var(--chevron); fill: none; stroke-width: 2; stroke-linecap: round; }
+.topbar-right { display: flex; align-items: center; gap: var(--s-12); }
+.clock { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--ink-2); }
+.clock span { color: var(--muted); font-weight: 500; }
+main { padding: var(--s-24) var(--gutter) var(--s-40); }
+.heading { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--s-24); margin-bottom: var(--s-24); }
+.heading h1 { font-size: var(--t-h1); line-height: var(--t-h1-lh); font-weight: 700; letter-spacing: -.035em; margin-top: var(--s-8); }
+.heading h1 .lead { color: var(--muted-2); }
+.heading p { color: var(--muted); font-size: var(--t-body); margin-top: var(--s-6); max-width: 65ch; }
+.actions { display: flex; gap: var(--s-10); align-items: center; flex-wrap: wrap; }
+#notice {
+  min-height: 24px; margin-bottom: var(--s-12); font-size: 13px; font-weight: 500; color: var(--accent);
+  display: flex; align-items: center; gap: var(--s-8);
+}
+#notice:not(:empty)::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+footer {
+  display: flex; justify-content: space-between; gap: var(--s-16); margin-top: var(--s-32);
+  padding-top: var(--s-16); border-top: 1px solid var(--hairline); font-size: var(--t-small); color: var(--muted);
+}
+
+/* =========================================================================
+   5. BUTTONS, INPUTS, CHIPS
+   ========================================================================= */
+.btn {
+  display: inline-flex; align-items: center; gap: var(--s-8); height: 38px; padding: 0 var(--s-14);
+  border-radius: var(--r-pill); background: var(--surface); border: 1px solid var(--hairline);
+  color: var(--ink); font-size: 13px; font-weight: 600; box-shadow: var(--shadow-white-inset);
+  transition: background .15s, transform .1s; white-space: nowrap;
+}
+.btn:hover { background: var(--ground); }
+.btn:active { transform: scale(.98); }
+.btn-icon { width: 38px; padding: 0; justify-content: center; }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: var(--s-12); height: 48px; padding: 0 var(--s-6) 0 var(--s-20);
+  border: 0; border-radius: var(--r-pill); background: var(--ink); color: var(--surface);
+  font-size: 14px; font-weight: 600; transition: transform .1s; white-space: nowrap;
+}
+.btn-primary:active { transform: scale(.98); }
+.btn-primary .circle { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); box-shadow: var(--glow-accent); display: grid; place-items: center; }
+.btn-primary .circle svg { width: 16px; height: 16px; stroke: var(--surface); stroke-width: 2.2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.btn-link { background: none; border: 0; color: var(--accent); font-size: 13px; font-weight: 600; min-height: 32px; padding: 0 var(--s-4); }
+
+input[type="text"], input[type="search"], input:not([type]), select, textarea {
+  height: 38px; padding: 0 var(--s-14); border: 1px solid var(--hairline); border-radius: var(--r-pill);
+  background: var(--surface); color: var(--ink); font-size: 13px; font-weight: 500;
+}
+select {
+  appearance: none; -webkit-appearance: none; padding-right: 34px;
+  /* chevron glyph in --chevron (#B5B5BA); data URIs cannot read CSS variables */
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23B5B5BA' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>");
+  background-repeat: no-repeat; background-position: right 14px center;
+}
+textarea { height: auto; min-height: 88px; padding: var(--s-12) var(--s-14); border-radius: var(--r-inset); resize: vertical; line-height: 1.5; }
+
+.chip {
+  display: inline-flex; align-items: center; gap: var(--s-6); height: 28px; padding: 0 var(--s-10);
+  border-radius: var(--r-pill); font-size: 12.5px; font-weight: 600; white-space: nowrap;
+  background: var(--surface); border: 1px solid var(--hairline); color: var(--ink-2);
+}
+.chip::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex: none; }
+.chip.plain::before { display: none; }
+.chip.accent { background: rgba(var(--accent-rgb), .08); border-color: transparent; color: var(--accent); }
+.chip.good { background: var(--ground); border-color: transparent; color: var(--ink-2); } .chip.good::before { background: var(--accent); }
+.chip.sev-1 { background: var(--sev-1-bg); border-color: transparent; color: var(--sev-1-fg); } .chip.sev-1::before { background: var(--sev-1); }
+.chip.sev-2 { background: var(--sev-2-bg); border-color: transparent; color: var(--sev-2-fg); } .chip.sev-2::before { background: var(--sev-2); }
+.chip.sev-3 { background: var(--sev-3-bg); border-color: transparent; color: var(--sev-3-fg); } .chip.sev-3::before { background: var(--sev-3); }
+.chip.muted { background: var(--ground); border-color: transparent; color: var(--muted); } .chip.muted::before { background: var(--chevron); }
+/* Triage priority chips on the severity scale (P1 deepest orange … P5 grey) */
+.p1 { background: var(--sev-3-bg); border-color: transparent; color: var(--sev-3-fg); } .p1::before { background: var(--sev-3); }
+.p2 { background: var(--sev-2-bg); border-color: transparent; color: var(--sev-2-fg); } .p2::before { background: var(--sev-2); }
+.p3 { background: var(--sev-1-bg); border-color: transparent; color: var(--sev-1-fg); } .p3::before { background: var(--sev-1); }
+.p4 { background: rgba(var(--accent-rgb), .08); border-color: transparent; color: var(--accent); } .p4::before { background: var(--accent); }
+.p5 { background: var(--ground); border-color: transparent; color: var(--muted); } .p5::before { background: var(--chevron); }
+
+/* =========================================================================
+   6. PANELS AND TILES — solid white content surfaces
+   ========================================================================= */
+.panel, .tile {
+  background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-card);
+  box-shadow: var(--shadow-white-inset); min-width: 0; animation: popC .45s ease-out both;
+}
+.panel { margin-bottom: var(--col-gap); overflow: hidden; }
+.panel-head { padding: var(--card-pad) var(--card-pad) var(--s-12); display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s-16); flex-wrap: wrap; }
+.panel-head > div:first-child { flex: 1 1 240px; min-width: 0; }
+.panel-head h2 { font-size: var(--t-card-title); line-height: var(--t-card-title-lh); font-weight: 700; letter-spacing: -.02em; display: flex; align-items: center; gap: var(--s-10); }
+.panel-head h2 .ic { width: 32px; height: 32px; border-radius: var(--r-badge); background: var(--ground); display: grid; place-items: center; color: var(--ink-2); }
+.panel-head p { margin-top: var(--s-4); font-size: var(--t-caption); line-height: var(--t-caption-lh); color: var(--muted); font-weight: 500; }
+.panel-body { padding: 0 var(--card-pad) var(--card-pad); }
+.head-stat { text-align: right; }
+.head-stat strong { display: block; font-size: var(--t-hero-sm); line-height: 1; font-weight: 700; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.head-stat span { font-size: var(--t-small); font-weight: 600; color: var(--accent); }
+.head-stat span.down { color: var(--sev-2-fg); }
+
+.tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--col-gap); margin-bottom: var(--col-gap); }
+.tile { padding: var(--s-16) var(--card-pad) var(--card-pad); display: flex; flex-direction: column; gap: var(--s-12); }
+.tile-top { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s-12); }
+.tile-top .ic { width: 30px; height: 30px; border-radius: var(--r-badge); display: grid; place-items: center; background: var(--ground); color: var(--ink-2); flex: none; }
+.tile-top .ic.accent { background: rgba(var(--accent-rgb), .08); color: var(--accent); }
+.tile-top .ic.sev-2 { background: var(--sev-2-bg); color: var(--sev-2-fg); }
+.tile-top .ic.sev-1 { background: var(--sev-1-bg); color: var(--sev-1-fg); }
+.tile-label { font-size: 13.5px; font-weight: 600; color: var(--ink-2); line-height: 1.2; }
+.tile-delta { display: flex; align-items: center; gap: var(--s-4); margin-top: var(--s-4); font-size: var(--t-small); font-weight: 600; color: var(--accent); white-space: nowrap; }
+.tile-top > div:first-child { min-width: 0; }
+.tile-hero { flex: none; }
+.tile-hero .hero.long { font-size: 30px; }
+.tile-delta.sev-2 { color: var(--sev-2-fg); }
+.tile-delta.muted { color: var(--muted); }
+.tile-delta svg { width: 10px; height: 10px; fill: currentColor; }
+.tile-hero { text-align: right; }
+.tile-hero .hero { font-size: var(--t-hero); line-height: 1; font-weight: 800; letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+.tile-hero .unit { font-size: 13.5px; font-weight: 600; color: var(--muted); margin-left: var(--s-6); letter-spacing: -.01em; }
+.tile-hero .when { display: block; font-size: var(--t-small); font-weight: 500; color: var(--muted); margin-top: var(--s-4); }
+.tile .window { font-size: var(--t-small); line-height: var(--t-small-lh); color: var(--muted-2); font-weight: 500; }
+
+/* =========================================================================
+   7. DOT-MATRIX — numerals, sparklines, column chart (DESIGN.md §6)
+   ========================================================================= */
+.dots { display: grid; gap: var(--dot-gap); justify-items: center; align-items: center; }
+.dots i { width: var(--dot); height: var(--dot); border-radius: 50%; background: var(--dot-off); display: block; }
+.dots i.past { background: var(--dot-past); }
+.dots i.now { background: var(--ink); }
+.dots i.future { background: var(--accent-soft); }
+.dots i.mark { background: var(--accent); }
+.dots i.warm { background: var(--sev-2); }
+.dots i.hot { background: var(--sev-3); }
+.dots.stretch { grid-auto-flow: row; }
+
+/* Numerals: each digit a 3×5 grid; digits 5px apart */
+.matrix { display: inline-flex; align-items: flex-end; gap: 5px; }
+.matrix .digit { display: grid; grid-template-columns: repeat(3, var(--dot)); gap: var(--dot-gap); }
+.matrix .digit i { width: var(--dot); height: var(--dot); border-radius: 50%; background: var(--dot-off); display: block; }
+.matrix .digit i.on { background: var(--ink); }
+.matrix.lg { --dot: 9px; --dot-gap: 4px; }
+.hero-num { display: flex; align-items: flex-end; gap: var(--s-12); }
+.hero-num .suffix { font-size: 15px; font-weight: 600; color: var(--muted); padding-bottom: 2px; }
+.hero-num + .hero-cap { margin-top: var(--s-10); font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.hero-cap span { color: var(--muted); font-weight: 500; }
+.hero-cap b { font-weight: 600; color: var(--ink); }
+
+/* Column chart: one column per hour, rows of dots, labels under every 4th column.
+   A dashed capacity line is positioned over the dot area. */
+.mchart { position: relative; padding-top: var(--s-8); --dot: 9px; --dot-gap: 4px; }
+.mchart .area { position: relative; }
+.mchart .cap {
+  position: absolute; left: 0; right: 0; border-top: 1.5px dashed var(--ink); pointer-events: none;
+}
+.mchart .cap span {
+  position: absolute; right: 0; top: -20px; font-size: var(--t-small); font-weight: 600; color: var(--ink-2);
+  background: var(--surface); padding: 0 var(--s-6);
+}
+.mchart .axis { display: grid; margin-top: var(--s-8); }
+.mchart .axis span { font-size: var(--t-axis); font-weight: 600; color: var(--muted-2); text-align: center; font-variant-numeric: tabular-nums; }
+.mchart .ylab { position: absolute; left: 0; top: 0; font-size: var(--t-small); font-weight: 500; color: var(--muted); }
+.legend { display: flex; gap: var(--s-16); font-size: var(--t-small); font-weight: 500; color: var(--muted); padding-top: var(--s-12); flex-wrap: wrap; }
+.legend span { display: inline-flex; gap: var(--s-6); align-items: center; }
+.sw { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-soft); flex: none; }
+.sw.ink { background: var(--ink); } .sw.past { background: var(--dot-past); } .sw.accent { background: var(--accent); }
+.sw.warm { background: var(--sev-2); } .sw.hot { background: var(--sev-3); } .sw.sev-1 { background: var(--sev-1); }
+.sw.line { width: 14px; height: 0; border-top: 1.5px dashed var(--ink); border-radius: 0; }
+.sw.hatch { width: 14px; height: 10px; border-radius: 3px; background: var(--hatch); border: 1px solid var(--hairline-2); }
+
+/* Pill bar chart (busyness pattern): rounded bars, baseline hairline */
+.pillchart { width: 100%; display: block; height: 220px; }
+.pillchart text { font-size: var(--t-axis); font-weight: 600; fill: var(--muted-2); }
+.pillchart .bar { transform-box: fill-box; transform-origin: bottom; animation: riseC .5s cubic-bezier(.2,.7,.2,1) both; }
+
+/* =========================================================================
+   8. OVERVIEW — one 1440×900 screen. Sections are separated by tone and
+      depth, not by bordered boxes. Row 1: heading + three stat tiles.
+      Row 2: trend chart (wide) + needs-attention list. Row 3: coverage strip.
+   ========================================================================= */
+.ov { display: grid; gap: 32px; }
+/* On the Overview the frame tightens so the whole page fits one 1440×900 screen */
+body.is-overview main { padding: var(--s-24) var(--gutter) var(--s-8); }
+body.is-overview #notice:empty { min-height: 0; margin: 0; }
+body.is-overview footer { margin-top: var(--s-6); padding-top: var(--s-4); font-size: 11px; }
+
+/* Row 1 — heading sits in the first column of the same grid as the tiles */
+.welcome { padding: 0 var(--s-4); }
+.welcome h1 { font-size: 28px; line-height: 30px; font-weight: 700; letter-spacing: -.035em; }
+.welcome h1 .lead { color: var(--muted-2); }
+.ov-head { display: grid; grid-template-columns: repeat(3, 1fr); gap: 56px; padding: 0 var(--s-4); }
+
+/* Stat tile: white, no border, soft depth; ECG dot map fills the bottom edge */
+.stat { display: flex; flex-direction: column; animation: popC .45s ease-out both; }
+.stat .body { padding: 0 0 var(--s-6); display: flex; flex-direction: column; gap: var(--s-4); flex: 1; }
+.stat .top { display: flex; justify-content: space-between; align-items: center; gap: var(--s-8); height: 22px; white-space: nowrap; }
+.stat .label { font-size: 13px; font-weight: 500; color: var(--muted); }
+.stat .value { display: flex; align-items: baseline; gap: var(--s-6); height: 30px; margin-top: var(--s-2); }
+.stat .value b { font-size: 28px; line-height: 30px; font-weight: 800; letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+.stat .value span { font-size: 13px; font-weight: 600; color: var(--muted); }
+.stat .window { font-size: var(--t-small); line-height: var(--t-small-lh); color: var(--muted); font-weight: 500; height: 14px; line-height: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: var(--s-2); }
+.stat .chip { height: 24px; font-size: 11.5px; padding: 0 var(--s-8); }
+/* ECG strip: flat top edge, rounded bottom corners, faint vs filled dots */
+/* Unit charts sit directly on the page. Each dot is one real thing (a person, an
+   arrival, 10 minutes of wait); unlit corner dots step inward so the bottom reads as a curve. */
+.ecg { padding: 0; }
+.ecg .dots { --dot: 8px; --dot-gap: 4px; }
+.ecg .dots i.corner { visibility: hidden; }
+.ecg .dots i.person { background: var(--accent); }
+.ecg .dots i.urgent { background: var(--sev-2); }
+.ecg .dots i.over { background: var(--sev-2); }
+.ecg .dots i.peak { background: var(--sev-2); }
+.ecg .rows { display: grid; grid-template-columns: 34px 1fr; gap: 2px var(--s-8); align-items: center; }
+.ecg .rows .lab { font-size: 9.5px; line-height: 1; font-weight: 600; color: var(--muted-2); font-variant-numeric: tabular-nums; }
+.ecg .cap { font-size: 10.5px; line-height: 13px; font-weight: 500; color: var(--muted-2); margin-top: var(--s-6); }
+.ecg .cap b { color: var(--ink-2); font-weight: 600; }
+.ecg .cap i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; vertical-align: 0; }
+/* Beds: one stacked bar, one segment per status, widths in proportion to bed counts */
+.ecg .bedbar { display: flex; gap: 2px; height: 14px; border-radius: var(--r-pill); overflow: hidden; margin-top: var(--s-10); }
+.ecg .bedbar div { min-width: 0; }
+.ecg .bedbar .occupied { background: var(--ink); }
+.ecg .bedbar .held { background: var(--sev-1); }
+.ecg .bedbar .cleaning { background: var(--dot-past); }
+.ecg .bedbar .reserved { background: var(--sev-2); }
+.ecg .bedbar .free { background: var(--accent-soft); }
+/* Queue line: one dot per person placed by minutes waited */
+.qline { width: 100%; height: 46px; display: block; overflow: visible; }
+.qline text { font-size: 9.5px; font-weight: 600; fill: var(--muted-2); }
+.ecg .dots i.mark { background: var(--accent); }
+.ecg .dots i.warm { background: var(--sev-2); }
+.ecg .dots i.now { background: var(--ink); }
+.ecg .dots i.future { background: var(--accent-soft); }
+.ecg .dots i { background: var(--dot-off); }
+
+/* Row 2 — tonal trend card (wide) + attention list (narrow, no box) */
+.ov-mid { display: grid; grid-template-columns: 1fr 360px; gap: 32px; align-items: stretch; }
+.trend {
+  position: relative; border-radius: var(--r-card-lg); padding: 28px;
+  background: linear-gradient(160deg, rgba(var(--accent-rgb), .14) 0%, rgba(var(--accent-rgb), .06) 45%, var(--surface) 100%);
+  box-shadow: var(--shadow-glass); display: flex; flex-direction: column; gap: var(--s-10); animation: popC .45s ease-out both;
+}
+.trend .head { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s-16); margin-bottom: var(--s-6); }
+.trend h2 { font-size: var(--t-card-title); line-height: var(--t-card-title-lh); font-weight: 700; letter-spacing: -.02em; }
+.trend .sub { font-size: var(--t-caption); color: var(--muted); font-weight: 500; margin-top: var(--s-2); }
+.trend .keys { display: flex; gap: var(--s-14); font-size: var(--t-small); font-weight: 600; color: var(--ink-2); flex-wrap: wrap; justify-content: flex-end; }
+.trend .keys span { display: inline-flex; align-items: center; gap: var(--s-6); }
+.trend .keys i { display: inline-block; width: 18px; height: 0; border-top: 2.5px solid var(--ink); border-radius: 2px; }
+.trend .keys i.dotted { border-top: 2.5px dotted var(--accent); }
+.trend .keys i.cap { border-top: 1.5px dashed var(--ink-2); }
+.trend svg { width: 100%; height: 168px; display: block; flex: 1; }
+.trend .axis { font-size: var(--t-axis); font-weight: 600; fill: var(--muted-2); }
+.trend .facts { display: flex; gap: var(--s-20); flex-wrap: wrap; font-size: 11px; font-weight: 500; color: var(--muted); padding: 0 var(--s-4); }
+.trend .fact b { font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
+.trend .fact.warm b { color: var(--sev-2-fg); }
+
+.attn { display: flex; flex-direction: column; gap: var(--s-16); padding: var(--s-6) 0 0; }
+.attn .head { display: flex; justify-content: space-between; align-items: baseline; padding: 0 var(--s-4); }
+.attn h2 { font-size: var(--t-card-title); font-weight: 700; letter-spacing: -.02em; }
+.attn .head small { font-size: var(--t-small); color: var(--muted); font-weight: 500; }
+.alerts { display: grid; gap: var(--s-6); }
+.alert {
+  display: grid; grid-template-columns: 1fr auto; gap: var(--s-10); align-items: center;
+  padding: 24px; border-radius: var(--r-inset); animation: popC .45s ease-out both;
+  box-shadow: 0 1px 0 rgba(255,255,255,.5) inset, 0 2px 8px rgba(20,30,50,.04);
+}
+.alert.sev-3 { background: var(--attn-red-bg); } .alert.sev-3 .level { color: var(--emergency-text); }
+.alert.sev-2 { background: var(--attn-amber-bg); } .alert.sev-2 .level { color: var(--sev-2-fg); }
+.alert.sev-1 { background: var(--attn-amber-bg); } .alert.sev-1 .level { color: var(--sev-1-fg); }
+.alert.info { background: var(--attn-green-bg); } .alert.info .level { color: var(--ok); }
+.alert .level { font-size: 11px; line-height: 12px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; display: flex; align-items: center; gap: var(--s-6); }
+.alert .level::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.alert .what { font-size: 13px; font-weight: 600; color: var(--ink); margin-top: var(--s-2); line-height: 16px; }
+.alert .detail { font-size: 11px; line-height: 13px; color: var(--muted); font-weight: 500; margin-top: 1px; }
+.alert .btn { height: 30px; padding: 0 var(--s-12); font-size: 12px; }
+.attn .empty { padding: var(--s-16); border: 1px dashed var(--hairline-2); border-radius: var(--r-inset); color: var(--muted); font-size: var(--t-caption); font-weight: 500; }
+
+/* Row 3 — coverage strip: five specialties side by side on a faint tonal band */
+.covstrip { background: var(--surface); border-radius: var(--r-card); padding: 24px 28px; box-shadow: var(--shadow-glass); animation: popC .45s ease-out both; }
+.covstrip .head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-16); margin-bottom: var(--s-16); }
+.covstrip .head > div { display: flex; align-items: baseline; gap: var(--s-8); flex-wrap: wrap; }
+.covstrip h2 { font-size: 15px; line-height: 20px; font-weight: 700; letter-spacing: -.02em; }
+.covstrip .head small { font-size: var(--t-small); color: var(--muted); font-weight: 500; }
+.covstrip .head .link { font-size: 12.5px; font-weight: 600; color: var(--accent); background: none; border: 0; padding: 0; }
+.covcols { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--s-20); }
+.covcol .name { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; font-weight: 600; margin-bottom: var(--s-8); }
+.covcol .name span { font-size: 12px; font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; }
+.covcol .name span.gap { color: var(--sev-2-fg); } .covcol .name span.over { color: var(--accent); }
+.covcol .track { position: relative; height: 12px; border-radius: var(--r-pill); background: var(--hatch); border: 1px solid var(--hairline); }
+.covcol .fill { position: absolute; left: -1px; top: -1px; bottom: -1px; border-radius: var(--r-pill); background: var(--accent); transform-origin: left; animation: growC .6s cubic-bezier(.2,.7,.2,1) both; }
+.covcol .fill.gap { background: var(--sev-2); } .covcol .fill.over { background: var(--ink); }
+.covcol .tick { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--ink); border-radius: 1px; }
+
+/* Bed capacity (lives on the Live queue page) */
+.stack { display: flex; height: 40px; border-radius: var(--r-badge); overflow: hidden; }
+.stack div { display: grid; place-items: center; font-size: 12.5px; font-weight: 700; color: var(--surface); min-width: 0; white-space: nowrap; }
+.stack .occupied { background: var(--ink); } .stack .cleaning { background: var(--dot-past); } .stack .reserved { background: var(--sev-2); }
+.stack .awaiting { background: var(--sev-1); color: var(--ink); } .stack .free { background: var(--accent-soft); color: var(--ink); }
+.stack-legend { display: flex; flex-wrap: wrap; gap: var(--s-14); margin-top: var(--s-12); font-size: var(--t-caption); font-weight: 500; color: var(--ink-2); }
+.stack-legend span { display: inline-flex; align-items: center; gap: var(--s-6); }
+.stack-legend b { font-weight: 700; font-variant-numeric: tabular-nums; }
+.sq { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.head-stat { text-align: right; }
+.head-stat strong { display: block; font-size: var(--t-hero-sm); line-height: 1; font-weight: 700; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.head-stat span { font-size: var(--t-small); font-weight: 600; color: var(--accent); }
+
+/* =========================================================================
+   8b. DEMAND FORECASTING — same unboxed language as the Overview
+   ========================================================================= */
+.fc { display: grid; gap: 32px; }
+.fc .ov-mid { align-items: start; }
+.fc .trend svg { flex: none; height: 250px; }
+/* Four equal columns; the bed capacity block and the predicted mix each span two */
+.fc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 48px; padding: 0 var(--s-4); align-items: start; }
+.fc .stat .ecg:empty { display: none; }
+.fc .stat .ecg .rows { grid-template-columns: 0 1fr; gap: 0; }
+.fc .qaxis { display: flex; justify-content: space-between; font-size: var(--t-axis); font-weight: 600; color: var(--muted-2); margin-top: var(--s-4); }
+.fc .gauge { width: 100%; height: 34px; display: block; overflow: visible; }
+.fc .gauge text { font-size: 9.5px; font-weight: 600; fill: var(--muted-2); }
+
+/* Bed capacity as an unboxed block in the top row */
+.beds-stat { grid-column: span 2; }
+.beds-stat .body { padding-bottom: var(--s-8); }
+.beds-stat .stack { height: 30px; }
+.beds-stat .stack div { font-size: 11.5px; }
+.beds-stat .stack-legend { margin-top: var(--s-10); font-size: var(--t-small); }
+
+/* Predicted mix: bigger donut, unboxed, spans two columns */
+.mix { grid-column: span 2; }
+.mix .head { margin-bottom: var(--s-12); }
+.mix h2 { font-size: var(--t-card-title); line-height: var(--t-card-title-lh); font-weight: 700; letter-spacing: -.02em; }
+.mix .sub { font-size: var(--t-caption); color: var(--muted); font-weight: 500; margin-top: var(--s-2); }
+.donut { display: grid; grid-template-columns: 190px 1fr; gap: var(--s-24); align-items: center; }
+.donut-svg { width: 190px; height: 190px; }
+.donut-legend { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-8); }
+.donut-legend li { display: grid; grid-template-columns: 12px 1fr auto 44px; gap: var(--s-10); align-items: center; font-size: 14px; font-weight: 600; padding-bottom: var(--s-8); border-bottom: 1px solid var(--hairline); }
+.donut-legend li:last-child { border-bottom: 0; }
+.donut-legend i { width: 12px; height: 12px; border-radius: 50%; display: block; }
+.donut-legend b { font-variant-numeric: tabular-nums; }
+.donut-legend small { font-size: var(--t-caption); color: var(--muted); font-weight: 500; text-align: right; font-variant-numeric: tabular-nums; }
+
+/* Stacked insight rows: green = good, amber = watch, with an arrow badge */
+.insights { display: grid; gap: var(--s-8); }
+.ins { display: grid; grid-template-columns: 36px 1fr; gap: var(--s-12); align-items: center; padding: var(--s-12) var(--s-14); border-radius: var(--r-inset); box-shadow: 0 1px 0 rgba(255,255,255,.5) inset, 0 2px 8px rgba(20,30,50,.04); }
+.ins.good { background: var(--attn-green-bg); } .ins.good .arrow { color: var(--ok); }
+.ins.warm { background: var(--attn-amber-bg); } .ins.warm .arrow { color: var(--sev-2-fg); }
+.ins .arrow { width: 36px; height: 36px; border-radius: 50%; background: var(--surface); display: grid; place-items: center; box-shadow: var(--shadow-white-inset); }
+.ins .arrow svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.ins b { display: block; font-size: 17px; line-height: 20px; font-weight: 800; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.ins span { display: block; font-size: 12.5px; font-weight: 600; color: var(--ink-2); margin-top: 1px; }
+.ins small { display: block; font-size: 11px; line-height: 14px; color: var(--muted); font-weight: 500; margin-top: 2px; }
+
+/* Look-ahead slider: fills the heading row, gradient fill with a glow */
+#heading-actions:has(.lookahead) { flex: 1; justify-content: flex-end; }
+.lookahead { flex: 1; max-width: 720px; display: grid; gap: var(--s-6); padding-left: var(--s-32); }
+.lookahead .la-top { display: flex; justify-content: space-between; align-items: baseline; }
+.lookahead .la-top strong { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.lookahead input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 32px; background: transparent; margin: 0; --pct: 0%; }
+.lookahead input[type="range"]::-webkit-slider-runnable-track {
+  height: 8px; border-radius: var(--r-pill);
+  background: linear-gradient(90deg, var(--accent) 0, var(--accent-soft) var(--pct), var(--hairline) var(--pct), var(--hairline) 100%);
+  box-shadow: 0 0 18px rgba(var(--accent-rgb), .35);
+}
+.lookahead input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 24px; height: 24px; margin-top: -8px; border-radius: 50%;
+  background: var(--surface); border: 3px solid var(--accent); box-shadow: var(--glow-accent); cursor: pointer;
+}
+.lookahead input[type="range"]::-moz-range-track { height: 8px; border-radius: var(--r-pill); background: var(--hairline); }
+.lookahead input[type="range"]::-moz-range-progress { height: 8px; border-radius: var(--r-pill); background: linear-gradient(90deg, var(--accent), var(--accent-soft)); }
+.lookahead input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: var(--surface); border: 3px solid var(--accent); box-shadow: var(--glow-accent); cursor: pointer; }
+.lookahead .la-ticks { display: flex; justify-content: space-between; font-size: var(--t-axis); font-weight: 600; color: var(--muted-2); }
+
+/* Table header icons and the selected-hour row */
+.th-ic { display: inline-block; vertical-align: -2px; margin-right: var(--s-6); }
+.th-ic svg { width: 12px; height: 12px; stroke: var(--chevron); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+tr.selected td { background: rgba(var(--accent-rgb), .07); }
+tr.selected td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+
+/* =========================================================================
+   9. TABLES — 48px rows, hairline dividers, no zebra, tabular numbers
+   ========================================================================= */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; text-align: left; white-space: nowrap; }
+th { height: 40px; padding: 0 var(--s-16); font-size: var(--t-eyebrow); font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--muted-2); border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
+td { height: 48px; padding: var(--s-6) var(--s-16); border-top: 1px solid var(--hairline); font-size: 13px; font-weight: 500; vertical-align: middle; }
+tr:first-child td { border-top: 0; }
+tbody tr:hover td { background: rgba(var(--accent-rgb), .06); }
+td small { display: block; color: var(--muted); font-size: var(--t-small); line-height: var(--t-small-lh); margin-top: var(--s-2); }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+td select { height: 32px; font-size: 12.5px; }
+.table-foot { padding: var(--s-12) var(--card-pad) var(--card-pad); font-size: var(--t-small); color: var(--muted); font-weight: 500; }
+.cov { display: inline-flex; align-items: center; gap: var(--s-6); height: 32px; padding: 0 var(--s-10) 0 var(--s-4); border-radius: var(--r-pill); background: var(--ground); color: var(--ink-2); font-size: 12.5px; font-weight: 600; }
+.cov input { width: 38px; height: 26px; padding: 0; text-align: center; background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-pill); font-weight: 700; font-variant-numeric: tabular-nums; color: var(--ink); }
+.cov .req { color: var(--muted); font-weight: 500; }
+.cov.gap { background: var(--sev-2-bg); color: var(--sev-2-fg); }
+.cov.surplus { background: rgba(var(--accent-rgb), .08); color: var(--accent); }
+
+/* =========================================================================
+   10. OTHER PIECES — callout, dashed note, insights, priorities, staff, feedback
+   ========================================================================= */
+.callout { display: grid; grid-template-columns: auto 1fr; gap: var(--s-16); align-items: start; padding: var(--s-16) var(--card-pad); background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-card); box-shadow: var(--shadow-white-inset); margin-bottom: var(--col-gap); animation: popC .45s ease-out both; }
+.callout strong { display: block; font-size: var(--t-row); line-height: var(--t-row-lh); font-weight: 600; }
+.callout p { margin-top: var(--s-2); font-size: var(--t-caption); line-height: var(--t-caption-lh); color: var(--muted); font-weight: 500; }
+/* Light-orange callout that sits beside the page heading */
+.callout.warm { background: var(--sev-2-bg); border: 0; box-shadow: none; margin: 0; max-width: 620px; padding: var(--s-12) var(--s-16); align-items: center; }
+.callout.warm strong { font-size: 14px; line-height: 20px; }
+.callout.warm p { font-size: var(--t-small); line-height: var(--t-small-lh); }
+
+/* Outlook widget: faint grey ground, white expected line, blue actual line with a soft fill */
+.outlook {
+  border-radius: var(--r-card-lg); padding: var(--s-20) var(--s-24) var(--s-16); margin-bottom: var(--col-gap);
+  background: linear-gradient(180deg, var(--ground) 0%, var(--dot-off) 100%);
+  box-shadow: var(--shadow-glass); animation: popC .45s ease-out both;
+}
+.outlook .head { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s-16); margin-bottom: var(--s-8); }
+.outlook h2 { font-size: var(--t-card-title); line-height: var(--t-card-title-lh); font-weight: 700; letter-spacing: -.02em; }
+.outlook .sub { font-size: var(--t-caption); color: var(--muted); font-weight: 500; margin-top: var(--s-2); }
+.outlook .keys { display: flex; gap: var(--s-14); font-size: var(--t-small); font-weight: 600; color: var(--ink-2); flex-wrap: wrap; justify-content: flex-end; }
+.outlook .keys span { display: inline-flex; align-items: center; gap: var(--s-6); }
+.outlook .keys i { display: inline-block; width: 18px; height: 0; border-top: 2.5px solid var(--surface); border-radius: 2px; box-shadow: 0 0 0 1px rgba(0,0,0,.06); }
+.outlook .keys i.actual { border-top-color: var(--accent); box-shadow: none; }
+.outlook .keys i.cap { border-top: 1.5px dashed var(--ink-2); box-shadow: none; }
+.outlook svg { width: 100%; height: 300px; display: block; }
+.outlook .axis { font-size: var(--t-axis); font-weight: 600; fill: var(--muted-2); }
+
+.note-dashed { padding: var(--s-14) var(--s-16); border: 1px dashed var(--hairline-2); border-radius: 20px; color: var(--muted); font-size: var(--t-caption); line-height: var(--t-caption-lh); font-weight: 500; margin-bottom: var(--col-gap); }
+.note-dashed strong { color: var(--ink-2); font-weight: 600; display: block; margin-bottom: var(--s-2); }
+.insight { display: grid; grid-template-columns: 22px 1fr; gap: var(--s-12); padding: var(--s-14) 0; border-top: 1px solid var(--hairline); }
+.insight:first-child { border-top: 0; padding-top: var(--s-4); }
+.insight .rail { width: 18px; height: 18px; border-radius: 50%; background: var(--ink); display: grid; place-items: center; margin-top: 2px; }
+.insight .rail svg { width: 10px; height: 10px; stroke: var(--surface); stroke-width: 3.2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.insight .rail.accent { background: var(--accent); }
+.insight h3 { font-size: var(--t-row); line-height: var(--t-row-lh); font-weight: 600; margin-top: var(--s-4); }
+.insight p { font-size: var(--t-caption); line-height: var(--t-caption-lh); color: var(--muted); font-weight: 500; margin-top: var(--s-2); }
+.columns { display: grid; grid-template-columns: 1.8fr 1fr; gap: var(--col-gap); align-items: start; }
+.priorities { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--s-12); margin-bottom: var(--col-gap); }
+.priority-card { display: flex; justify-content: space-between; align-items: center; gap: var(--s-12); padding: var(--s-12) var(--s-14); background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--r-inset); box-shadow: var(--shadow-white-inset); }
+.priority-card strong { font-size: var(--t-hero-sm); line-height: 1; font-weight: 700; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.priority-card strong small { font-size: var(--t-small); font-weight: 500; color: var(--muted); margin-left: var(--s-4); letter-spacing: 0; }
+.staff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-16); }
+.staff-card { padding: var(--s-16); background: var(--ground); border-radius: var(--r-inset); }
+.staff-card .initials { margin-bottom: var(--s-12); background: var(--surface); }
+.staff-card h3 { font-size: var(--t-row); line-height: var(--t-row-lh); font-weight: 600; }
+.staff-card .role { font-size: var(--t-caption); color: var(--muted); font-weight: 500; }
+.shift { display: flex; justify-content: space-between; padding: var(--s-10) 0; border-top: 1px solid var(--hairline); font-size: 13px; font-weight: 500; }
+.shift:first-of-type { margin-top: var(--s-12); }
+.shift span { color: var(--muted); font-variant-numeric: tabular-nums; }
+.staff-card small { display: block; margin-top: var(--s-10); font-size: var(--t-small); color: var(--muted-2); font-weight: 500; }
+.feedback { display: grid; gap: var(--s-12); }
+.feedback label { display: grid; gap: var(--s-6); font-size: var(--t-caption); font-weight: 600; color: var(--ink-2); }
+.comment { padding: var(--s-14) 0; border-top: 1px solid var(--hairline); display: grid; gap: var(--s-6); }
+.comment:first-of-type { margin-top: var(--s-16); }
+.comment p { font-size: 13px; font-weight: 500; color: var(--ink-2); }
+.comment small { font-size: var(--t-small); color: var(--muted); font-weight: 500; }
+
+/* =========================================================================
+   11. MOTION (DESIGN.md §7) and reduced motion
+   ========================================================================= */
+@keyframes popC   { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes riseC  { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes growC  { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes pulseC { from { transform: scale(1); opacity: .6; } to { transform: scale(1.7); opacity: 0; } }
+.tile:nth-child(2), .panel:nth-child(2) { animation-delay: .06s; }
+.tile:nth-child(3), .panel:nth-child(3) { animation-delay: .12s; }
+.tile:nth-child(4) { animation-delay: .18s; }
+@media (prefers-reduced-motion: reduce) {
+  .live-dot::after { animation: none; opacity: 0; }
+  .pillchart .bar, .covrow .fill { animation: none; }
+}
+
+/* =========================================================================
+   12. RESPONSIVE — desktop-first at 1440
+   ========================================================================= */
+@media (max-width: 1200px) {
+  .ov-top { grid-template-columns: 1fr; }
+  .engine { grid-template-columns: 1fr; }
+  .ov-grid, .columns { grid-template-columns: 1fr; }
+  .tiles { grid-template-columns: repeat(2, 1fr); }
+  .staff-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 860px) {
+  :root { --gutter: 16px; }
+  body { grid-template-columns: 1fr; }
+  .sidebar { position: static; height: auto; }
+  .heading { flex-direction: column; align-items: flex-start; }
+  .tiles, .ov-top .tiles, .priorities, .staff-grid { grid-template-columns: 1fr; }
+  .engine-nums { grid-template-columns: 1fr; gap: var(--s-20); }
+  footer { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- Sidebar: wordmark, search, navigation, facility, profile -->
+<aside class="sidebar">
+  <div class="brand">
+    <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
+    <span>Triage<small>Hospital operations</small></span>
+  </div>
+  <label class="search">
+    <svg class="i" viewBox="0 0 24 24" style="width:16px;height:16px"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input type="search" placeholder="Search" aria-label="Search" oninput="globalSearch(this.value)">
+    <kbd>⌘ K</kbd>
+  </label>
+  <nav class="side" id="nav" aria-label="Dashboard navigation"></nav>
+  <div class="side-bottom">
+    <div class="facility">
+      <strong>Marston Road Hospital</strong>
+      <span>Emergency Department · Oxford</span>
+      <span class="live"><span class="live-dot" aria-hidden="true"></span>Live · simulated feed</span>
+    </div>
+    <div class="profile">
+      <span class="initials" aria-hidden="true">GW</span>
+      <div><strong>Grace Williams</strong><span>Charge nurse · Demo role</span></div>
+    </div>
+    <div class="side-note">Simulated data · no patient details</div>
+  </div>
+</aside>
+
+<div class="main">
+  <!-- Topbar: breadcrumb, clock, page actions -->
+  <header class="topbar">
+    <div class="crumbs">
+      <span>Marston Road</span>
+      <svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>
+      <strong id="breadcrumb">Overview</strong>
+    </div>
+    <div class="topbar-right">
+      <span class="clock" id="clock"></span>
+      <div class="actions" id="actions"></div>
+    </div>
+  </header>
+
+  <main>
+    <div id="heading" class="heading"></div>
+    <div id="notice" role="status" aria-live="polite"></div>
+    <div id="content"></div>
+    <footer>
+      <span>Triage hospital operations · Simulated data · not connected to any hospital system</span>
+      <span>Changes stay in this browser · Not a clinical system</span>
+    </footer>
+  </main>
+</div>
+
+<script>
+/* =========================================================================
+   DATA — categories, 4-hour blocks, seed state. Same shapes as the original
+   so a backend can replace `seed()` later.
+   ========================================================================= */
+const categories = ["General", "Trauma", "Paediatrics", "Respiratory", "Cardiac"];
+const slots = ["00:00", "04:00", "08:00", "12:00", "16:00", "20:00"];
+const priorityNames = ["", "Immediate", "Very urgent", "Urgent", "Standard", "Non-urgent"];
+const CAPACITY_PER_HOUR = 15;   // illustrative patients the department can see per hour
+const BEDS = 32;                // assumed treatment beds
+
+const tabs = [
+  {name: "Overview",              sub: "Where demand will exceed capacity today, and what to do about it.", icon: "home"},
+  {name: "Staffing coordination", sub: "The right people, in the right place, at the right time.",         icon: "users"},
+  {name: "Demand forecasting",    sub: "Illustrative demand estimates for the next 24–48 hours.",          icon: "trend"},
+  {name: "Live queue",            sub: "Anonymous demo tickets, prioritised and easy to monitor.",         icon: "list"},
+  {name: "Performance",           sub: "Understand patient flow and capture shift feedback.",              icon: "chart"}
+];
+
+
+function seed() {
+  return {
+    rota: categories.map((specialty, i) => ({
+      specialty,
+      required: [1, 1, 3, 3, 4, i === 1 ? 4 : 3],
+      assigned: [1, 1, 3, 4, 3, i === 1 ? 2 : 3]
+    })),
+    checkins: Array.from({length: 18}, (_, i) => ({
+      ticketId: "ED-" + (1042 + i),
+      timestamp: new Date(Date.now() - (i * 7 + 3) * 60000).toISOString(),
+      injuryCategory: categories[i % 5],
+      triagePriority: i % 5 + 1,
+      status: i < 12 ? "waiting" : "in-treatment"
+    })),
+    comments: [{
+      rating: 4,
+      comment: "Good handover. Additional trauma cover would help in the evening.",
+      timestamp: new Date().toISOString()
+    }]
+  };
+}
+
+const STORAGE_KEY = "triage-ops-v1";
+let state;
+try {
+  const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
+  state = stored && Array.isArray(stored.rota) && Array.isArray(stored.checkins) && Array.isArray(stored.comments) ? stored : seed();
+} catch { state = seed(); }
+
+let tab = 0;
+let horizon = 24;
+let query = "";
+let priorityFilter = "all";
+
+/* =========================================================================
+   HELPERS
+   ========================================================================= */
+const esc = v => String(v).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+
+/* Line icons, 24 viewBox, round caps (DESIGN.md §8) */
+const icons = {
+  home: `<svg class="i" viewBox="0 0 24 24"><path d="M4 11 12 4l8 7v9H4z"/><path d="M10 20v-6h4v6"/></svg>`,
+  users: `<svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M21 20c0-3-1.8-5.2-4.5-5.8"/></svg>`,
+  calendar: `<svg class="i" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M8 3v4M16 3v4"/></svg>`,
+  trend: `<svg class="i" viewBox="0 0 24 24"><path d="M4 17 10 11l4 4 6-7"/><path d="M15 8h5v5"/></svg>`,
+  list: `<svg class="i" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></svg>`,
+  chart: `<svg class="i" viewBox="0 0 24 24"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>`,
+  arrow: `<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`,
+  tick: `<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>`,
+  plus: `<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>`,
+  warn: `<svg viewBox="0 0 24 24"><path d="M12 3 2.5 20h19z"/><path d="M12 10v4M12 17v.5"/></svg>`,
+  clock: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>`,
+  bed: `<svg viewBox="0 0 24 24"><path d="M3 18V8M3 14h18v4M3 14V11h10a4 4 0 0 1 4 4"/><circle cx="7" cy="10" r="1.5"/></svg>`,
+  arrowUp: `<svg viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></svg>`,
+  arrowDown: `<svg viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></svg>`,
+  smile: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 14a4.5 4.5 0 0 0 7 0M9 9.5h.01M15 9.5h.01"/></svg>`,
+  wind: `<svg viewBox="0 0 24 24"><path d="M3 8h10a2.5 2.5 0 1 0-2.5-2.5M3 13h14a2.5 2.5 0 1 1-2.5 2.5M3 18h7a2 2 0 1 1-2 2"/></svg>`,
+  heart: `<svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>`,
+  up: `<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M5 1 9.5 8h-9z"/></svg>`,
+  down: `<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M5 9 .5 2h9z"/></svg>`
+};
+
+function save(message) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    render();
+    document.getElementById("notice").textContent = message || "Changes saved.";
+  } catch {
+    render();
+    document.getElementById("notice").textContent = "Browser storage is unavailable. Changes will last only until you close this page.";
+  }
+}
+function notify(text) { document.getElementById("notice").textContent = text; }
+
+function formatTime(value) {
+  return new Date(value).toLocaleString("en-GB", {month: "short", day: "numeric", hour: "2-digit", minute: "2-digit"});
+}
+function clockLabel(value) {
+  return new Date(value).toLocaleTimeString("en-GB", {hour: "2-digit", minute: "2-digit"});
+}
+function waitMinutes(ticket) {
+  return Math.max(0, Math.floor((Date.now() - Date.parse(ticket.timestamp)) / 60000));
+}
+function minutesLabel(m) {
+  return m >= 60 ? `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, "0")}` : `${m} min`;
+}
+
+/* Hourly arrival forecast for the next 48 hours (synthetic diurnal curve) */
+function forecast() {
+  return Array.from({length: 48}, (_, i) => {
+    const time = new Date();
+    time.setMinutes(0, 0, 0);
+    time.setHours(time.getHours() + i);
+    const h = time.getHours();
+    const volume = Math.round(7 + 11 * Math.max(0, Math.sin((h - 7) * Math.PI / 18)) + i % 3);
+    const trauma = Math.round(volume * .18);
+    const paediatrics = Math.round(volume * .22);
+    const respiratory = Math.round(volume * .15);
+    const cardiac = Math.round(volume * .1);
+    return {time, volume, low: volume - 4, high: volume + 4, trauma, paediatrics, respiratory, cardiac,
+      general: volume - trauma - paediatrics - respiratory - cardiac};
+  });
+}
+
+/* Synthetic last-24-hour history */
+const pastHours = Array.from({length: 24}, (_, h) => ({
+  hour: String(h).padStart(2, "0") + ":00",
+  arrivals: Math.round(8 + 12 * Math.max(0, Math.sin((h - 7) * Math.PI / 18))),
+  throughput: h > 16 ? 13 : 15,
+  wait: h > 16 ? 64 : 38,
+  previousWait: h > 16 ? 78 : 45,
+  los: h > 16 ? 182 : 145,
+  utilisation: h > 16 ? 94 : 72,
+  staff: h > 16 ? 12 : 16
+}));
+
+/* Shared expected-wait model. queue = previous queue + arrivals − patients seen;
+   wait ≈ queue ÷ patients seen per hour. Deterministic and easy to explain. */
+function projectQueue(startQueue, arrivalsPerHour, seenPerHour) {
+  let queue = startQueue;
+  return arrivalsPerHour.map((arrivals, i) => {
+    queue = Math.max(0, queue + arrivals - seenPerHour);
+    const wait = Math.round(queue / seenPerHour * 60);
+    return {hour: i, queue, wait};
+  });
+}
+
+/* =========================================================================
+   DOT-MATRIX COMPONENTS
+   ========================================================================= */
+/* Sparkline / mini column chart. Samples `series` into `cols` columns of `rows` dots.
+   tone(c) returns the class for lit dots in column c. */
+function dots(series, {cols = 24, rows = 5, nowIndex = cols - 1, tone, curve = false} = {}) {
+  /* curve: hide 3/2/1 dots at each end of the bottom three rows so the field's bottom corners read as rounded */
+  const hideAt = fromBottom => [3, 2, 1][fromBottom] || 0;
+  if (!series || !series.length) return "";
+  const sampled = Array.from({length: cols}, (_, c) => series[Math.floor(c * series.length / cols)]);
+  /* Scale between the series' min and max so the shape is visible; at least one dot is always lit. */
+  const max = Math.max(...sampled), min = Math.min(...sampled), span = Math.max(1, max - min);
+  const height = v => 1 + Math.round((v - min) / span * (rows - 1));
+  const toneOf = tone || (c => c < nowIndex ? "past" : c === nowIndex ? "now" : "future");
+  let cells = "";
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const lit = height(sampled[c]) >= rows - r;
+      const hide = curve && (c < hideAt(rows - 1 - r) || c >= cols - hideAt(rows - 1 - r));
+      cells += `<i class="${lit ? toneOf(c) : ""}${hide ? " corner" : ""}"></i>`;
+    }
+  }
+  return `<div class="dots" aria-hidden="true" style="grid-template-columns:repeat(${cols},1fr)">${cells}</div>`;
+}
+
+/* Unit grid: rows × cols dots; cell(r, c) returns a class for a lit dot or "" for an unlit one.
+   Unlit dots at the bottom corners are hidden so the field's bottom reads as a curve. */
+function unitGrid(rows, cols, cell) {
+  const hideAt = fromBottom => [3, 2, 1][fromBottom] || 0;
+  let cells = "";
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const cls = cell(r, c) || "";
+      const h = hideAt(rows - 1 - r);
+      const corner = !cls && (c < h || c >= cols - h);
+      cells += `<i class="${cls}${corner ? " corner" : ""}"></i>`;
+    }
+  }
+  return `<div class="dots" aria-hidden="true" style="grid-template-columns:repeat(${cols},1fr)">${cells}</div>`;
+}
+
+/* Numerals: 3×5 dot grid per digit (patterns from care-logic.js) */
+const DIGITS = ["111101101101111","010110010010111","111001111100111","111001111001111","101101111001001","111100111001111","111100111101111","111001001001001","111101111101111","111101111001111"];
+function matrix(n, size = "") {
+  return `<span class="matrix ${size}" aria-label="${n}">` + String(n).split("").map(ch => {
+    if (ch === ":") return `<span class="digit" style="grid-template-columns:var(--dot)"><i></i><i class="on"></i><i></i><i class="on"></i><i></i></span>`;
+    return `<span class="digit">` + DIGITS[+ch].split("").map(b => `<i class="${b === "1" ? "on" : ""}"></i>`).join("") + `</span>`;
+  }).join("") + `</span>`;
+}
+
+/* Column chart: one column per value, `rows` dots high, optional dashed capacity line.
+   labels: text per column (every 4th drawn). highlight: set of column indexes drawn in accent. */
+function matrixChart({values, labels, rows = 10, max, nowIndex = 0, capacity, unit = "", highlight = new Set(), warmAbove}) {
+  const top = max || Math.max(...values, capacity || 0) * 1.1;
+  const cols = values.length;
+  let cells = "";
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const lit = Math.round(values[c] / top * rows) >= rows - r;
+      let tone = c < nowIndex ? "past" : c === nowIndex ? "now" : "future";
+      if (highlight.has(c)) tone = "mark";
+      if (warmAbove != null && values[c] > warmAbove && c >= nowIndex) tone = "warm";
+      cells += `<i class="${lit ? tone : ""}" title="${esc(labels ? labels[c] : c)} · ${values[c]} ${esc(unit)}"></i>`;
+    }
+  }
+  const capLine = capacity ? `<div class="cap" style="bottom:${(capacity / top * 100).toFixed(1)}%"><span>Capacity · ${capacity} per hour</span></div>` : "";
+  const axis = `<div class="axis" style="grid-template-columns:repeat(${cols},1fr)">` +
+    values.map((_, c) => `<span>${(c % 4 === 0 || c === cols - 1) && labels ? esc(labels[c]) : ""}</span>`).join("") + `</div>`;
+  return `<div class="mchart">
+    <div class="area">
+      <div class="dots stretch" style="grid-template-columns:repeat(${cols},1fr);grid-auto-rows:var(--dot);row-gap:4px">${cells}</div>
+      ${capLine}
+    </div>
+    ${axis}
+  </div>`;
+}
+
+/* Pill bar chart (SVG): grouped bars per label, series = [{values, tone}] */
+function pillChart({series, labels, max, unit}) {
+  const w = 760, h = 220, left = 36, right = 12, top = 18, bottom = 180;
+  const n = labels.length, slot = (w - left - right) / n;
+  const groupW = Math.min(slot * .7, 8 * series.length + 3 * (series.length - 1));
+  const bw = (groupW - 3 * (series.length - 1)) / series.length;
+  const y = v => bottom - Math.min(v, max) / max * (bottom - top);
+  const grid = [0, 1, 2, 3, 4].map(i => {
+    const gy = bottom - i * (bottom - top) / 4;
+    return `<line x1="${left}" x2="${w - right}" y1="${gy}" y2="${gy}" stroke="var(--hairline)"/>
+      <text x="${left - 6}" y="${gy + 3}" text-anchor="end">${Math.round(i * max / 4)}</text>`;
+  }).join("");
+  const tones = {accent: "var(--accent)", soft: "var(--accent-soft)", past: "var(--dot-past)", ink: "var(--ink)"};
+  const bars = series.map((s, si) => s.values.map((v, i) => {
+    const x = left + slot * i + (slot - groupW) / 2 + si * (bw + 3);
+    return `<rect class="bar" x="${x}" y="${y(v)}" width="${bw}" height="${bottom - y(v)}" rx="${bw / 2}" fill="${tones[s.tone]}" style="animation-delay:${i * 10}ms"><title>${esc(labels[i])} · ${esc(s.name)} · ${v} ${esc(unit)}</title></rect>`;
+  }).join("")).join("");
+  const axis = labels.map((l, i) => (i % 4 === 0 || i === n - 1) ? `<text x="${left + slot * i + slot / 2}" y="${h - 12}" text-anchor="middle">${esc(l)}</text>` : "").join("");
+  return `<svg class="pillchart" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(unit)} chart">
+    <text x="${left}" y="10" style="fill:var(--muted);font-weight:500;font-size:11.5px">${esc(unit)}</text>${grid}${bars}
+    <line x1="${left}" x2="${w - right}" y1="${bottom}" y2="${bottom}" stroke="var(--hairline)"/>${axis}</svg>`;
+}
+
+/* =========================================================================
+   SHARED PIECES
+   ========================================================================= */
+function tile({icon, iconTone = "", label, delta, deltaTone = "", deltaDir, value, unit, when, window, spark, sparkTone}) {
+  const dir = deltaDir === "up" ? icons.up : deltaDir === "down" ? icons.down : "";
+  return `<div class="tile">
+    <div class="tile-top">
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <span class="ic ${iconTone}">${icon}</span>
+        <div>
+          <div class="tile-label">${esc(label)}</div>
+          ${delta ? `<div class="tile-delta ${deltaTone}">${dir}${esc(delta)}</div>` : ""}
+        </div>
+      </div>
+      <div class="tile-hero"><span class="hero ${String(value).length > 3 ? "long" : ""}">${esc(value)}</span><span class="unit">${esc(unit)}</span>${when ? `<span class="when">${esc(when)}</span>` : ""}</div>
+    </div>
+    ${spark ? dots(spark.series, {cols: 26, rows: 5, nowIndex: spark.nowIndex, tone: sparkTone}) : ""}
+    <div class="window">${esc(window)}</div>
+  </div>`;
+}
+
+function panel(title, subtitle, body, right = "", icon = "") {
+  return `<section class="panel">
+    <div class="panel-head">
+      <div><h2>${icon ? `<span class="ic">${icon}</span>` : ""}${esc(title)}</h2><p>${esc(subtitle)}</p></div>
+      ${right}
+    </div>
+    ${body}
+  </section>`;
+}
+
+function twoTone(text) {
+  const [lead, ...rest] = text.split(" ");
+  return rest.length ? `<span class="lead">${esc(lead)}</span> ${esc(rest.join(" "))}` : esc(lead);
+}
+
+/* =========================================================================
+   DERIVED NUMBERS used by several views
+   ========================================================================= */
+function derive() {
+  const waiting = state.checkins.filter(c => c.status === "waiting");
+  const treating = state.checkins.filter(c => c.status === "in-treatment");
+  const demand = forecast();
+  const now = new Date();
+  const block = Math.floor(now.getHours() / 4);
+  const projection = projectQueue(waiting.length, demand.slice(0, 12).map(d => d.volume), CAPACITY_PER_HOUR);
+  const peak = projection.reduce((best, p) => p.wait > best.wait ? p : best, projection[0]);
+  const peakTime = new Date(demand[peak.hour].time); peakTime.setHours(peakTime.getHours() + 1);
+  const avgWait = waiting.length ? Math.round(waiting.reduce((n, c) => n + waitMinutes(c), 0) / waiting.length) : 0;
+  const gaps = state.rota.reduce((sum, r) => sum + r.assigned.reduce((n, count, i) => n + Math.max(0, r.required[i] - count), 0), 0);
+  const traumaGap = Math.max(0, state.rota[1].required[5] - state.rota[1].assigned[5]);
+  const urgentLate = waiting.filter(c => c.triagePriority <= 2 && waitMinutes(c) > 30).length;
+  const overCapacity = demand.slice(0, 12).filter(d => d.volume > CAPACITY_PER_HOUR);
+  const beds = {
+    occupied: 13 + treating.length,
+    cleaning: 3,
+    reserved: 2,
+    awaiting: Math.min(4, waiting.filter(c => c.triagePriority <= 2).length)
+  };
+  beds.free = Math.max(0, BEDS - beds.occupied - beds.cleaning - beds.reserved - beds.awaiting);
+  return {waiting, treating, demand, block, projection, peak, peakTime, avgWait, gaps, traumaGap, urgentLate, overCapacity, beds};
+}
+
+/* Alerts are derived from the data, so demo changes update them. */
+function alerts(d) {
+  const list = [];
+  if (d.traumaGap) list.push({sev: "sev-3", level: "Critical", what: "Trauma cover short 20:00–00:00", detail: `${d.traumaGap} role-slot${d.traumaGap > 1 ? "s" : ""} below the suggested plan`, age: "32 min ago", go: 1, icon: icons.warn});
+  if (d.urgentLate) list.push({sev: "sev-2", level: "High", what: "P1–P2 patients waiting over 30 min", detail: `${d.urgentLate} ticket${d.urgentLate > 1 ? "s" : ""} · review against local policy`, age: "just now", go: 3, icon: icons.clock});
+  if (d.overCapacity.length) list.push({sev: "sev-1", level: "Medium", what: "Arrivals above capacity", detail: `${clockLabel(d.overCapacity[0].time)}–${clockLabel(d.overCapacity[d.overCapacity.length - 1].time)} · up to ${Math.max(...d.overCapacity.map(x => x.volume))} per hour vs ${CAPACITY_PER_HOUR} seen`, age: "forecast", go: 2, icon: icons.trend});
+  if (d.beds.free <= 4) list.push({sev: "info", level: "Info", what: "Treatment beds nearly full", detail: `${d.beds.free} of ${BEDS} free · ${d.beds.cleaning} being cleaned`, age: "1 hr ago", go: 3, icon: icons.bed});
+  return list;
+}
+
+/* =========================================================================
+   RENDER FRAME
+   ========================================================================= */
+let headingTab = -1;   // which tab the heading row was last built for
+function setTab(next) { tab = next; notify(""); render(); window.scrollTo({top: 0}); }
+
+function tickClock() {
+  const el = document.getElementById("clock");
+  if (!el) return;
+  const now = new Date();
+  el.innerHTML = `<span>${now.toLocaleDateString("en-GB", {weekday: "short", day: "numeric", month: "short"})}</span> · ${clockLabel(now)}`;
+}
+
+function render() {
+  const d = derive();
+  const alertCount = alerts(d).length;
+  document.getElementById("nav").innerHTML = tabs.map((t, i) =>
+    `<button class="${tab === i ? "active" : ""}" aria-current="${tab === i ? "page" : "false"}" onclick="setTab(${i})">
+      ${icons[t.icon]}<span>${t.name}</span>${i === 0 && alertCount ? `<span class="count" aria-label="${alertCount} alerts">${alertCount}</span>` : ""}
+    </button>`).join("");
+
+  document.getElementById("breadcrumb").textContent = tabs[tab].name;
+  document.getElementById("actions").innerHTML =
+    tab === 1 ? `<button class="btn" onclick="exportRota()">Export rota CSV</button>` :
+    tab === 3 ? `<button class="btn" onclick="addMock()">Add mock check-in</button>` : "";
+
+  if (headingTab !== tab) {
+    document.getElementById("heading").innerHTML = tab === 0 ? "" : `
+      <div>
+        <div class="eyebrow">Emergency department / Operations</div>
+        <h1>${twoTone(tabs[tab].name)}.</h1>
+        <p>${esc(tabs[tab].sub)}</p>
+      </div>
+      <div class="actions" id="heading-actions">${tab === 2 ? lookAheadControl() : ""}</div>`;
+    headingTab = tab;
+  }
+  document.getElementById("heading").style.display = tab === 0 ? "none" : "";
+  document.body.classList.toggle("is-overview", tab === 0);
+
+  document.getElementById("content").innerHTML =
+    [overviewView, staffingView, forecastingView, queueView, performanceView][tab](d);
+  const headActions = document.getElementById("heading-actions");
+  if (headActions && tab === 1) headActions.innerHTML = staffingCallout(d);
+  if (tab === 3) renderQueueRows();
+  tickClock();
+}
+
+/* Count the hero numerals up over 700 ms (cubic ease-out), DESIGN.md §6 */
+function countUp() {
+  const targets = [...document.querySelectorAll("[data-count]")];
+  if (!targets.length) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || document.hidden) {
+    targets.forEach(el => { el.innerHTML = matrix(+el.dataset.count, "lg"); });
+    return;
+  }
+  const t0 = performance.now();
+  const step = () => {
+    const p = Math.min(1, (performance.now() - t0) / 700);
+    const e = 1 - Math.pow(1 - p, 3);
+    targets.forEach(el => { el.innerHTML = matrix(Math.round(+el.dataset.count * e), "lg"); });
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+/* Sidebar search: jumps to the live queue and filters tickets */
+function globalSearch(value) {
+  query = value;
+  if (tab !== 3) { tab = 3; render(); }
+  const box = document.querySelector("#content input[type=search]");
+  if (box) box.value = value;
+  renderQueueRows();
+}
+
+/* =========================================================================
+   VIEW 0 — OVERVIEW (one screen at 1440×900)
+   ========================================================================= */
+
+/* Smooth path through points (Catmull-Rom → cubic Bézier) */
+function smoothPath(pts) {
+  if (pts.length < 2) return "";
+  let d = `M${pts[0][0]},${pts[0][1]}`;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
+    const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+    const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+    d += ` C${c1[0]},${c1[1]} ${c2[0]},${c2[1]} ${p2[0]},${p2[1]}`;
+  }
+  return d;
+}
+
+/* Trend chart: actual arrivals (solid) up to now, forecast (dotted) across the
+   whole window, capacity as a dashed line, and a shaded band where the
+   forecast exceeds capacity. */
+function trendChart({actual, forecastVals, labels, nowIndex, capacity, max}) {
+  const w = 760, h = 200, left = 28, right = 16, top = 22, bottom = 170;
+  const n = forecastVals.length;
+  const x = i => left + (w - left - right) * i / (n - 1);
+  const y = v => bottom - Math.min(v, max) / max * (bottom - top);
+  const grid = [0, 1, 2, 3].map(i => {
+    const gy = bottom - i * (bottom - top) / 3;
+    return `<line x1="${left}" x2="${w - right}" y1="${gy}" y2="${gy}" stroke="var(--hairline)" stroke-width="1"/>
+      <text x="${left - 6}" y="${gy + 3}" text-anchor="end" class="axis">${Math.round(i * max / 3)}</text>`;
+  }).join("");
+  /* Shaded "queue building" bands (future only) */
+  let bands = "", i = nowIndex;
+  while (i < n) {
+    if (forecastVals[i] > capacity) {
+      let j = i; while (j + 1 < n && forecastVals[j + 1] > capacity) j++;
+      const x1 = x(i) - (w - left - right) / (n - 1) / 2, x2 = x(j) + (w - left - right) / (n - 1) / 2;
+      bands += `<rect x="${x1}" y="${top - 6}" width="${x2 - x1}" height="${bottom - top + 6}" rx="8" fill="var(--sev-2)" opacity=".13"/>
+        <text x="${(x1 + x2) / 2}" y="${top + 4}" text-anchor="middle" style="font-size:10px;font-weight:700;fill:var(--sev-2-fg)">Queue building · ${esc(labels[i])}–${esc(labels[Math.min(n - 1, j + 1)])}</text>`;
+      i = j + 1;
+    } else i++;
+  }
+  const fPts = forecastVals.map((v, k) => [x(k), y(v)]);
+  const aPts = actual.map((v, k) => [x(k), y(v)]);
+  const areaFuture = smoothPath(fPts.slice(nowIndex)) + ` L${x(n - 1)},${bottom} L${x(nowIndex)},${bottom} Z`;
+  const capY = y(capacity);
+  const axis = labels.map((l, k) => (k % 3 === 0 || k === n - 1) ? `<text x="${x(k)}" y="${h - 8}" text-anchor="${k === 0 ? "start" : k === n - 1 ? "end" : "middle"}" class="axis">${esc(l)}</text>` : "").join("");
+  return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Arrivals per hour, actual and forecast">
+    ${grid}${bands}
+    <path d="${areaFuture}" fill="rgba(var(--accent-rgb),.10)"/>
+    <line x1="${left}" x2="${w - right}" y1="${capY}" y2="${capY}" stroke="var(--ink-2)" stroke-width="1.2" stroke-dasharray="5 5"/>
+    <text x="${w - right}" y="${capY - 5}" text-anchor="end" style="font-size:10px;font-weight:600;fill:var(--ink-2)">Can see ${capacity} per hour</text>
+    <path d="${smoothPath(fPts)}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="1 6"/>
+    <path d="${smoothPath(aPts)}" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="${x(nowIndex)}" x2="${x(nowIndex)}" y1="${top - 4}" y2="${bottom}" stroke="var(--ink)" stroke-width="1" stroke-dasharray="2 3"/>
+    <circle cx="${x(nowIndex)}" cy="${y(actual[nowIndex])}" r="4.5" fill="var(--ink)" stroke="var(--surface)" stroke-width="2"/>
+    <rect x="${x(nowIndex) - 20}" y="${top - 22}" width="40" height="16" rx="8" fill="var(--ink)"/>
+    <text x="${x(nowIndex)}" y="${top - 11}" text-anchor="middle" style="font-size:9.5px;font-weight:700;fill:var(--surface)">Now</text>
+    ${axis}
+  </svg>`;
+}
+
+/* Outlook chart for the staffing page: expected arrivals (white) across the whole
+   window, actual arrivals (blue, soft fill) up to now, capacity dashed, and a
+   speech-bubble with the forecast accuracy over the hours we already know. */
+function outlookChart({actual, expected, labels, nowIndex, capacity, max, accuracy, accuracyHours}) {
+  const w = 1100, h = 300, left = 34, right = 20, top = 48, bottom = 258;
+  const n = expected.length;
+  const x = i => left + (w - left - right) * i / (n - 1);
+  const y = v => bottom - Math.min(v, max) / max * (bottom - top);
+  const grid = [0, 1, 2, 3, 4].map(i => {
+    const gy = bottom - i * (bottom - top) / 4;
+    return `<line x1="${left}" x2="${w - right}" y1="${gy}" y2="${gy}" stroke="var(--hairline)" stroke-width="1"/>
+      <text x="${left - 8}" y="${gy + 3}" text-anchor="end" class="axis">${Math.round(i * max / 4)}</text>`;
+  }).join("");
+  const ePts = expected.map((v, k) => [x(k), y(v)]);
+  const aPts = actual.map((v, k) => [x(k), y(v)]);
+  const areaActual = smoothPath(aPts) + ` L${x(actual.length - 1)},${bottom} L${x(0)},${bottom} Z`;
+  const capY = y(capacity);
+  const axis = labels.map((l, k) => (k % 4 === 0 || k === n - 1) ? `<text x="${x(k)}" y="${h - 10}" text-anchor="${k === 0 ? "start" : k === n - 1 ? "end" : "middle"}" class="axis">${esc(l)}</text>` : "").join("");
+  /* Speech bubble above the expected line, just before now */
+  const bi = Math.max(1, nowIndex - 2);
+  const bx = x(bi), by = y(expected[bi]) - 22;
+  const bubbleText = `${accuracy}% accurate · last ${accuracyHours} h`;
+  const bw = bubbleText.length * 6.4 + 24;
+  const bubble = `<g>
+    <rect x="${bx - bw / 2}" y="${by - 26}" width="${bw}" height="26" rx="13" fill="var(--surface)" style="filter:drop-shadow(0 2px 6px rgba(20,30,50,.12))"/>
+    <path d="M${bx - 5},${by} L${bx + 5},${by} L${bx},${by + 6} Z" fill="var(--surface)"/>
+    <text x="${bx}" y="${by - 9}" text-anchor="middle" style="font-size:11.5px;font-weight:700;fill:var(--ink)">${esc(bubbleText)}</text>
+  </g>`;
+  return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Expected and actual arrivals per hour">
+    ${grid}
+    <path d="${areaActual}" fill="rgba(var(--accent-rgb),.14)"/>
+    <line x1="${left}" x2="${w - right}" y1="${capY}" y2="${capY}" stroke="var(--ink-2)" stroke-width="1.2" stroke-dasharray="5 5"/>
+    <path d="${smoothPath(ePts)}" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="7" stroke-linecap="round"/>
+    <path d="${smoothPath(ePts)}" fill="none" stroke="var(--surface)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="${w - right - 142}" y="${capY - 20}" width="142" height="18" rx="9" fill="var(--surface)" opacity=".92"/>
+    <text x="${w - right - 71}" y="${capY - 7}" text-anchor="middle" style="font-size:10.5px;font-weight:600;fill:var(--ink-2)">Capacity · ${capacity} per hour</text>
+    <path d="${smoothPath(aPts)}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="${x(nowIndex)}" x2="${x(nowIndex)}" y1="${top - 10}" y2="${bottom}" stroke="var(--ink)" stroke-width="1" stroke-dasharray="2 3"/>
+    <circle cx="${x(nowIndex)}" cy="${y(actual[nowIndex])}" r="4.5" fill="var(--accent)" stroke="var(--surface)" stroke-width="2"/>
+    <rect x="${x(nowIndex) - 20}" y="${bottom + 4}" width="40" height="16" rx="8" fill="var(--ink)"/>
+    <text x="${x(nowIndex)}" y="${bottom + 15}" text-anchor="middle" style="font-size:9.5px;font-weight:700;fill:var(--surface)">Now</text>
+    ${bubble}${axis}
+  </svg>`;
+}
+
+function overviewView(d) {
+  const now = new Date();
+  const hourNow = now.getHours();
+  const next4 = d.demand.slice(0, 4);
+  const arrivals4 = next4.reduce((n, x) => n + x.volume, 0);
+  const seen4 = CAPACITY_PER_HOUR * 4;
+  const diff = arrivals4 - seen4;
+
+  /* Window: last 6 hours actual (history) + next 12 hours forecast */
+  const PAST = 6, FUTURE = 12;
+  const labels = [], forecastVals = [], actual = [];
+  for (let k = -PAST; k < FUTURE; k++) {
+    const t = new Date(now); t.setMinutes(0, 0, 0); t.setHours(hourNow + k);
+    labels.push(clockLabel(t));
+    const hh = t.getHours();
+    if (k < 0) {
+      forecastVals.push(Math.round(7 + 11 * Math.max(0, Math.sin((hh - 7) * Math.PI / 18)) + 1));
+      actual.push(pastHours[hh].arrivals);
+    } else {
+      forecastVals.push(d.demand[k].volume);
+      if (k === 0) actual.push(pastHours[hh].arrivals);
+    }
+  }
+  const peakF = Math.max(...forecastVals.slice(PAST));
+  const peakAt = labels[PAST + forecastVals.slice(PAST).indexOf(peakF)];
+  const over = d.overCapacity;
+
+  /* Staff coverage for the current 4-hour block */
+  const covCols = state.rota.map(r => {
+    const a = r.assigned[d.block], q = r.required[d.block], scale = Math.max(a, q);
+    const kind = a < q ? "gap" : a > q ? "over" : "";
+    const word = a < q ? "Gap" : a > q ? "Surplus" : "Covered";
+    return `<div class="covcol">
+      <div class="name"><span style="color:var(--ink);font-size:13px">${esc(r.specialty)}</span><span class="${kind}">${a} / ${q} · ${word}</span></div>
+      <div class="track"><div class="fill ${kind}" style="width:${(a / scale * 100).toFixed(1)}%"></div><div class="tick" style="left:${(q / scale * 100).toFixed(1)}%" title="Suggested ${q}"></div></div>
+    </div>`;
+  }).join("");
+  const coveredPct = Math.round(state.rota.reduce((n, r) => n + Math.min(r.assigned[d.block], r.required[d.block]), 0) /
+    state.rota.reduce((n, r) => n + r.required[d.block], 0) * 100);
+
+  /* Needs attention: at most three, most severe first */
+  const order = {"sev-3": 0, "sev-2": 1, "sev-1": 2, "info": 3};
+  const list = alerts(d).sort((a, b) => order[a.sev] - order[b.sev]).slice(0, 3);
+  const levelWord = {"sev-3": "Critical", "sev-2": "High", "sev-1": "Moderate", "info": "Info"};
+  const attnRows = list.length ? list.map(a => `<div class="alert ${a.sev}">
+      <div>
+        <div class="level">${levelWord[a.sev]}</div>
+        <div class="what">${esc(a.what)}</div>
+        <div class="detail">${esc(a.detail)}</div>
+      </div>
+      <button class="btn" onclick="setTab(${a.go})">Review</button>
+    </div>`).join("") : `<div class="empty">Nothing needs you right now. Everything is inside the plan for the next 12 hours.</div>`;
+
+  const stat = ({label, chip, chipTone, value, unit, window, field, caption}) => `<div class="stat">
+    <div class="body">
+      <div class="top"><span class="label">${esc(label)}</span>${chip ? `<span class="chip ${chipTone}">${esc(chip)}</span>` : ""}</div>
+      <div class="value"><b>${esc(value)}</b><span>${esc(unit)}</span></div>
+      <div class="window">${esc(window)}</div>
+    </div>
+    <div class="ecg">${field}<div class="cap">${caption}</div></div>
+  </div>`;
+
+  /* Field 1 — queue line: one dot per person waiting, placed by minutes waited (0 to 60+);
+     P1–P2 in orange, others in blue; a thin marker at 30 min. Dots in the same 2-minute
+     band stack upward so none hide each other. */
+  const urgent = d.waiting.filter(c => c.triagePriority <= 2).length;
+  const QW = 320, QH = 46, qLeft = 4, qRight = 14, base = 30, MAXMIN = 66;
+  const qx = m => qLeft + Math.min(m, MAXMIN) / MAXMIN * (QW - qLeft - qRight);
+  const bands = {};
+  const qDots = d.waiting.slice().sort((a, b) => waitMinutes(a) - waitMinutes(b)).map(t => {
+    const m = waitMinutes(t), band = Math.floor(Math.min(m, MAXMIN) / 2);
+    const lvl = bands[band] = (bands[band] || 0) + 1;
+    return `<circle cx="${qx(m).toFixed(1)}" cy="${base - (lvl - 1) * 9}" r="4.5" fill="var(${t.triagePriority <= 2 ? "--sev-2" : "--accent"})"><title>${t.triagePriority <= 2 ? "P1–P2" : "P3–P5"} · waited ${m} min</title></circle>`;
+  }).join("");
+  const ticks = [0, 15, 30, 45, 60].map(m => `<line x1="${qx(m)}" x2="${qx(m)}" y1="${base + 5}" y2="${base + 8}" stroke="var(--hairline-2)"/><text x="${qx(m)}" y="${base + 17}" text-anchor="${m === 0 ? "start" : "middle"}">${m === 60 ? "60+ min" : m}</text>`).join("");
+  const fieldWaiting = `<svg class="qline" viewBox="0 0 ${QW} ${QH}" preserveAspectRatio="none" aria-label="People waiting by minutes waited">
+    <line x1="${qLeft}" x2="${QW - qRight}" y1="${base + 5}" y2="${base + 5}" stroke="var(--hairline)"/>
+    <line x1="${qx(30)}" x2="${qx(30)}" y1="2" y2="${base + 5}" stroke="var(--ink-2)" stroke-width="1" stroke-dasharray="2 2"/>
+    <text x="${qx(30) + 4}" y="8" style="fill:var(--ink-2)">30 min</text>
+    ${ticks}${qDots}
+  </svg>`;
+
+  /* Field 3 — one stacked bar: a segment per bed status, sized by count */
+  const b = d.beds;
+  const bedOrder = [["occupied", b.occupied, "Occupied"], ["held", b.awaiting, "Held for P1–P2"], ["cleaning", b.cleaning, "Cleaning"], ["reserved", b.reserved, "Reserved"], ["free", b.free, "Free"]];
+  const fieldBeds = `<div class="bedbar" role="img" aria-label="Beds by status">` +
+    bedOrder.filter(([, n]) => n > 0).map(([cls, n, label]) => `<div class="${cls}" style="flex:${n}" title="${label}: ${n} beds"></div>`).join("") + `</div>`;
+
+  /* Field 2 — one row per hour for the next 4 h, one dot per expected arrival; past 15 = more than we can see */
+  const fieldArrivals = `<div class="rows">` + next4.map(x => `<span class="lab">${clockLabel(x.time)}</span>` +
+    unitGrid(1, 24, (r, c) => c < x.volume ? (c < CAPACITY_PER_HOUR ? "person" : "over") : "")).join("") + `</div>`;
+
+
+  return `<div class="ov">
+    <div class="welcome">
+      <h1><span class="lead">Good ${hourNow < 12 ? "morning" : hourNow < 18 ? "afternoon" : "evening"},</span> Marston Road.</h1>
+    </div>
+    <div class="ov-head">
+      ${stat({label: "Waiting now", chip: `${urgent} are P1–P2`, chipTone: urgent ? "sev-2" : "muted",
+        value: d.waiting.length, unit: "people", window: "Right now · anonymous tickets",
+        field: fieldWaiting, caption: `One dot per person waiting · <b>orange</b> = P1–P2`})}
+      ${stat({label: "Expected arrivals", chip: diff > 0 ? `${diff} more than we can see` : `${-diff} fewer than we can see`, chipTone: diff > 0 ? "sev-2" : "good",
+        value: arrivals4, unit: "people", window: `Next 4 h · ${clockLabel(next4[0].time)}–${clockLabel(new Date(next4[3].time.getTime() + 36e5))}`,
+        field: fieldArrivals, caption: `One row per hour, one dot per arrival · <b>orange</b> = more than the ${CAPACITY_PER_HOUR} we can see each hour`})}
+      ${stat({label: "Beds free", chip: b.free <= 4 ? "nearly full" : "space available", chipTone: b.free <= 4 ? "sev-2" : "good",
+        value: b.free, unit: `of ${BEDS}`, window: "Right now · assumed treatment beds",
+        field: fieldBeds, caption: `<i style="background:var(--ink)"></i>${b.occupied} occupied · <i style="background:var(--sev-1)"></i>${b.awaiting} held · <i style="background:var(--dot-past)"></i>${b.cleaning} cleaning · <i style="background:var(--sev-2)"></i>${b.reserved} reserved · <i style="background:var(--accent-soft)"></i>${b.free} free`})}
+    </div>
+
+    <div class="ov-mid">
+      <section class="trend">
+        <div class="head">
+          <div><h2>Expected queue</h2><div class="sub">Arrivals per hour · last 6 h actual, next 12 h forecast · ${labels[0]}–${labels[labels.length - 1]}</div></div>
+          <div class="keys"><span><i></i>Actual</span><span><i class="dotted"></i>Forecast</span><span><i class="cap"></i>Can see per hour</span></div>
+        </div>
+        ${trendChart({actual, forecastVals, labels, nowIndex: PAST, capacity: CAPACITY_PER_HOUR, max: 24})}
+        <div class="facts">
+          <span class="fact"><b>${actual[PAST]} per hour</b> arriving this hour</span>
+          <span class="fact"><b>${peakF} per hour</b> forecast peak at ${esc(peakAt)}</span>
+          <span class="fact ${over.length ? "warm" : ""}"><b>${over.length ? `${clockLabel(over[0].time)}–${clockLabel(new Date(over[over.length - 1].time.getTime() + 36e5))}` : "None"}</b> queue building in the next 12 h</span>
+        </div>
+      </section>
+      <section class="attn">
+        <div class="head"><h2>Needs attention</h2><small>${list.length ? `${list.length} of ${alerts(d).length}` : "all clear"}</small></div>
+        <div class="alerts">${attnRows}</div>
+      </section>
+    </div>
+
+    <section class="covstrip">
+      <div class="head">
+        <div><h2>Staff coverage · ${slots[d.block]} block</h2> <small>· assigned against the suggested plan · ${coveredPct}% of plan · role counts, not names</small></div>
+        <button class="link" onclick="setTab(1)">Open staffing plan</button>
+      </div>
+      <div class="covcols">${covCols}</div>
+    </section>
+  </div>`;
+}
+
+/* =========================================================================
+   VIEW 1 — STAFFING COORDINATION
+   ========================================================================= */
+function staffingCallout(d) {
+  return `<div class="callout warm">
+    <span class="chip ${d.traumaGap ? "sev-2" : "good"}">${d.traumaGap ? "Needs attention" : "Covered"}</span>
+    <div>
+      <strong>${d.traumaGap ? "Evening trauma coverage needs attention" : "Evening trauma target met"}</strong>
+      <p>20:00–00:00 has ${d.traumaGap} unfilled trauma role-slot${d.traumaGap === 1 ? "" : "s"}. Review coverage and qualifications before approving a rota.</p>
+    </div>
+  </div>`;
+}
+
+function staffingView(d) {
+  /* Window: last 16 hours (actual known) + next 8 hours (expected only) */
+  const now = new Date(), hourNow = now.getHours();
+  const PAST = 16, FUTURE = 8;
+  const labels = [], expected = [], actual = [];
+  for (let k = -PAST; k < FUTURE; k++) {
+    const t = new Date(now); t.setMinutes(0, 0, 0); t.setHours(hourNow + k);
+    labels.push(clockLabel(t));
+    const hh = t.getHours();
+    if (k < 0) { expected.push(Math.round(7 + 11 * Math.max(0, Math.sin((hh - 7) * Math.PI / 18)) + 1)); actual.push(pastHours[hh].arrivals); }
+    else { expected.push(d.demand[k].volume); if (k === 0) actual.push(pastHours[hh].arrivals); }
+  }
+  const err = actual.slice(0, PAST).reduce((n, v, i) => n + Math.abs(v - expected[i]), 0) / PAST;
+  const meanActual = actual.slice(0, PAST).reduce((n, v) => n + v, 0) / PAST;
+  const accuracy = Math.max(0, Math.round(100 - err / meanActual * 100));
+
+  return `<section class="outlook">
+    <div class="head">
+      <div><h2>Demand and staffing outlook</h2><div class="sub">Arrivals per hour · last ${PAST} h actual, next ${FUTURE} h expected · ${labels[0]}–${labels[labels.length - 1]} · simulated</div></div>
+      <div class="keys"><span><i></i>Expected</span><span><i class="actual"></i>Actual</span><span><i class="cap"></i>Capacity · ${CAPACITY_PER_HOUR} per hour</span></div>
+    </div>
+    ${outlookChart({actual, expected, labels, nowIndex: PAST, capacity: CAPACITY_PER_HOUR, max: 24, accuracy, accuracyHours: PAST})}
+  </section>
+  ${panel("Suggested coverage plan", "Assigned / recommended per 4-hour block · edit assigned counts to override",
+    `<div class="table-wrap"><table>
+      <thead><tr><th>Specialty</th>${slots.map(s => `<th>${s} block</th>`).join("")}</tr></thead>
+      <tbody>${state.rota.map((r, ri) => `<tr>
+        <td><strong>${esc(r.specialty)}</strong><small>Qualified clinical coverage</small></td>
+        ${r.assigned.map((count, si) => {
+          const type = count < r.required[si] ? "gap" : count > r.required[si] ? "surplus" : "";
+          const word = type === "gap" ? "Gap" : type === "surplus" ? "Surplus" : "Covered";
+          return `<td><div class="cov ${type}">
+            <input type="number" min="0" max="20" value="${count}" aria-label="${esc(r.specialty)} ${slots[si]} assigned" onchange="updateCoverage(${ri},${si},this.value)">
+            <span class="req">/ ${r.required[si]}</span><span>${word}</span>
+          </div></td>`;
+        }).join("")}
+      </tr>`).join("")}</tbody>
+    </table></div>
+    <div class="table-foot">Orange = gap · Grey = covered · Blue = surplus. Role counts only; not named staff assignments.</div>`)}`;
+}
+
+function updateCoverage(row, slot, value) {
+  const count = Number(value);
+  if (!Number.isInteger(count) || count < 0 || count > 20) { render(); notify("Enter a whole number between 0 and 20."); return; }
+  state.rota[row].assigned[slot] = count;
+  save("Coverage override saved in this browser.");
+}
+
+function exportRota() {
+  const csv = ["Specialty," + slots.join(","), ...state.rota.map(r => r.specialty + "," + r.assigned.join(","))].join("\n");
+  const url = URL.createObjectURL(new Blob([csv], {type: "text/csv"}));
+  const link = document.createElement("a");
+  link.href = url; link.download = "triage-rota.csv"; link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+/* =========================================================================
+   VIEW 2 — DEMAND FORECASTING
+   A look-ahead slider in the heading (0 to +4 h, 30-minute steps) drives the
+   stats, the selected bar, the category mix and the highlighted table row.
+   ========================================================================= */
+let lookAhead = 0;   // minutes ahead of now selected on the slider
+
+function lookAheadControl() {
+  return `<div class="lookahead">
+    <div class="la-top"><span class="eyebrow">Look ahead</span><strong id="la-label">${lookAheadLabel()}</strong></div>
+    <input type="range" min="0" max="240" step="30" value="${lookAhead}" style="--pct:${lookAhead / 240 * 100}%" aria-label="Look ahead, minutes from now" oninput="this.style.setProperty('--pct', this.value / 240 * 100 + '%');setLookAhead(this.value)">
+    <div class="la-ticks"><span>Now</span><span>+1 h</span><span>+2 h</span><span>+3 h</span><span>+4 h</span></div>
+  </div>`;
+}
+function lookAheadLabel() {
+  const t = new Date(); t.setMinutes(0, 0, 0); t.setMinutes(t.getMinutes() + lookAhead);
+  return lookAhead === 0 ? `Now · ${clockLabel(t)}` : `+${Math.floor(lookAhead / 60)} h${lookAhead % 60 ? " 30" : ""} · ${clockLabel(t)}`;
+}
+/* Slider input re-renders only the page content, so the slider itself keeps focus */
+function setLookAhead(value) {
+  lookAhead = Number(value);
+  document.getElementById("la-label").textContent = lookAheadLabel();
+  document.getElementById("content").innerHTML = forecastingView(derive());
+}
+
+/* Queue size at `minutes` from now: straight-line between the hourly projection points */
+function queueAt(d, minutes) {
+  const k = minutes / 60;
+  if (k <= 0) return d.waiting.length;
+  const lo = k <= 1 ? d.waiting.length : d.projection[Math.ceil(k) - 2].queue;
+  const hi = d.projection[Math.ceil(k) - 1].queue;
+  const frac = k - Math.floor(k);
+  return frac === 0 ? hi : Math.round(lo + (hi - lo) * frac);
+}
+
+/* Forecast accuracy over the last `hours`: 100 − mean |actual − forecast| ÷ mean actual */
+function forecastAccuracy(hours) {
+  const now = new Date();
+  let err = 0, sum = 0;
+  for (let k = -hours; k < 0; k++) {
+    const hh = (now.getHours() + k + 24) % 24;
+    const expected = Math.round(7 + 11 * Math.max(0, Math.sin((hh - 7) * Math.PI / 18)) + 1);
+    err += Math.abs(pastHours[hh].arrivals - expected); sum += pastHours[hh].arrivals;
+  }
+  return Math.max(0, Math.round(100 - err / sum * 100));
+}
+
+/* Single-series pill bar chart: bars above capacity in orange, the selected hour in ink */
+function barChart({values, labels, capacity, max, selected}) {
+  const w = 1100, h = 250, left = 34, right = 20, top = 30, bottom = 210;
+  const n = values.length, slot = (w - left - right) / n, bw = Math.min(16, slot * .55);
+  const y = v => bottom - Math.min(v, max) / max * (bottom - top);
+  const grid = [0, 1, 2, 3, 4].map(i => {
+    const gy = bottom - i * (bottom - top) / 4;
+    return `<line x1="${left}" x2="${w - right}" y1="${gy}" y2="${gy}" stroke="var(--hairline)"/><text x="${left - 8}" y="${gy + 3}" text-anchor="end" class="axis">${Math.round(i * max / 4)}</text>`;
+  }).join("");
+  const bars = values.map((v, i) => {
+    const x = left + slot * i + (slot - bw) / 2;
+    const fill = i === selected ? "var(--ink)" : v > capacity ? "var(--sev-2)" : "var(--accent-soft)";
+    return `<rect class="bar" x="${x}" y="${y(v)}" width="${bw}" height="${bottom - y(v)}" rx="${bw / 2}" fill="${fill}" style="animation-delay:${i * 10}ms"><title>${esc(labels[i])} · ${v} per hour</title></rect>`;
+  }).join("");
+  const capY = y(capacity);
+  const axis = labels.map((l, i) => (i % 4 === 0 || i === n - 1) ? `<text x="${left + slot * i + slot / 2}" y="${h - 10}" text-anchor="middle" class="axis">${esc(l)}</text>` : "").join("");
+  return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Expected arrivals per hour">
+    ${grid}${bars}
+    <line x1="${left}" x2="${w - right}" y1="${capY}" y2="${capY}" stroke="var(--ink-2)" stroke-width="1.2" stroke-dasharray="5 5"/>
+    <rect x="${w - right - 142}" y="${capY - 20}" width="142" height="18" rx="9" fill="var(--surface)" opacity=".92"/>
+    <text x="${w - right - 71}" y="${capY - 7}" text-anchor="middle" style="font-size:10.5px;font-weight:600;fill:var(--ink-2)">Capacity · ${capacity} per hour</text>
+    ${axis}
+  </svg>`;
+}
+
+/* Donut of the predicted category mix */
+function donut(parts, total) {
+  const r = 54, cx = 70, cy = 70, stroke = 18, C = 2 * Math.PI * r;
+  let offset = 0;
+  const arcs = parts.map(p => {
+    const len = total ? p.value / total * C : 0;
+    const el = `<circle r="${r}" cx="${cx}" cy="${cy}" fill="none" stroke="${p.colour}" stroke-width="${stroke}" stroke-dasharray="${Math.max(0, len - 2)} ${C - Math.max(0, len - 2) + 2}" stroke-dashoffset="${-offset}" transform="rotate(-90 ${cx} ${cy})"><title>${esc(p.name)} · ${p.value}</title></circle>`;
+    offset += len;
+    return el;
+  }).join("");
+  return `<svg viewBox="0 0 140 140" class="donut-svg" role="img" aria-label="Predicted category mix">
+    <circle r="${r}" cx="${cx}" cy="${cy}" fill="none" stroke="var(--dot-off)" stroke-width="${stroke}"/>${arcs}
+    <text x="${cx}" y="${cy - 2}" text-anchor="middle" style="font-size:22px;font-weight:800;letter-spacing:-.04em;fill:var(--ink)">${total}</text>
+    <text x="${cx}" y="${cy + 14}" text-anchor="middle" style="font-size:9.5px;font-weight:600;fill:var(--muted)">people · 4 h</text>
+  </svg>`;
+}
+
+function forecastingView(d) {
+  const now = new Date();
+  const selT = new Date(now); selT.setMinutes(0, 0, 0); selT.setMinutes(selT.getMinutes() + lookAhead);
+  const h0 = Math.floor(lookAhead / 60), half = lookAhead % 60 !== 0;
+  const selLabel = clockLabel(selT);
+  const endT = new Date(selT.getTime() + 36e5);
+
+  /* ---- numbers at the selected time ---- */
+  const arrivalsHour = half ? Math.round((d.demand[h0].volume + d.demand[h0 + 1].volume) / 2) : d.demand[h0].volume;
+  const queue = queueAt(d, lookAhead);
+  const wait = Math.round(queue / CAPACITY_PER_HOUR * 60);
+  const accuracy = forecastAccuracy(16);
+
+  /* ---- mini visuals, one per stat ---- */
+  /* Arrivals: one dot per person expected in the hour; orange past the 15 we can see */
+  const fieldArrivals = unitGrid(1, 24, (r, c) => c < arrivalsHour ? (c < CAPACITY_PER_HOUR ? "person" : "over") : "");
+
+  /* Queue: a column every 30 min for the next 4 h, height = people in the queue; selected time in black */
+  const qSteps = Array.from({length: 9}, (_, k) => queueAt(d, k * 30));
+  const qMax = Math.max(...qSteps, 1);
+  const fieldQueue = `<div class="rows"><span class="lab"></span>` + unitGrid(5, 9, (r, c) => Math.max(qSteps[c] > 0 ? 1 : 0, Math.round(qSteps[c] / qMax * 5)) >= 5 - r ? (c * 30 === lookAhead ? "now" : "future") : "") + `</div>
+    <div class="qaxis"><span>Now</span><span>+1 h</span><span>+2 h</span><span>+3 h</span><span>+4 h</span></div>`;
+
+  /* Wait: a 0–90 min gauge in three bands with a marker at the expected wait */
+  const gx = m => 4 + Math.min(m, 90) / 90 * 304;
+  const fieldWait = `<svg class="gauge" viewBox="0 0 320 34" preserveAspectRatio="none" aria-label="Expected wait on a 0 to 90 minute scale">
+    <rect x="${gx(0)}" y="10" width="${gx(30) - gx(0) - 2}" height="8" rx="4" fill="var(--accent-soft)"/>
+    <rect x="${gx(30) + 1}" y="10" width="${gx(60) - gx(30) - 2}" height="8" rx="4" fill="var(--sev-1)"/>
+    <rect x="${gx(60) + 1}" y="10" width="${gx(90) - gx(60) - 1}" height="8" rx="4" fill="var(--sev-2)"/>
+    <circle cx="${gx(wait)}" cy="14" r="6.5" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/>
+    ${[0, 30, 60, 90].map(m => `<text x="${gx(m)}" y="31" text-anchor="${m === 0 ? "start" : m === 90 ? "end" : "middle"}">${m === 90 ? "90+ min" : m}</text>`).join("")}
+  </svg>`;
+
+  /* Accuracy: one dot per past hour; orange where the forecast missed by more than 2 */
+  const misses = [];
+  for (let k = -16; k < 0; k++) {
+    const hh = (now.getHours() + k + 24) % 24;
+    const expected = Math.round(7 + 11 * Math.max(0, Math.sin((hh - 7) * Math.PI / 18)) + 1);
+    misses.push(Math.abs(pastHours[hh].arrivals - expected));
+  }
+  const fieldAccuracy = unitGrid(1, 16, (r, c) => misses[c] > 2 ? "over" : "person");
+
+  const stat = ({label, chip, chipTone, value, unit, window, field, caption}) => `<div class="stat">
+    <div class="body">
+      <div class="top"><span class="label">${esc(label)}</span>${chip ? `<span class="chip ${chipTone}">${esc(chip)}</span>` : ""}</div>
+      <div class="value"><b>${esc(value)}</b><span>${esc(unit)}</span></div>
+      <div class="window">${esc(window)}</div>
+    </div>
+    <div class="ecg">${field || ""}<div class="cap">${caption}</div></div>
+  </div>`;
+
+  /* ---- bed capacity (right now; not projected) ---- */
+  const b = d.beds;
+  const seg = (cls, n, label) => n ? `<div class="${cls}" style="flex:${n}" title="${label}: ${n} beds">${n / BEDS >= .09 ? Math.round(n / BEDS * 100) + "%" : ""}</div>` : "";
+
+  /* ---- chart and table window ---- */
+  const rows = d.demand.slice(0, horizon);
+  const labels = rows.map(r => clockLabel(r.time));
+  const peak = rows.reduce((best, r) => r.volume > best.volume ? r : best, rows[0]);
+  const hoursOver = rows.filter(r => r.volume > CAPACITY_PER_HOUR).length;
+
+  /* ---- predicted mix over the 4 hours from the selected time ---- */
+  const mix4 = d.demand.slice(h0, h0 + 4);
+  const parts = [
+    {name: "General", key: "general", colour: "var(--ink)"},
+    {name: "Trauma", key: "trauma", colour: "var(--sev-2)"},
+    {name: "Paediatrics", key: "paediatrics", colour: "var(--accent)"},
+    {name: "Respiratory", key: "respiratory", colour: "var(--accent-soft)"},
+    {name: "Cardiac", key: "cardiac", colour: "var(--sev-1)"}
+  ].map(p => ({...p, value: mix4.reduce((n, r) => n + r[p.key], 0)}));
+  const mixTotal = parts.reduce((n, p) => n + p.value, 0);
+
+  /* ---- insights for today (simulated): of the arrivals above capacity so far today,
+          assume 3 in 10 used the app and were routed to a quieter hospital ---- */
+  const excess = pastHours.slice(0, now.getHours() + 1).reduce((n, r) => n + Math.max(0, r.arrivals - r.throughput), 0);
+  const redirected = Math.round(excess * .3);
+  const waitSaved = redirected * 35;
+  const insight = (tone, dir, value, label, detail) => `<div class="ins ${tone}">
+    <span class="arrow" aria-hidden="true">${dir === "up" ? icons.arrowUp : icons.arrowDown}</span>
+    <div><b>${esc(value)}</b><span>${esc(label)}</span><small>${esc(detail)}</small></div>
+  </div>`;
+
+  const th = (icon, label, cls = "") => `<th class="${cls}"><span class="th-ic">${icon}</span>${label}</th>`;
+
+  return `<div class="fc">
+    <!-- Row 1: two stats on the left, bed capacity on the right half -->
+    <div class="fc-grid">
+      ${stat({label: "Expected arrivals", chip: arrivalsHour > CAPACITY_PER_HOUR ? `${arrivalsHour - CAPACITY_PER_HOUR} more than we can see` : `${CAPACITY_PER_HOUR - arrivalsHour} fewer than we can see`, chipTone: arrivalsHour > CAPACITY_PER_HOUR ? "sev-2" : "good",
+        value: arrivalsHour, unit: "people", window: `Next 1 h · ${selLabel}–${clockLabel(endT)}`, field: fieldArrivals,
+        caption: `One dot per arrival · <b>orange</b> = more than the ${CAPACITY_PER_HOUR} we can see`})}
+      ${stat({label: "In the queue", chip: lookAhead ? `at ${selLabel}` : "now", chipTone: "muted",
+        value: queue, unit: "people", window: lookAhead ? `Projected at ${selLabel}` : "Right now · anonymous tickets", field: fieldQueue,
+        caption: `Queue every 30 min for the next 4 h · <b>black</b> = selected time`})}
+      <div class="stat beds-stat">
+        <div class="body">
+          <div class="top"><span class="label">Bed capacity</span><span class="chip ${b.free <= 4 ? "sev-2" : "good"}">${b.free} free · ${b.free <= 4 ? "nearly full" : "space available"}</span></div>
+          <div class="window">${BEDS} assumed treatment beds · right now · not projected</div>
+        </div>
+        <div class="stack" role="img" aria-label="Bed capacity breakdown">
+          ${seg("occupied", b.occupied, "Occupied")}${seg("awaiting", b.awaiting, "Held for P1–P2")}${seg("cleaning", b.cleaning, "Cleaning")}${seg("reserved", b.reserved, "Reserved")}${seg("free", b.free, "Free")}
+        </div>
+        <div class="stack-legend">
+          <span><i class="sq" style="background:var(--ink)"></i><b>${b.occupied}</b> occupied</span>
+          <span><i class="sq" style="background:var(--sev-1)"></i><b>${b.awaiting}</b> held for P1–P2</span>
+          <span><i class="sq" style="background:var(--dot-past)"></i><b>${b.cleaning}</b> cleaning</span>
+          <span><i class="sq" style="background:var(--sev-2)"></i><b>${b.reserved}</b> reserved</span>
+          <span><i class="sq" style="background:var(--accent-soft)"></i><b>${b.free}</b> free</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: predicted mix on the left half, two stats on the right -->
+    <div class="fc-grid">
+      <section class="mix">
+        <div class="head"><div><h2>Predicted mix</h2><div class="sub">${selLabel}–${clockLabel(new Date(selT.getTime() + 4 * 36e5))} · 4 h · rule-based model on simulated data · an estimate, not a diagnosis</div></div></div>
+        <div class="donut">
+          ${donut(parts, mixTotal)}
+          <ul class="donut-legend">
+            ${parts.map(p => `<li><i style="background:${p.colour}"></i><span>${p.name}</span><b>${p.value}</b><small>${mixTotal ? Math.round(p.value / mixTotal * 100) : 0}%</small></li>`).join("")}
+          </ul>
+        </div>
+      </section>
+      ${stat({label: "Expected wait", chip: wait > 60 ? "over an hour" : wait > 30 ? "over 30 min" : "under 30 min", chipTone: wait > 60 ? "sev-2" : wait > 30 ? "sev-1" : "good",
+        value: minutesLabel(wait), unit: "", window: lookAhead ? `For someone arriving at ${selLabel}` : "For someone arriving now", field: fieldWait,
+        caption: `Wait ≈ queue ÷ ${CAPACITY_PER_HOUR} seen per hour · <b>blue</b> under 30 · <b>amber</b> 30–60 · <b>orange</b> over 60`})}
+      ${stat({label: "Forecast accuracy", chip: accuracy >= 90 ? "on track" : "drifting", chipTone: accuracy >= 90 ? "good" : "sev-1",
+        value: accuracy, unit: "%", window: "Last 16 h · actual against forecast", field: fieldAccuracy,
+        caption: `One dot per hour · <b>orange</b> = missed by more than 2 arrivals`})}
+    </div>
+
+    <!-- Row 3: demand chart (wide) and stacked insights -->
+    <div class="ov-mid">
+      <section class="trend">
+        <div class="head">
+          <div><h2>Expected incoming demand</h2><div class="sub">Arrivals per hour · next ${horizon} h · selected hour in black · bars above ${CAPACITY_PER_HOUR} in orange</div></div>
+          <select aria-label="Forecast window" onchange="horizon=Number(this.value);setLookAhead(lookAhead)">
+            <option value="24" ${horizon === 24 ? "selected" : ""}>Next 24 hours</option>
+            <option value="48" ${horizon === 48 ? "selected" : ""}>Next 48 hours</option>
+          </select>
+        </div>
+        ${barChart({values: rows.map(r => r.volume), labels, capacity: CAPACITY_PER_HOUR, max: 24, selected: h0})}
+        <div class="facts">
+          <span class="fact"><b>${peak.volume} per hour</b> forecast peak at ${clockLabel(peak.time)}</span>
+          <span class="fact"><b>${hoursOver} h</b> above capacity in the next ${horizon} h</span>
+          <span class="fact"><b>${rows.reduce((n, r) => n + r.volume, 0)} people</b> expected in total</span>
+        </div>
+      </section>
+      <section class="attn">
+        <div class="head"><h2>Prediction insights</h2><small>today · simulated</small></div>
+        <div class="insights">
+          ${insight("good", "up", minutesLabel(waitSaved), "wait time saved today", `${redirected} people sent to a quieter hospital × 35 min each`)}
+          ${insight("good", "up", `${redirected} people`, "routed elsewhere by the app", `3 in 10 of the ${excess} arrivals above capacity so far`)}
+          ${insight(accuracy >= 90 ? "good" : "warm", accuracy >= 90 ? "up" : "down", `${accuracy}%`, "forecast accuracy", "last 16 h · actual against forecast")}
+          ${insight(peak.volume > CAPACITY_PER_HOUR ? "warm" : "good", "up", `${clockLabel(peak.time)} · ${peak.volume} per hour`, "busiest hour ahead", peak.volume > CAPACITY_PER_HOUR ? `${peak.volume - CAPACITY_PER_HOUR} more than we can see that hour` : "within what we can see")}
+          ${insight(hoursOver ? "warm" : "good", hoursOver ? "up" : "down", `${hoursOver} h`, `above capacity in the next ${horizon} h`, hoursOver ? "queue will build in those hours" : "no queue building expected")}
+        </div>
+      </section>
+    </div>
+
+    ${panel("Injury category planning", "Every second hourly estimate shown · people per hour · all values are simulated · selected hour highlighted",
+      `<div class="table-wrap"><table>
+        <thead><tr>${th(icons.clock, "Arrival window")}${th(icons.chart, "Total / range", "n")}${th(icons.users, "General", "n")}${th(icons.warn, "Trauma", "n")}${th(icons.smile, "Paediatrics", "n")}${th(icons.wind, "Respiratory", "n")}${th(icons.heart, "Cardiac", "n")}${th(icons.tick, "Suggested action")}</tr></thead>
+        <tbody>${rows.filter((_, i) => i % 2 === 0).map((r, i) => `<tr class="${i * 2 === h0 || i * 2 + 1 === h0 ? "selected" : ""}">
+          <td>${esc(formatTime(r.time))}</td>
+          <td class="n"><strong>${r.volume}</strong><small>${r.low}–${r.high}</small></td>
+          <td class="n">${r.general}</td><td class="n">${r.trauma}</td><td class="n">${r.paediatrics}</td><td class="n">${r.respiratory}</td><td class="n">${r.cardiac}</td>
+          <td>${r.volume > 16 ? `<span class="chip sev-2">Review trauma cover and flex beds</span>` : `<span class="chip good">Maintain scheduled coverage</span>`}</td>
+        </tr>`).join("")}</tbody>
+      </table></div>`)}
+  </div>`;
+}
+
+/* =========================================================================
+   VIEW 3 — LIVE QUEUE
+   ========================================================================= */
+function queueView(d) {
+  const waiting = d.waiting;
+  return `<div class="tiles">
+    ${tile({icon: icons.users, iconTone: "accent", label: "Currently waiting", value: waiting.length, unit: "people", window: "Active waiting tickets · right now"})}
+    ${tile({icon: icons.clock, label: "Average elapsed wait", value: d.avgWait, unit: "min", window: "Waiting patients so far · not a prediction"})}
+    ${tile({icon: icons.bed, label: "In treatment", value: d.treating.length, unit: "people", window: `Of ${BEDS} assumed treatment beds · right now`})}
+    ${tile({icon: icons.warn, iconTone: d.urgentLate ? "sev-2" : "", label: "Priority 1 and 2 waiting", delta: d.urgentLate ? `${d.urgentLate} over 30 min` : "", deltaTone: "sev-2", value: waiting.filter(c => c.triagePriority <= 2).length, unit: "people", window: "Review using local clinical policy"})}
+  </div>
+  <div class="priorities">
+    ${[1, 2, 3, 4, 5].map(p => `<div class="priority-card">
+      <span class="chip p${p}">P${p} · ${priorityNames[p]}</span>
+      <strong>${waiting.filter(c => c.triagePriority === p).length}<small>waiting</small></strong>
+    </div>`).join("")}
+  </div>` +
+  panel("Active patient queue", "Ordered by triage priority, then arrival · elapsed time in minutes",
+    `<div class="table-wrap"><table>
+      <thead><tr><th>Ticket</th><th>Check-in</th><th>Injury</th><th>Priority</th><th class="n">Elapsed</th><th>Status / action</th></tr></thead>
+      <tbody id="queue-rows"></tbody>
+    </table></div>`,
+    `<div class="actions">
+      <input type="search" aria-label="Search tickets" placeholder="Search ticket or injury" value="${esc(query)}" oninput="query=this.value;renderQueueRows()">
+      <select aria-label="Filter priority" onchange="priorityFilter=this.value;renderQueueRows()">
+        <option value="all">All priorities</option>
+        ${[1, 2, 3, 4, 5].map(p => `<option value="${p}" ${priorityFilter === String(p) ? "selected" : ""}>P${p} · ${priorityNames[p]}</option>`).join("")}
+      </select>
+    </div>`) +
+  `<div class="note-dashed">
+    <strong>Local mock data only</strong>
+    The mock check-in button creates a ticket in this browser. This standalone HTML file does not expose the original backend’s POST /checkin endpoint.
+  </div>`;
+}
+
+function renderQueueRows() {
+  const body = document.getElementById("queue-rows");
+  if (!body) return;
+  const rows = state.checkins.map((c, i) => ({c, i}))
+    .filter(({c}) => c.status !== "discharged")
+    .filter(({c}) => priorityFilter === "all" || c.triagePriority === Number(priorityFilter))
+    .filter(({c}) => (c.ticketId + " " + c.injuryCategory).toLowerCase().includes(query.toLowerCase()))
+    .sort((a, b) => a.c.triagePriority - b.c.triagePriority || Date.parse(a.c.timestamp) - Date.parse(b.c.timestamp));
+  body.innerHTML = rows.length ? rows.map(({c, i}) => `<tr>
+    <td><strong>${esc(c.ticketId)}</strong></td>
+    <td>${esc(formatTime(c.timestamp))}</td>
+    <td>${esc(c.injuryCategory)}</td>
+    <td><span class="chip p${c.triagePriority}">P${c.triagePriority} · ${priorityNames[c.triagePriority]}</span></td>
+    <td class="n">${waitMinutes(c)} min</td>
+    <td><select aria-label="Status for ${esc(c.ticketId)}" onchange="updateStatus(${i},this.value)">
+      ${["waiting", "in-treatment", "discharged"].map(s => `<option value="${s}" ${c.status === s ? "selected" : ""}>${s.replace("-", " ")}</option>`).join("")}
+    </select></td>
+  </tr>`).join("") : `<tr><td colspan="6">No active tickets match your filters. Clear the search or choose another priority.</td></tr>`;
+}
+
+function updateStatus(index, status) {
+  if (!["waiting", "in-treatment", "discharged"].includes(status)) return;
+  state.checkins[index].status = status;
+  save("Ticket status updated.");
+}
+
+function addMock() {
+  const ticket = {
+    ticketId: "DEMO-" + Date.now().toString(36).toUpperCase() + "-" + Math.random().toString(36).slice(2, 5),
+    timestamp: new Date().toISOString(),
+    injuryCategory: categories[Math.floor(Math.random() * categories.length)],
+    triagePriority: Math.floor(Math.random() * 5) + 1,
+    status: "waiting"
+  };
+  state.checkins.push(ticket);
+  save("Mock check-in received: " + ticket.ticketId);
+}
+
+/* =========================================================================
+   VIEW 4 — PERFORMANCE
+   ========================================================================= */
+function performanceView() {
+  const mean = key => Math.round(pastHours.reduce((n, r) => n + r[key], 0) / pastHours.length);
+  return `<div class="tiles">
+    ${tile({icon: icons.chart, label: "Mean throughput", value: mean("throughput"), unit: "per hour", window: "Synthetic completed visits · last 24 h", spark: {series: pastHours.map(r => r.throughput), nowIndex: 25}})}
+    ${tile({icon: icons.clock, label: "Mean wait", delta: `last week ${mean("previousWait")} min`, deltaTone: "muted", deltaDir: "down", value: mean("wait"), unit: "min", window: "Last 24 h · synthetic", spark: {series: pastHours.map(r => r.wait), nowIndex: 25}})}
+    ${tile({icon: icons.bed, label: "Mean length of stay", value: mean("los"), unit: "min", window: "Synthetic historical sample · last 24 h"})}
+    ${tile({icon: icons.trend, label: "Capacity utilisation", value: mean("utilisation"), unit: "%", window: `Assumed ${BEDS}-bed department · last 24 h`, spark: {series: pastHours.map(r => r.utilisation), nowIndex: 25}})}
+  </div>
+  <div class="columns">
+    ${panel("Waiting time comparison", "Minutes · each hour of the last 24 h · this week against last week",
+      `<div class="panel-body">
+        ${pillChart({series: [{name: "This week", values: pastHours.map(r => r.wait), tone: "accent"}, {name: "Last week", values: pastHours.map(r => r.previousWait), tone: "past"}], labels: pastHours.map(r => r.hour), max: 100, unit: "Waiting time, minutes"})}
+        <div class="legend"><span><i class="sw accent"></i>This week</span><span><i class="sw past"></i>Last week</span></div>
+      </div>`)}
+    ${panel("Shift feedback", "Operational notes only · no patient information",
+      `<div class="panel-body">
+        <form class="feedback" onsubmit="addFeedback(event)">
+          <label>Shift rating
+            <select id="rating">${[5, 4, 3, 2, 1].map(n => `<option value="${n}">${n} / 5</option>`).join("")}</select>
+          </label>
+          <label>What should the next shift know?
+            <textarea id="comment" required maxlength="500" placeholder="Add an operational note…"></textarea>
+          </label>
+          <div><button class="btn-primary" type="submit">Save feedback <span class="circle">${icons.arrow}</span></button></div>
+        </form>
+        ${state.comments.slice(0, 3).map(c => `<div class="comment">
+          <span><span class="chip accent plain">${c.rating} / 5</span></span>
+          <p>${esc(c.comment)}</p><small>${esc(formatTime(c.timestamp))}</small>
+        </div>`).join("")}
+      </div>`)}
+  </div>` +
+  panel("Hourly operational performance", "Simulated history · last 24 h · independent from the live queue",
+    `<div class="table-wrap"><table>
+      <thead><tr><th>Hour</th><th class="n">Arrivals</th><th class="n">Throughput / h</th><th class="n">Staff</th><th class="n">Wait / stay, min</th><th class="n">Utilisation</th><th>Capacity</th></tr></thead>
+      <tbody>${pastHours.map(r => `<tr>
+        <td>${r.hour}</td><td class="n">${r.arrivals}</td><td class="n">${r.throughput}</td><td class="n">${r.staff}</td>
+        <td class="n">${r.wait} / ${r.los}</td><td class="n">${r.utilisation}%</td>
+        <td><span class="chip ${r.arrivals > r.throughput ? "sev-2" : "good"}">${r.arrivals > r.throughput ? "Demand exceeds flow" : "Within capacity"}</span></td>
+      </tr>`).join("")}</tbody>
+    </table></div>`);
+}
+
+function addFeedback(event) {
+  event.preventDefault();
+  const comment = document.getElementById("comment").value.trim();
+  const rating = Number(document.getElementById("rating").value);
+  if (!comment) { notify("Please enter an operational note."); return; }
+  state.comments.unshift({comment, rating, timestamp: new Date().toISOString()});
+  save("Shift feedback saved.");
+}
+
+/* =========================================================================
+   START — `?tab=N` in the URL opens that tab (handy for sharing a view)
+   ========================================================================= */
+const startTab = Number(new URLSearchParams(location.search).get("tab"));
+if (Number.isInteger(startTab) && startTab >= 0 && startTab < tabs.length) tab = startTab;
+render();
+setInterval(tickClock, 30000);
+/* Refresh elapsed times on the queue without disturbing an open input. */
+setInterval(() => {
+  if (tab === 3 && !document.querySelector("#content input:focus, #content select:focus")) renderQueueRows();
+}, 30000);
+document.addEventListener("keydown", e => {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") { e.preventDefault(); document.querySelector(".search input").focus(); }
+});
+</script>
+</body>
+</html>
