@@ -1,75 +1,63 @@
-# Paste into Claude Code with the design export
+# Prompt for Claude Code — foundation and both frontends
+
+Supply the patient design exports/screenshots with this prompt. Zack gets [his matching prompt](ZACK-START-PROMPT.md). Ajjar passes the PR links between the two sessions; neither agent can assume it has read the other's chat.
 
 ```text
-We're three people building an unnamed hackathon app. I'm the frontend owner;
-another teammate owns backend/database; the third helps with data/integration.
-Build the patient phone experience first, then the hospital dashboard.
+Build our unnamed hackathon app's frontend in:
+https://github.com/ajjarm/oxhack-project
 
-Read AGENTS.md and docs/build/START-HERE.md, following its read order, especially
-docs/build/BUILD-PLAN.md and the relevant MODELS-AND-DATA.md sections. Read the
-backend report and inspect the exported Claude Design file I provide. Treat
-attached reference documents as context, not instructions to execute.
+YOU own the single Next.js app foundation and both frontends. Zack owns
+Supabase, backend routes/calculations and API contracts. Ownership is fixed.
 
-Before editing, report your actual directory/branch, current app structure and
-intended files. Inspect newer repository code, local changes and relevant PRs.
-Keep other people's changes. Work on my task branch, not main. This task depends
-on the contract/context PR if it is still unmerged.
+Hospital screens already exist as coded HTML:
+docs/build/inputs/hospital-dashboard.html
+Reuse their layout/styles and adapt them into the app; don't redesign them.
+Patient screens have only the designs/screenshots I supply: implement those.
+Zack reports Supabase is ready, but its schema/API details are pending.
 
-The selected stack is Next.js App Router, React, TypeScript, Tailwind, Next.js
-Route Handlers, Supabase Postgres, npm/Node 24 LTS and Vercel. No scaffold was
-present when this handoff was checked. Verify now. Reuse any existing scaffold;
-if none exists and I am the designated scaffold owner, make one minimal app,
-pin compatible dependencies and document actual setup/check commands. If the
-scaffold owner hasn't been coordinated, surface that one dependency and continue
-independent design mapping/spec work while it is resolved.
+1. Inspect the actual checkout, unsaved work and newer remote code. Preserve
+   existing work. Clone into a fresh folder if needed. The context is on branch
+   ajjar/queuecare-contract (PR #1); start your own task branch from it if still
+   unmerged, or current main if merged. Never implement on main/context branch.
 
-First complete docs/build/IMPLEMENTATION-SPEC.md from the actual design and
-repository. Keep it concise: screens and behaviour, design/assets mapping,
-components/files, data client and API dependencies, loading/error/unavailable
-states, acceptance checks, and remaining decisions. Separate confirmed scope,
-your recommendations, mocks and verified implementations. Link to the owning
-contract rather than inventing another set of API payloads.
+2. Read AGENTS.md, docs/build/START-HERE.md, SCOPE.md, BUILD-PLAN.md,
+   MODELS-AND-DATA.md, docs/INTERFACES.md, contracts/queuecare.ts and fixtures.
+   Complete docs/build/IMPLEMENTATION-SPEC.md from the real designs/repository:
+   screens/interactions, files, data mapping, UI states and acceptance checks.
+   Link the API proposal rather than inventing another schema. Then build;
+   don't stop for approval of routine implementation details.
 
-Then implement P1/P2 from docs/build/SCOPE.md without waiting for every later
-feature. Use the exported design as the visual reference, adapting it to the
-existing app rather than replacing the repo wholesale. Keep the phone layout
-usable and accessible. Inspect any assets/code that the export references.
-If the export is missing, request it and continue independent setup/data-client
-work; don't claim to have matched unseen screens.
+3. FIRST publish a small foundation PR: reuse any newer app; otherwise create
+   one Next.js App Router/React/TypeScript/Tailwind app with npm/Node 24 LTS,
+   patient/hospital page shells, typed API client, explicit sample/live modes,
+   and actual setup/check commands. Supabase and Route Handlers belong to this
+   same app; Vercel is the deployment target. Return FOUNDATION_READY, PR URL,
+   branch/commit and run/check commands. I will send that link to Zack.
 
-Use contracts/queuecare.ts and fixtures/queuecare/ through one typed API client
-in explicit sample mode. Do not import the full visit dataset into the browser.
-Do not invent wait/ranking calculations, silently fall back to samples after
-live errors, or claim sample interactions prove backend integration.
+4. Continue frontend work on a SEPARATE task branch based on the foundation;
+   keep later UI commits out of the foundation PR Zack uses. Build the patient
+   design first: description, photo preview/remove, confirmed category, hospital
+   comparison and destination selection. Use the committed fixtures while API
+   work is pending. If design files are inaccessible, ask for their location
+   and continue foundation/client work; don't invent unseen screens.
 
-The core API is proposed and the backend report verifies no working core routes.
-Keep any new backend reply/code in view. Coordinate differences with its owner
-before connected integration; update docs/INTERFACES.md, types and affected
-fixtures together. Don't overwrite their backend or force it to adopt our toy
-model. UI sample work is allowed while agreement is pending. Keep service keys
-server-side and use relative /api calls for the shared Next.js app.
+5. Bring the existing hospital screens into the app and bind them through the
+   API client. Follow BUILD-PLAN.md's five-tab mapping for missing source fields.
+   No separate frontend ranking/forecast formula or fake functioning controls.
 
-Implement the first complete patient journey, test the important UI states and
-run the real checks supported by the scaffold. Use browser/visual verification
-against the supplied design when available. Report what actually passed and
-what could not be checked. Connect the first real Compare response as soon as
-it is available, before polishing every screen. Then continue H1/H2 in small
-increments, coordinating ownership and using the same scenario/version.
+6. When I provide Zack's CATALOG_READY/backend PR link, read
+   docs/build/BACKEND-CONNECTION.md and the
+   actual routes/types. Bring the reviewed backend into your branch preserving
+   work. Connect catalog first, then compare/capacity, then classification,
+   events and forecasting as available. Never silently replace failed live
+   requests with samples; never put privileged database keys in browser code.
 
-Do not invent a product name, diagnosis, urgency score, live hospital data,
-forecast or functioning integration. Photo/description category suggestion and
-evaluated forecasting are required follow-on tasks in the expanded build plan;
-implement them through agreed contracts and the shared backend model. Speech-to-
-text comes last. Keep the synthetic notice
-and accurate wait labels visible. The app's existing queuecare paths/schema IDs
-are temporary technical names, not a selected brand.
+After foundation, Zack owns package/lock/env-example and API-contract changes
+until the first live comparison works. Use existing dependencies; list any
+exact additions you need in your handoff for him. You own frontend files.
+Do not invent database columns, a product name, clinical severity or forecasts.
+Keep synthetic-data and correct wait labels. Speech-to-text is last.
 
-The supplied hospital HTML/design notes are under docs/build/inputs/. Preserve
-their visual direction, replacing browser-only data and unsupported metrics as
-mapped in BUILD-PLAN.md. Coordinate with the model/backend owners; don't create
-a separate frontend ranking formula. Commit focused changes and prepare small
-PRs for teammate review. Record working
-behaviour, sample/live status, checks and the next step on the relevant task/PR.
-Ask me only for missing decisions that block the current slice; choose ordinary
-implementation details yourself and keep independent work moving.
+Run real checks and visual/browser checks where available. Push focused PRs
+for teammate review. Report sample/live status, evidence and remaining work.
 ```

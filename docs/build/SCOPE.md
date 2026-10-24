@@ -58,7 +58,7 @@ These are proposed paths for the first scaffold, not existing folders. Inspect n
 | Third teammate | Data verification, fixtures, forecasting/model module (suggested `src/lib/server/models/`) and end-to-end checks; coordinate its function inputs/outputs and contract changes with API |
 | One named owner at a time | Root scaffold, package/lock files, layout/global CSS, environment examples, deployment/CI and contract changes |
 
-Recommendation: the frontend owner makes the first minimal Next.js scaffold because patient work is starting now. Tell the backend owner before starting so they extend that scaffold rather than generating another app. If they already made one, reuse it. After the foundation is shared, everyone works on separate branches/folders in parallel. See [WORKING-TOGETHER.md](../WORKING-TOGETHER.md) for save, push, review and merge steps.
+Assigned: Claude, working for the frontend owner, makes the one minimal Next.js foundation unless a newer one already exists. It publishes a small foundation PR; Ajjar passes that exact link to Zack, who builds the backend on that foundation. Claude continues UI work on a separate dependent branch. See [the exact handoff](START-HERE.md#exact-ownership-and-handoff) and [WORKING-TOGETHER.md](../WORKING-TOGETHER.md) for the shared branch/review workflow.
 
 ## First connected milestone
 
@@ -81,7 +81,7 @@ Test the loop in two browsers against the same scenario. Also check failed reque
 
 ## Decisions needed now, and what can wait
 
-**Now:** designate the one scaffold owner; backend owner confirms/revises the four routes and sample shapes; agree the simulation clock, wait/model meanings, demo travel and shared scenario storage. Decide access controls before enabling a publicly writable capacity route. UI fixture work can proceed while these are resolved.
+**Now:** Claude publishes the shared foundation; Zack publishes actual schema/API evidence and confirms/revises the proposed route shapes, simulation clock, wait/model meanings, demo travel and shared scenario storage. Decide access controls before enabling a publicly writable capacity route. UI fixture work can proceed while these are resolved.
 
 **Required after the first comparison:** photo/description categorization with confirmation, shared queue/ranking model, evaluated demand forecasts and supported hospital metrics. **Later:** final name, speech-to-text (last), real routing, automatic realtime, Monte Carlo refinements and native packaging. Do not delay P1 for these later refinements.
 

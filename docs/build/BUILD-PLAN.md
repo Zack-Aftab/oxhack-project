@@ -2,7 +2,7 @@
 
 **25 October 2026. Target: an actual patient-to-hospital demo with explainable ranking and evaluated forecasting.** The backend owner has not pushed code and their contract reply is pending. Tasks below are ready to assign, not claims that any feature already works. Continue fixture UI and data work while that reply arrives.
 
-Roles: **UI = you**, **API = backend/database teammate**, **Data = third teammate**. Assign each role to a named person before starting. Data owns the forecasting/model module so API is not the bottleneck; API owns its integration and persistence. Use the selected Next.js/TypeScript/Supabase stack. No second app scaffold.
+Roles: **UI = Ajjar using Claude**, **API = Zack**, **Data = third teammate**. Claude owns the one app foundation; Zack extends it rather than generating another. Data owns the forecasting/model module so API is not the bottleneck; Zack owns its integration and persistence. Use [the matching prompts and exact PR handoff](START-HERE.md#exact-ownership-and-handoff). Use the selected Next.js/TypeScript/Supabase stack.
 
 ## The demo we are building
 
@@ -23,7 +23,7 @@ An intended destination is not a hospital check-in. Manual category selection re
 
 ## First work block: agree the shared foundation
 
-- [ ] **T01 · All · Agree ownership and the API reply.** Send [the backend message](BACKEND-ALIGNMENT.md), then include the extensions in [MODELS-AND-DATA.md](MODELS-AND-DATA.md#backend-changes-to-agree). Pick one scaffold/dependency owner and one merge coordinator. Check the actual submission deadline and reserve a final demo/rehearsal block. **Done:** everyone knows their branch, files and immediate deliverable; no two agents generate separate app foundations.
+- [ ] **T01 · All · Start the fixed handoff and API reply.** Send [Zack's prompt](ZACK-START-PROMPT.md) and start [Claude's prompt](CLAUDE-START-PROMPT.md) with patient designs. Claude owns the foundation; Zack owns backend/contracts and backend dependency changes after foundation. Ajjar passes the PR links. Include the extensions in [MODELS-AND-DATA.md](MODELS-AND-DATA.md#backend-changes-to-agree). Check the actual submission deadline and reserve a final demo/rehearsal block. **Done:** everyone knows their branch, files and immediate deliverable; no two agents generate separate app foundations.
 - [ ] **T02 · UI · Create/share the runnable app.** Reuse any newer scaffold; otherwise create the agreed minimal Next.js app, patient/hospital routes, typed API client, explicit sample/connected mode, ignored local env and safe env example. Document install/run/check commands in [SETUP.md](../SETUP.md). **Done:** a second teammate can run the same app. Do not wait for final visuals or Gemini.
 - [ ] **T03 · Data, with API · Prepare the shared demo data.** Keep the five source hospital IDs and eight category IDs. Import/verify the existing dataset; create small matching API fixtures and a resettable scenario. Add the new forecast, classification, intention and queue examples listed in [the data checklist](MODELS-AND-DATA.md#data-and-fixtures-to-prepare). **Done:** UI and API use identical sample shapes and scenario/version; the original 23 MB file stays off the browser.
 

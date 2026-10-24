@@ -1,5 +1,7 @@
 # What the backend handoff means
 
+**Current action:** Zack is the named backend owner and reports Supabase is built. Use [ZACK-START-PROMPT.md](ZACK-START-PROMPT.md) and [the exact ownership/handoff](START-HERE.md#exact-ownership-and-handoff). The older message below is retained as background; it no longer needs to ask who creates the scaffold.
+
 The [report supplied by the teammate](inputs/BACKEND-HANDOFF.md), dated 24 October 2026, verifies **no running core API, database import or shared scenario**. It describes empty local classifier files and two unexecuted classifier snippets. That does not prove the teammate has no newer work elsewhere; ask for its branch if they do.
 
 We checked GitHub at this handoff: only `main` and `ajjar/queuecare-contract` were present, with no application scaffold. The report's GitHub-access failure is a limitation of its session, not evidence that the repository or PR does not exist.

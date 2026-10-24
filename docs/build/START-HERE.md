@@ -12,14 +12,26 @@
 
 Then copy the [Claude starting prompt](CLAUDE-START-PROMPT.md). Claude should inspect the actual checkout and design, fill in [IMPLEMENTATION-SPEC.md](IMPLEMENTATION-SPEC.md), and implement the first patient journey. It can work with fixtures while backend agreement is pending.
 
+## Exact ownership and handoff
+
+The product scope and build tasks already exist in this folder. The screen-level implementation spec is still a template: Claude writes it after inspecting the patient files and actual checkout, then implements it.
+
+- **Claude:** the one app foundation, patient frontend from designs, reuse/adaptation of the coded hospital frontend, and the typed API client.
+- **Zack:** existing Supabase schema/data, backend routes/calculations and API contracts. After foundation, Zack owns backend-required dependency/lock/env-example changes until the first live comparison works; Claude sends exact dependency requests rather than editing those concurrently.
+- **Ajjar:** supplies patient designs to Claude and passes the PR links between the two sessions. No architecture decisions or secret values are needed in this chat.
+
+Send [Zack's prompt](ZACK-START-PROMPT.md) now; he publishes `DATABASE_HANDOFF_READY` with his database/schema PR. Start Claude with [its prompt](CLAUDE-START-PROMPT.md) and the patient designs at the same time. Claude publishes `FOUNDATION_READY` with a small runnable-app PR, keeping later UI work on a separate branch. Ajjar sends that PR link to Zack. Zack builds on that exact foundation and returns `CATALOG_READY` with a tested Supabase-backed route PR. Ajjar sends that link to Claude for the first live frontend read. Each PR is reviewed by a teammate before merging. An unmerged dependency must be declared; agents must not generate competing scaffolds.
+
+These matching prompts replace the earlier vague instruction to choose or coordinate a scaffold owner. If a newer app already exists, preserve/reuse it and identify its branch rather than generating another.
+
 ## What exists: checked 25 October 2026
 
 | Item | Evidence / status |
 | --- | --- |
 | GitHub `main` | Commit `4cc3a09`: documentation/templates; no app scaffold |
 | Existing PR | [PR #1](https://github.com/ajjarm/oxhack-project/pull/1), branch `ajjar/queuecare-contract`; proposed contract, types, samples, and this handoff; unmerged when checked |
-| Backend/database | No core implementation or running endpoint verified by the teammate's report; no backend branch pushed when checked |
-| Classification | Two incompatible chat examples, neither verified running; optional later feature |
+| Backend/database | User now reports Zack has built the Supabase database; its current schema/imports/API remain uninspected here, and no backend branch was pushed when checked |
+| Classification | Two incompatible chat examples, neither verified running; required follow-on task in the expanded build |
 | Hospital design | Supplied five-tab HTML prototype; browser-local business state and generated forecast/history, no backend calls |
 | Patient design | Exists according to the user; user will supply it directly |
 | Samples | Five hospitals, baseline and edge-case responses; synthetic source data plus explicitly added demo travel/model |
