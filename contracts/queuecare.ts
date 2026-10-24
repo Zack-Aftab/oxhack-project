@@ -1,4 +1,5 @@
-/** QueueCare API v1. Dataset-backed examples: fixtures/queuecare/.
+/** Proposed API v1, pending backend-owner agreement. The app is unnamed.
+ * Dataset-backed examples: fixtures/queuecare/.
  * These types are the shared wire format, not the database schema.
  * Backend handlers must also validate incoming JSON at runtime.
  */

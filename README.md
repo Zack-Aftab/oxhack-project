@@ -2,9 +2,9 @@
 
 One project. Three people. Everyone can use their own coding tools and work at the same time.
 
-**Start here:** QueueCare is our synthetic hospital-comparison and capacity-scenario demo. The shared instructions, API agreement and frontend samples are ready. The application still needs to be built.
+**Start here:** We are building a synthetic hospital-comparison and capacity-scenario demo. The app has no name yet. The application still needs to be built.
 
-**Building QueueCare now?** Read the [shared API agreement](docs/INTERFACES.md), use the [small frontend samples](fixtures/queuecare/README.md), and check the [short dataset review](docs/DATASET-REVIEW.md). The application and API routes still need implementing.
+**Starting development with Claude Code?** Open the [build handoff](docs/build/START-HERE.md), then use the [Claude starting prompt](docs/build/CLAUDE-START-PROMPT.md) with your exported design file. It includes the scope and the backend teammate's report. The [API proposal](docs/INTERFACES.md) and [small samples](fixtures/queuecare/README.md) let UI work begin before a backend is available; backend-owner agreement is still needed.
 
 ## Our team
 
@@ -22,7 +22,7 @@ Between us we use Antigravity, Codex and Claude Code. Everyone can choose the to
 - **[Ready to build something?](docs/WORKING-TOGETHER.md)** Make your own task folder and work alongside everyone else.
 - **[Something confusing or broken?](docs/HELP.md)** Plain-English explanations and safe first steps.
 - **[What are we building?](docs/PROJECT.md)** Our product and technical choices.
-- **[How do we run the app?](docs/SETUP.md)** The setup commands, once we have chosen a stack.
+- **[How do we run the app?](docs/SETUP.md)** The selected stack and setup status; runnable commands still need adding.
 
 ## How we work together
 
@@ -73,7 +73,7 @@ Separate folders prevent accidental overwrites. Changes can still disagree when 
 ## Our first steps
 
 1. Both invited teammates accept their GitHub invitations.
-2. Fill in [the project agreement](docs/PROJECT.md) together.
+2. Read [the build handoff](docs/build/START-HERE.md) and confirm the API proposal with the backend owner.
 3. One person creates the smallest runnable app and fills in [the setup instructions](docs/SETUP.md).
 4. Everyone tries running it.
 5. Split the next tasks and start working in separate folders.

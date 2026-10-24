@@ -2,7 +2,7 @@
 
 **Start with [compare.response.json](compare.response.json) for the patient cards and [dashboard.response.json](dashboard.response.json) for the hospital screen.** These use real source IDs and synthetic source values. The complete agreement is [docs/INTERFACES.md](../../docs/INTERFACES.md); shared wire types are [contracts/queuecare.ts](../../contracts/queuecare.ts).
 
-These files do not create API endpoints or configure Supabase.
+These files do not create API endpoints or configure Supabase. The contract is proposed, pending backend-owner agreement. See [the build handoff](../../docs/build/START-HERE.md). The app has no name yet; existing `queuecare` paths and schema IDs are temporary technical names.
 
 | File | Use |
 | --- | --- |

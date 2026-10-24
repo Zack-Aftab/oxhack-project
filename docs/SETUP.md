@@ -2,7 +2,7 @@
 
 Chosen stack: Next.js App Router with React, TypeScript and Tailwind; API Route Handlers in the same app; npm and Node.js 24 LTS; Supabase Postgres for shared state; Vercel deployment. The application has not been scaffolded, so run/check commands below are still unconfigured.
 
-The [API agreement](INTERFACES.md) and [frontend samples](../fixtures/queuecare/README.md) are ready for implementation. The original dataset stays outside the repository. Fixture regeneration/checking uses Python 3's standard library as an offline data tool; it does not add a Python backend.
+The [API proposal](INTERFACES.md) and [frontend samples](../fixtures/queuecare/README.md) support UI work now; the backend owner still needs to confirm or revise the proposal. See [the build handoff](build/START-HERE.md). The original dataset stays outside the repository. Fixture regeneration/checking uses Python 3's standard library as an offline data tool; it does not add a Python backend.
 
 ## The scaffold owner's checklist
 

@@ -1,14 +1,14 @@
-# QueueCare: the frontend–backend agreement
+# Proposed frontend–backend agreement
 
 **Version: `queuecare.v1` · 24 October 2026**
 
-You can build the UI now using [the sample responses](../fixtures/queuecare/README.md). The backend must return the same fields. The database can keep the source file's snake_case columns; the API translates them into the camelCase types in [contracts/queuecare.ts](../contracts/queuecare.ts).
+You can build the UI now using [the sample responses](../fixtures/queuecare/README.md). This is a proposal awaiting backend-owner agreement. Once accepted, both sides use these fields. The database can keep the source file's snake_case columns; the API translates them into the camelCase types in [contracts/queuecare.ts](../contracts/queuecare.ts).
 
-This is a selected integration contract and a proposed, explicitly labelled demo model. It is not an implemented API or evidence that the backend owner has reviewed it. Give that person's AI this file before integration. The database import does not need restructuring to match the response objects.
+The [backend handoff](build/inputs/BACKEND-HANDOFF.md) could not inspect this proposal and verifies no core API or database. It does not establish a competing core contract. Give the backend owner this file and reconcile any newer code before connecting the UI. Change the documentation, types and affected fixtures together if the agreement changes. The toy model below is an assistant-authored demo option, not a validated predictor or an algorithm the teammate has already adopted. The database import does not need restructuring to match response objects. The app is unnamed; `queuecare.v1` is a temporary schema identifier.
 
 ## One instruction for each coding assistant
 
-> Read docs/INTERFACES.md, contracts/queuecare.ts and fixtures/queuecare/README.md. Keep the v1 request/response shapes and IDs consistent. The frontend uses the fixtures through one API client until the routes exist. The backend maps the supplied dataset/database into this contract and validates requests at runtime. Report a needed contract change before implementing a conflicting shape.
+> Read docs/build/START-HERE.md, docs/INTERFACES.md, contracts/queuecare.ts and fixtures/queuecare/README.md. Use the proposal consistently for fixture UI work. Confirm or reconcile it with the backend owner before connected integration. After agreement, the backend maps the dataset into that contract and validates requests at runtime. Record a needed contract change before implementing a conflicting shape.
 
 Implementation target: React through Next.js App Router, TypeScript and Tailwind; API routes in the same Next.js app; Supabase Postgres for shared scenario state; npm and Node.js 24 LTS; Vercel deployment. Nothing here scaffolds or configures those services.
 
@@ -129,10 +129,10 @@ Return `ErrorResponse` from the shared types, never raw database errors:
 ## Working in parallel
 
 - **UI owner:** components and one `api-client` adapter. Sample mode returns these JSON responses; connected mode calls these endpoints. Do not import the 42,000 visits into browser components or calculate the ranking independently.
-- **Database/backend owner:** import the supplied file using its IDs, preserve both wait stages and timestamps, implement these responses, validate input and store scenario changes separately. Keep Supabase secrets server-side. No database rename is required merely because the API uses camelCase.
+- **Database/backend owner:** confirm or revise this proposal, then import the supplied file using its IDs, preserve both wait stages and timestamps, implement the agreed responses, validate input and store scenario changes separately. Keep Supabase secrets server-side. No database rename is required merely because the API uses camelCase.
 - **Data/integration owner:** preserve the original input, verify its checksum, maintain the fixtures and exercise the baseline/changed/no-travel/unknown/zero-doctor cases. The external source file is not included in this PR.
 
-Keep mock mode explicit. Do not silently return fixtures after a live request fails. Everyone needs this contract; the backend developer does not need to author it, but their agent must implement it.
+Keep mock mode explicit. Do not silently return fixtures after a live request fails. Everyone needs the same accepted contract; the backend developer does not need to author it, but must know and agree to it.
 
 ## First acceptance check
 
