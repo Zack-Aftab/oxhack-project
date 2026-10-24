@@ -1,0 +1,19 @@
+{
+  "status": "verified",
+  "dataset_id": "month-v5",
+  "model_version": "resource_queue_month_v5",
+  "measured_days": 30,
+  "warmup_days": 3,
+  "runs": 5,
+  "hospitals": 5,
+  "visits": 68705,
+  "staffing_snapshots": 3600,
+  "verified_patient_averages": 68705,
+  "verified_raw_samples": 343525,
+  "integer_averages_exact": true,
+  "raw_sample_absolute_tolerance_minutes": 1e-9,
+  "dataset_sha256": "8a825a125ebfd559c38f08b0a1cd8bfec127b197dd89e3ac56522d914bd49818",
+  "imported_at": "2026-10-24T23:11:55.136825+00:00",
+  "legacy_backup": "/workspace/backups/queuecare-before-month-v5.json",
+  "legacy_archive_schema": "queuecare_archive_20261024"
+}

@@ -34,6 +34,8 @@ Individual-wait mean: **192.81 minutes**; median: **111.92 minutes**. Across the
 
 ## Supabase migration and import
 
+**Current demo status:** the migration has been applied and the monthly dataset has been imported and verified. See `results/month-v5/supabase-verification.json`. Do not rerun the migration on this project; use import/verification commands to refresh or check the selected data. The migration steps below document setup for a legacy-schema project.
+
 Node.js 24; no npm packages required. Use server-only environment variables `SUPABASE_URL` and `SUPABASE_SECRET_KEY` (see root `.env.example`). Never commit secrets. Node needs `NODE_USE_ENV_PROXY=1` in the cloud workspace.
 
 1. Back up the existing four demo tables (write to a secure location outside Git):
