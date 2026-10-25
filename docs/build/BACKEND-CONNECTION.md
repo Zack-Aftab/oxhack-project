@@ -6,6 +6,8 @@ Implemented on `zack/backend`, based on unmerged `ajjar/app-foundation` commit `
 
 The route previously returned HTTP 200 against Supabase, captured below. After the environment network settings were published, the current production request returns HTTP 500 in the agreed error envelope because Supabase returns **401: Unregistered API key** for the existing `SUPABASE_SECRET_KEY` binding. The key name is present and the configured project host matches, but a usable project credential must be restored securely before publishing `CATALOG_READY`. No credential value is included in this report.
 
+GitHub API reads work after the network update, but PR creation (GraphQL and REST) and issue-comment creation both return HTTP 403: `Resource not accessible by integration`. No PR or handoff comment has been created. Code is pushed to `Zack-Aftab/oxhack-project:zack/backend`; a repository connection with PR/comment write access, or a manually opened fork PR, is still required. This authorization failure is separate from the resolved network 403 and the Supabase credential 401.
+
 ## Implemented and verified
 
 `GET /api/catalog` returned HTTP **200**, `Content-Type: application/json`, `Cache-Control: no-store` from the actual Next.js Route Handler reading the existing Supabase project. The [captured response](examples/catalog.live.response.json) contains five hospitals (`H001`–`H005`), eight category IDs, the stored synthetic-data notice and actual inclusive date range **2026-09-21–2026-10-20**. It is evidence captured from a request, not a runtime fixture or fallback.
