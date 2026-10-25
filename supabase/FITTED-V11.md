@@ -29,3 +29,17 @@ python3 simulation/export_supabase_v11.py /tmp/new-v11-sql-export
 ```
 
 Local PostgreSQL-compatible PGlite verification applied the full script twice against the existing monthly schema, including old sample visits/staffing, and checked row counts, targets, representative patient values, category coverage, preserved backups, service-role reads and denied anonymous reads. No live mutation has been claimed.
+
+## Small setup plus automated batch upload
+
+If the full query is too large, run `downloads/SUPABASE_SMALL_SETUP.sql` (about46KB) in SQL Editor, and replace the existing `SUPABASE_SECRET_KEY` value securely in this Codex environment's Secrets settings. It must be a server-side Supabase Secret key for this project. No key belongs in chat or GitHub.
+
+The small setup installs the same staging/capacity data and a parameterless activation RPC. That RPC is callable only by service_role, contains no arbitrary SQL input, validates the entire fixed v11 dataset and preserves the previous tables before switching views. Incomplete uploads cannot activate. It was tested locally as service_role, including repeated activation and denied anonymous calls.
+
+Then the assistant can run:
+
+```sh
+NODE_USE_ENV_PROXY=1 node simulation/import_fitted_v11.mjs --apply
+```
+
+The importer upserts 1,000 records per HTTP request and calls the validated activation function only after all batches succeed. It retains epoch microseconds as decimal strings to avoid JavaScript integer precision loss. `--dry-run` prepares records without making any network request. No database update has happened merely because these files exist.
