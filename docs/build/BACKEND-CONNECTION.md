@@ -2,6 +2,10 @@
 
 Implemented on `zack/backend`, based on unmerged `ajjar/app-foundation` commit `03c93f0e416835fe306a69cfbe42030c67dddb23` (PR #3). Read the FRONTEND / FOUNDATION_READY comment on issue #2 and `BACKEND-REQUESTS.md` before implementation. Existing database work is preserved; no database mutations or new frontend scaffold were made.
 
+## Current connection status
+
+The route previously returned HTTP 200 against Supabase, captured below. After the environment network settings were published, the current production request returns HTTP 500 in the agreed error envelope because Supabase returns **401: Unregistered API key** for the existing `SUPABASE_SECRET_KEY` binding. The key name is present and the configured project host matches, but a usable project credential must be restored securely before publishing `CATALOG_READY`. No credential value is included in this report.
+
 ## Implemented and verified
 
 `GET /api/catalog` returned HTTP **200**, `Content-Type: application/json`, `Cache-Control: no-store` from the actual Next.js Route Handler reading the existing Supabase project. The [captured response](examples/catalog.live.response.json) contains five hospitals (`H001`–`H005`), eight category IDs, the stored synthetic-data notice and actual inclusive date range **2026-09-21–2026-10-20**. It is evidence captured from a request, not a runtime fixture or fallback.
