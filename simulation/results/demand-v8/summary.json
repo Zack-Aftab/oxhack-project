@@ -1,0 +1,1244 @@
+{
+  "model_version": "demand_patterns_v8",
+  "seed": 20261027,
+  "runs": 1,
+  "warmup_days": 3,
+  "measured_days": 30,
+  "generated_patients": 67676,
+  "warmup_patients": 6757,
+  "completed_hospital_patients": 67473,
+  "emergency_exits": 203,
+  "bed_flag_patients": 3459,
+  "individual_waits": {
+    "count": 67473,
+    "mean": 176.60834489316323,
+    "median": 119.57546605269114,
+    "p90": 420.53440666913986,
+    "p95": 563.4005303502082,
+    "max": 1180.5229963580766
+  },
+  "stored_integer_waits": {
+    "count": 67473,
+    "mean": 177.10921405599277,
+    "median": 120,
+    "p90": 421.0,
+    "p95": 564.0,
+    "max": 1181
+  },
+  "non_bed_waits": {
+    "count": 64023,
+    "mean": 184.5925214374447,
+    "median": 125.69104205369949,
+    "p90": 430.5751054024697,
+    "p95": 577.9640740851548,
+    "max": 1180.5229963580766
+  },
+  "bed_waits": {
+    "count": 3450,
+    "mean": 28.44285651793687,
+    "median": 7.305850426355998,
+    "p90": 74.29909536639845,
+    "p95": 161.04786101063087,
+    "max": 673.4816282351811
+  },
+  "non_bed_over_30_percent": 84.88511941021196,
+  "bed_under_20_percent": 82.84057971014492,
+  "non_bed_urgency_at_least_8": 0,
+  "wait_bins": [
+    {
+      "label": "10 minutes or less",
+      "count": 7702,
+      "percent": 11.414936344908334
+    },
+    {
+      "label": "Over 10\u201324 minutes",
+      "count": 3594,
+      "percent": 5.326575074474234
+    },
+    {
+      "label": "Over 24\u201360 minutes",
+      "count": 8095,
+      "percent": 11.997391549212278
+    },
+    {
+      "label": "Over 1\u20132 hours",
+      "count": 14461,
+      "percent": 21.432276614349444
+    },
+    {
+      "label": "Over 2\u20134 hours",
+      "count": 17596,
+      "percent": 26.07857957998014
+    },
+    {
+      "label": "Over 4 hours",
+      "count": 16025,
+      "percent": 23.75024083707557
+    }
+  ],
+  "profiles": {
+    "H001": {
+      "hospital_id": "H001",
+      "supported_specialties": [
+        "cardiology",
+        "emergency_medicine",
+        "general_surgery_or_gastroenterology",
+        "neurology_or_neurosurgery",
+        "orthopaedics",
+        "respiratory_medicine",
+        "wound_care_or_plastics"
+      ],
+      "support": {
+        "cardiology": true,
+        "emergency_medicine": true,
+        "general_surgery_or_gastroenterology": true,
+        "neurology_or_neurosurgery": true,
+        "orthopaedics": true,
+        "respiratory_medicine": true,
+        "wound_care_or_plastics": true
+      },
+      "specialist_doctors_on_duty": {
+        "cardiology": 3,
+        "emergency_medicine": 0,
+        "general_surgery_or_gastroenterology": 3,
+        "neurology_or_neurosurgery": 4,
+        "orthopaedics": 4,
+        "respiratory_medicine": 3,
+        "wound_care_or_plastics": 4
+      },
+      "general_doctors_by_four_hour_block": [
+        3,
+        5,
+        19,
+        23,
+        34,
+        13
+      ],
+      "triage_nurses_by_four_hour_block": [
+        3,
+        2,
+        6,
+        7,
+        7,
+        5
+      ],
+      "support_beds": 33,
+      "expected_daily_arrivals": 933.5111745237411,
+      "expected_general_doctor_utilisation": 0.9808901416777458,
+      "fluid_planning_mean_minutes": 105.20756918628464,
+      "fluid_planning_under_30_fraction": 0.25399994238046647,
+      "fluid_end_backlog_work_minutes": 534.3070283049401
+    },
+    "H002": {
+      "hospital_id": "H002",
+      "supported_specialties": [
+        "emergency_medicine",
+        "orthopaedics",
+        "respiratory_medicine",
+        "wound_care_or_plastics"
+      ],
+      "support": {
+        "cardiology": false,
+        "emergency_medicine": true,
+        "general_surgery_or_gastroenterology": false,
+        "neurology_or_neurosurgery": false,
+        "orthopaedics": true,
+        "respiratory_medicine": true,
+        "wound_care_or_plastics": true
+      },
+      "specialist_doctors_on_duty": {
+        "cardiology": 0,
+        "emergency_medicine": 0,
+        "general_surgery_or_gastroenterology": 0,
+        "neurology_or_neurosurgery": 0,
+        "orthopaedics": 3,
+        "respiratory_medicine": 2,
+        "wound_care_or_plastics": 3
+      },
+      "general_doctors_by_four_hour_block": [
+        2,
+        2,
+        7,
+        11,
+        5,
+        6
+      ],
+      "triage_nurses_by_four_hour_block": [
+        2,
+        2,
+        3,
+        3,
+        3,
+        2
+      ],
+      "support_beds": 14,
+      "expected_daily_arrivals": 376.6476401625005,
+      "expected_general_doctor_utilisation": 0.9685073851900695,
+      "fluid_planning_mean_minutes": 105.6179854964821,
+      "fluid_planning_under_30_fraction": 0.21696996820664868,
+      "fluid_end_backlog_work_minutes": 577.2000964689504
+    },
+    "H003": {
+      "hospital_id": "H003",
+      "supported_specialties": [
+        "cardiology",
+        "emergency_medicine",
+        "respiratory_medicine"
+      ],
+      "support": {
+        "cardiology": true,
+        "emergency_medicine": true,
+        "general_surgery_or_gastroenterology": false,
+        "neurology_or_neurosurgery": false,
+        "orthopaedics": false,
+        "respiratory_medicine": true,
+        "wound_care_or_plastics": false
+      },
+      "specialist_doctors_on_duty": {
+        "cardiology": 2,
+        "emergency_medicine": 0,
+        "general_surgery_or_gastroenterology": 0,
+        "neurology_or_neurosurgery": 0,
+        "orthopaedics": 0,
+        "respiratory_medicine": 2,
+        "wound_care_or_plastics": 0
+      },
+      "general_doctors_by_four_hour_block": [
+        3,
+        3,
+        2,
+        5,
+        6,
+        3
+      ],
+      "triage_nurses_by_four_hour_block": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "support_beds": 8,
+      "expected_daily_arrivals": 199.85533217759445,
+      "expected_general_doctor_utilisation": 0.9818425042797014,
+      "fluid_planning_mean_minutes": 119.03128964206296,
+      "fluid_planning_under_30_fraction": 0.05016771977779365,
+      "fluid_end_backlog_work_minutes": 656.0543572345562
+    },
+    "H004": {
+      "hospital_id": "H004",
+      "supported_specialties": [
+        "cardiology",
+        "emergency_medicine",
+        "general_surgery_or_gastroenterology",
+        "wound_care_or_plastics"
+      ],
+      "support": {
+        "cardiology": true,
+        "emergency_medicine": true,
+        "general_surgery_or_gastroenterology": true,
+        "neurology_or_neurosurgery": false,
+        "orthopaedics": false,
+        "respiratory_medicine": false,
+        "wound_care_or_plastics": true
+      },
+      "specialist_doctors_on_duty": {
+        "cardiology": 2,
+        "emergency_medicine": 0,
+        "general_surgery_or_gastroenterology": 2,
+        "neurology_or_neurosurgery": 0,
+        "orthopaedics": 0,
+        "respiratory_medicine": 0,
+        "wound_care_or_plastics": 2
+      },
+      "general_doctors_by_four_hour_block": [
+        2,
+        2,
+        5,
+        7,
+        13,
+        3
+      ],
+      "triage_nurses_by_four_hour_block": [
+        2,
+        2,
+        2,
+        3,
+        3,
+        2
+      ],
+      "support_beds": 12,
+      "expected_daily_arrivals": 318.39206279482033,
+      "expected_general_doctor_utilisation": 0.9586373872489385,
+      "fluid_planning_mean_minutes": 114.25414216056636,
+      "fluid_planning_under_30_fraction": 0.1787778936482631,
+      "fluid_end_backlog_work_minutes": 463.101815590332
+    },
+    "H005": {
+      "hospital_id": "H005",
+      "supported_specialties": [
+        "emergency_medicine",
+        "general_surgery_or_gastroenterology",
+        "neurology_or_neurosurgery",
+        "orthopaedics"
+      ],
+      "support": {
+        "cardiology": false,
+        "emergency_medicine": true,
+        "general_surgery_or_gastroenterology": true,
+        "neurology_or_neurosurgery": true,
+        "orthopaedics": true,
+        "respiratory_medicine": false,
+        "wound_care_or_plastics": false
+      },
+      "specialist_doctors_on_duty": {
+        "cardiology": 0,
+        "emergency_medicine": 0,
+        "general_surgery_or_gastroenterology": 2,
+        "neurology_or_neurosurgery": 3,
+        "orthopaedics": 3,
+        "respiratory_medicine": 0,
+        "wound_care_or_plastics": 0
+      },
+      "general_doctors_by_four_hour_block": [
+        2,
+        2,
+        7,
+        10,
+        17,
+        4
+      ],
+      "triage_nurses_by_four_hour_block": [
+        2,
+        2,
+        3,
+        3,
+        3,
+        2
+      ],
+      "support_beds": 15,
+      "expected_daily_arrivals": 415.59178967445456,
+      "expected_general_doctor_utilisation": 0.9670424980012914,
+      "fluid_planning_mean_minutes": 143.13933826391445,
+      "fluid_planning_under_30_fraction": 0.16195598398198172,
+      "fluid_end_backlog_work_minutes": 579.5454780639249
+    }
+  },
+  "by_hospital": [
+    {
+      "hospital_id": "H001",
+      "patients": 27991,
+      "daily_hospital_arrivals": 933.0333333333333,
+      "general_doctor_utilisation": 0.9776527173911094,
+      "bed_utilisation": 0.7205042712219921,
+      "count": 27991,
+      "mean": 156.48766582467377,
+      "median": 100.13558941284815,
+      "p90": 382.96648350556694,
+      "p95": 502.3667911012967,
+      "max": 868.9272727966309
+    },
+    {
+      "hospital_id": "H002",
+      "patients": 11300,
+      "daily_hospital_arrivals": 376.6666666666667,
+      "general_doctor_utilisation": 0.9632244396231123,
+      "bed_utilisation": 0.6470179512823424,
+      "count": 11300,
+      "mean": 127.07187071554358,
+      "median": 94.4231888949871,
+      "p90": 305.3616588989894,
+      "p95": 407.50007623632723,
+      "max": 576.4351270874341
+    },
+    {
+      "hospital_id": "H003",
+      "patients": 6077,
+      "daily_hospital_arrivals": 202.56666666666666,
+      "general_doctor_utilisation": 0.9809901818759011,
+      "bed_utilisation": 0.648642083172445,
+      "count": 6077,
+      "mean": 403.83041565469443,
+      "median": 281.0785400867462,
+      "p90": 929.4253424247106,
+      "p95": 1034.5836285090445,
+      "max": 1180.5229963580766
+    },
+    {
+      "hospital_id": "H004",
+      "patients": 9463,
+      "daily_hospital_arrivals": 315.43333333333334,
+      "general_doctor_utilisation": 0.960823963843631,
+      "bed_utilisation": 0.6685859613167237,
+      "count": 9463,
+      "mean": 148.1515569492436,
+      "median": 125.23121844927469,
+      "p90": 314.18614792903327,
+      "p95": 406.6419651607672,
+      "max": 702.2848056197166
+    },
+    {
+      "hospital_id": "H005",
+      "patients": 12642,
+      "daily_hospital_arrivals": 421.4,
+      "general_doctor_utilisation": 0.9779346933119669,
+      "bed_utilisation": 0.7339087380428189,
+      "count": 12642,
+      "mean": 177.51153634298748,
+      "median": 143.85027193029723,
+      "p90": 394.5384670555592,
+      "p95": 491.39000923474623,
+      "max": 691.9464319944382
+    }
+  ],
+  "origin_intake": {
+    "H001": 562.2333333333333,
+    "H002": 452.7,
+    "H003": 363.06666666666666,
+    "H004": 394.6666666666667,
+    "H005": 483.2
+  },
+  "by_weekday_block": [
+    {
+      "weekday": 0,
+      "four_hour_block": 0,
+      "patients": 889,
+      "category_counts": {
+        "abdominal_or_stomach_problems": 139,
+        "head_injury_or_neurological_symptoms": 142,
+        "fracture_sprain_or_dislocation": 176,
+        "cuts_or_wounds": 156,
+        "other_or_uncategorised": 177,
+        "breathing_problems": 133,
+        "chest_pain_or_heart_symptoms": 152
+      },
+      "count": 889,
+      "mean": 311.80072712323886,
+      "median": 294.62736474672954,
+      "p90": 452.24553293069215,
+      "p95": 522.2398996194195,
+      "max": 901.9415659030278
+    },
+    {
+      "weekday": 0,
+      "four_hour_block": 1,
+      "patients": 710,
+      "category_counts": {
+        "cuts_or_wounds": 130,
+        "head_injury_or_neurological_symptoms": 137,
+        "chest_pain_or_heart_symptoms": 109,
+        "other_or_uncategorised": 143,
+        "fracture_sprain_or_dislocation": 138,
+        "abdominal_or_stomach_problems": 87,
+        "breathing_problems": 105
+      },
+      "count": 710,
+      "mean": 204.4791358479312,
+      "median": 201.8185618797938,
+      "p90": 322.125926301082,
+      "p95": 371.9818288888532,
+      "max": 748.0321754336358
+    },
+    {
+      "weekday": 0,
+      "four_hour_block": 2,
+      "patients": 2306,
+      "category_counts": {
+        "cuts_or_wounds": 371,
+        "other_or_uncategorised": 419,
+        "chest_pain_or_heart_symptoms": 329,
+        "abdominal_or_stomach_problems": 289,
+        "fracture_sprain_or_dislocation": 697,
+        "breathing_problems": 294,
+        "head_injury_or_neurological_symptoms": 364
+      },
+      "count": 2306,
+      "mean": 131.1945874748219,
+      "median": 120.29860819578171,
+      "p90": 217.76366865436236,
+      "p95": 243.92131849229335,
+      "max": 549.4893323620161
+    },
+    {
+      "weekday": 0,
+      "four_hour_block": 3,
+      "patients": 2747,
+      "category_counts": {
+        "cuts_or_wounds": 516,
+        "other_or_uncategorised": 582,
+        "chest_pain_or_heart_symptoms": 402,
+        "breathing_problems": 432,
+        "fracture_sprain_or_dislocation": 526,
+        "head_injury_or_neurological_symptoms": 479,
+        "abdominal_or_stomach_problems": 379
+      },
+      "count": 2747,
+      "mean": 100.58081022439514,
+      "median": 94.64130357106527,
+      "p90": 183.7071639355024,
+      "p95": 203.59103752493854,
+      "max": 678.8274885932605
+    },
+    {
+      "weekday": 0,
+      "four_hour_block": 4,
+      "patients": 2894,
+      "category_counts": {
+        "abdominal_or_stomach_problems": 410,
+        "chest_pain_or_heart_symptoms": 449,
+        "fracture_sprain_or_dislocation": 530,
+        "head_injury_or_neurological_symptoms": 512,
+        "other_or_uncategorised": 611,
+        "breathing_problems": 436,
+        "cuts_or_wounds": 538
+      },
+      "count": 2894,
+      "mean": 87.90023730163941,
+      "median": 55.95934454401334,
+      "p90": 146.7373567958673,
+      "p95": 255.92830037156736,
+      "max": 1019.0223586082459
+    },
+    {
+      "weekday": 0,
+      "four_hour_block": 5,
+      "patients": 1759,
+      "category_counts": {
+        "chest_pain_or_heart_symptoms": 235,
+        "abdominal_or_stomach_problems": 267,
+        "fracture_sprain_or_dislocation": 343,
+        "other_or_uncategorised": 398,
+        "cuts_or_wounds": 309,
+        "breathing_problems": 306,
+        "head_injury_or_neurological_symptoms": 283
+      },
+      "count": 1759,
+      "mean": 215.9319669196071,
+      "median": 136.21938978036243,
+      "p90": 481.4328154238065,
+      "p95": 569.4652188917,
+      "max": 1122.583806081613
+    },
+    {
+      "weekday": 1,
+      "four_hour_block": 0,
+      "patients": 891,
+      "category_counts": {
+        "cuts_or_wounds": 154,
+        "head_injury_or_neurological_symptoms": 178,
+        "abdominal_or_stomach_problems": 125,
+        "breathing_problems": 132,
+        "other_or_uncategorised": 181,
+        "fracture_sprain_or_dislocation": 178,
+        "chest_pain_or_heart_symptoms": 128
+      },
+      "count": 891,
+      "mean": 330.40325804179497,
+      "median": 333.58902877171835,
+      "p90": 483.4381743590037,
+      "p95": 563.9078903814157,
+      "max": 1038.940447775523
+    },
+    {
+      "weekday": 1,
+      "four_hour_block": 1,
+      "patients": 675,
+      "category_counts": {
+        "fracture_sprain_or_dislocation": 126,
+        "chest_pain_or_heart_symptoms": 111,
+        "cuts_or_wounds": 118,
+        "other_or_uncategorised": 144,
+        "head_injury_or_neurological_symptoms": 108,
+        "abdominal_or_stomach_problems": 115,
+        "breathing_problems": 88
+      },
+      "count": 675,
+      "mean": 207.36077406629516,
+      "median": 202.58311758438745,
+      "p90": 325.6975465043386,
+      "p95": 385.5928260624403,
+      "max": 887.7033223787944
+    },
+    {
+      "weekday": 1,
+      "four_hour_block": 2,
+      "patients": 2200,
+      "category_counts": {
+        "abdominal_or_stomach_problems": 323,
+        "other_or_uncategorised": 411,
+        "fracture_sprain_or_dislocation": 538,
+        "head_injury_or_neurological_symptoms": 358,
+        "breathing_problems": 318,
+        "chest_pain_or_heart_symptoms": 335,
+        "cuts_or_wounds": 365
+      },
+      "count": 2200,
+      "mean": 137.35635229704596,
+      "median": 131.9017851829529,
+      "p90": 223.8533964673679,
+      "p95": 263.393285211722,
+      "max": 858.3691321969033
+    },
+    {
+      "weekday": 1,
+      "four_hour_block": 3,
+      "patients": 2644,
+      "category_counts": {
+        "head_injury_or_neurological_symptoms": 473,
+        "other_or_uncategorised": 566,
+        "abdominal_or_stomach_problems": 346,
+        "fracture_sprain_or_dislocation": 514,
+        "chest_pain_or_heart_symptoms": 388,
+        "cuts_or_wounds": 472,
+        "breathing_problems": 429
+      },
+      "count": 2644,
+      "mean": 110.8527252177187,
+      "median": 84.04174378315608,
+      "p90": 175.74876682639126,
+      "p95": 209.27099835634226,
+      "max": 927.0589469790459
+    },
+    {
+      "weekday": 1,
+      "four_hour_block": 4,
+      "patients": 2912,
+      "category_counts": {
+        "abdominal_or_stomach_problems": 426,
+        "breathing_problems": 498,
+        "other_or_uncategorised": 609,
+        "chest_pain_or_heart_symptoms": 458,
+        "head_injury_or_neurological_symptoms": 494,
+        "cuts_or_wounds": 566,
+        "fracture_sprain_or_dislocation": 515
+      },
+      "count": 2912,
+      "mean": 99.47069592601704,
+      "median": 46.59626830816269,
+      "p90": 186.9117340854804,
+      "p95": 254.15636344452662,
+      "max": 1131.4277912735938
+    },
+    {
+      "weekday": 1,
+      "four_hour_block": 5,
+      "patients": 1840,
+      "category_counts": {
+        "cuts_or_wounds": 361,
+        "breathing_problems": 297,
+        "head_injury_or_neurological_symptoms": 317,
+        "abdominal_or_stomach_problems": 240,
+        "chest_pain_or_heart_symptoms": 241,
+        "fracture_sprain_or_dislocation": 345,
+        "other_or_uncategorised": 391
+      },
+      "count": 1840,
+      "mean": 245.04392666907415,
+      "median": 175.73833774526915,
+      "p90": 518.0820449344318,
+      "p95": 546.591063665549,
+      "max": 1133.746553862095
+    },
+    {
+      "weekday": 2,
+      "four_hour_block": 0,
+      "patients": 682,
+      "category_counts": {
+        "chest_pain_or_heart_symptoms": 89,
+        "head_injury_or_neurological_symptoms": 122,
+        "fracture_sprain_or_dislocation": 142,
+        "abdominal_or_stomach_problems": 106,
+        "cuts_or_wounds": 117,
+        "other_or_uncategorised": 145,
+        "breathing_problems": 106
+      },
+      "count": 682,
+      "mean": 352.63510862574316,
+      "median": 375.0748395939668,
+      "p90": 478.7804925704002,
+      "p95": 497.01258366505306,
+      "max": 989.1163827975591
+    },
+    {
+      "weekday": 2,
+      "four_hour_block": 1,
+      "patients": 522,
+      "category_counts": {
+        "breathing_problems": 81,
+        "chest_pain_or_heart_symptoms": 84,
+        "other_or_uncategorised": 120,
+        "head_injury_or_neurological_symptoms": 73,
+        "abdominal_or_stomach_problems": 84,
+        "fracture_sprain_or_dislocation": 92,
+        "cuts_or_wounds": 93
+      },
+      "count": 522,
+      "mean": 230.25542596408843,
+      "median": 214.3477819899718,
+      "p90": 343.096492451032,
+      "p95": 374.50152195572855,
+      "max": 874.7649893204372
+    },
+    {
+      "weekday": 2,
+      "four_hour_block": 2,
+      "patients": 1791,
+      "category_counts": {
+        "abdominal_or_stomach_problems": 216,
+        "head_injury_or_neurological_symptoms": 301,
+        "other_or_uncategorised": 363,
+        "fracture_sprain_or_dislocation": 446,
+        "cuts_or_wounds": 326,
+        "breathing_problems": 271,
+        "chest_pain_or_heart_symptoms": 238
+      },
+      "count": 1791,
+      "mean": 137.7407531471375,
+      "median": 143.9300026098887,
+      "p90": 201.24819200436275,
+      "p95": 215.95572349031767,
+      "max": 724.3307657122612
+    },
+    {
+      "weekday": 2,
+      "four_hour_block": 3,
+      "patients": 2041,
+      "category_counts": {
+        "cuts_or_wounds": 356,
+        "other_or_uncategorised": 400,
+        "head_injury_or_neurological_symptoms": 360,
+        "fracture_sprain_or_dislocation": 406,
+        "breathing_problems": 331,
+        "abdominal_or_stomach_problems": 310,
+        "chest_pain_or_heart_symptoms": 307
+      },
+      "count": 2041,
+      "mean": 104.7659832555777,
+      "median": 91.37439908186595,
+      "p90": 159.1487161755562,
+      "p95": 175.60346395174662,
+      "max": 793.4436104814212
+    },
+    {
+      "weekday": 2,
+      "four_hour_block": 4,
+      "patients": 2275,
+      "category_counts": {
+        "chest_pain_or_heart_symptoms": 388,
+        "breathing_problems": 331,
+        "other_or_uncategorised": 449,
+        "head_injury_or_neurological_symptoms": 425,
+        "cuts_or_wounds": 426,
+        "fracture_sprain_or_dislocation": 422,
+        "abdominal_or_stomach_problems": 315
+      },
+      "count": 2275,
+      "mean": 74.800848145181,
+      "median": 42.16276541550954,
+      "p90": 159.89851411739988,
+      "p95": 213.60085654616339,
+      "max": 1009.0531620661418
+    },
+    {
+      "weekday": 2,
+      "four_hour_block": 5,
+      "patients": 1462,
+      "category_counts": {
+        "fracture_sprain_or_dislocation": 320,
+        "other_or_uncategorised": 314,
+        "cuts_or_wounds": 266,
+        "abdominal_or_stomach_problems": 215,
+        "chest_pain_or_heart_symptoms": 218,
+        "breathing_problems": 203,
+        "head_injury_or_neurological_symptoms": 227
+      },
+      "count": 1462,
+      "mean": 185.43725737021276,
+      "median": 130.29809130032857,
+      "p90": 441.33401083469397,
+      "p95": 501.9657286240658,
+      "max": 1006.3646594961484
+    },
+    {
+      "weekday": 3,
+      "four_hour_block": 0,
+      "patients": 800,
+      "category_counts": {
+        "other_or_uncategorised": 138,
+        "abdominal_or_stomach_problems": 128,
+        "head_injury_or_neurological_symptoms": 142,
+        "chest_pain_or_heart_symptoms": 135,
+        "breathing_problems": 126,
+        "fracture_sprain_or_dislocation": 159,
+        "cuts_or_wounds": 146
+      },
+      "count": 800,
+      "mean": 347.8269718600859,
+      "median": 350.54021988312405,
+      "p90": 477.7759612997373,
+      "p95": 492.9369587914149,
+      "max": 866.7989204088847
+    },
+    {
+      "weekday": 3,
+      "four_hour_block": 1,
+      "patients": 550,
+      "category_counts": {
+        "cuts_or_wounds": 101,
+        "head_injury_or_neurological_symptoms": 92,
+        "chest_pain_or_heart_symptoms": 79,
+        "abdominal_or_stomach_problems": 78,
+        "other_or_uncategorised": 129,
+        "fracture_sprain_or_dislocation": 112,
+        "breathing_problems": 65
+      },
+      "count": 550,
+      "mean": 232.1236720338807,
+      "median": 238.0114289720853,
+      "p90": 349.43257453759514,
+      "p95": 389.1077601844069,
+      "max": 721.7489289919536
+    },
+    {
+      "weekday": 3,
+      "four_hour_block": 2,
+      "patients": 1948,
+      "category_counts": {
+        "other_or_uncategorised": 369,
+        "abdominal_or_stomach_problems": 251,
+        "cuts_or_wounds": 341,
+        "chest_pain_or_heart_symptoms": 276,
+        "fracture_sprain_or_dislocation": 475,
+        "breathing_problems": 301,
+        "head_injury_or_neurological_symptoms": 321
+      },
+      "count": 1948,
+      "mean": 149.03935213899018,
+      "median": 131.1397353430589,
+      "p90": 270.0573614299297,
+      "p95": 284.486671992739,
+      "max": 552.0659135262172
+    },
+    {
+      "weekday": 3,
+      "four_hour_block": 3,
+      "patients": 2281,
+      "category_counts": {
+        "breathing_problems": 368,
+        "chest_pain_or_heart_symptoms": 353,
+        "cuts_or_wounds": 405,
+        "other_or_uncategorised": 485,
+        "fracture_sprain_or_dislocation": 440,
+        "head_injury_or_neurological_symptoms": 372,
+        "abdominal_or_stomach_problems": 307
+      },
+      "count": 2281,
+      "mean": 124.92908147245092,
+      "median": 109.28481322129568,
+      "p90": 248.16379994948704,
+      "p95": 264.526586107413,
+      "max": 746.9561623016994
+    },
+    {
+      "weekday": 3,
+      "four_hour_block": 4,
+      "patients": 2378,
+      "category_counts": {
+        "cuts_or_wounds": 422,
+        "breathing_problems": 370,
+        "other_or_uncategorised": 509,
+        "chest_pain_or_heart_symptoms": 347,
+        "abdominal_or_stomach_problems": 338,
+        "head_injury_or_neurological_symptoms": 451,
+        "fracture_sprain_or_dislocation": 429
+      },
+      "count": 2378,
+      "mean": 154.56243700313408,
+      "median": 71.33168334166209,
+      "p90": 447.19370365381286,
+      "p95": 782.1311027046045,
+      "max": 1072.7875624895096
+    },
+    {
+      "weekday": 3,
+      "four_hour_block": 5,
+      "patients": 1493,
+      "category_counts": {
+        "chest_pain_or_heart_symptoms": 211,
+        "fracture_sprain_or_dislocation": 273,
+        "cuts_or_wounds": 251,
+        "breathing_problems": 231,
+        "head_injury_or_neurological_symptoms": 253,
+        "abdominal_or_stomach_problems": 231,
+        "other_or_uncategorised": 340
+      },
+      "count": 1493,
+      "mean": 308.0535186627875,
+      "median": 221.40148228009542,
+      "p90": 807.5994308320682,
+      "p95": 814.1310522850354,
+      "max": 1084.4108888983726
+    },
+    {
+      "weekday": 4,
+      "four_hour_block": 0,
+      "patients": 718,
+      "category_counts": {
+        "fracture_sprain_or_dislocation": 125,
+        "cuts_or_wounds": 170,
+        "abdominal_or_stomach_problems": 92,
+        "head_injury_or_neurological_symptoms": 151,
+        "other_or_uncategorised": 130,
+        "chest_pain_or_heart_symptoms": 98,
+        "breathing_problems": 98
+      },
+      "count": 718,
+      "mean": 387.3519154606977,
+      "median": 336.1745024402936,
+      "p90": 678.7199930286407,
+      "p95": 738.161438609759,
+      "max": 1044.0873646934826
+    },
+    {
+      "weekday": 4,
+      "four_hour_block": 1,
+      "patients": 585,
+      "category_counts": {
+        "fracture_sprain_or_dislocation": 115,
+        "head_injury_or_neurological_symptoms": 90,
+        "other_or_uncategorised": 141,
+        "breathing_problems": 97,
+        "abdominal_or_stomach_problems": 87,
+        "chest_pain_or_heart_symptoms": 91,
+        "cuts_or_wounds": 99
+      },
+      "count": 585,
+      "mean": 262.9291099911334,
+      "median": 232.32734198967617,
+      "p90": 501.26236307621014,
+      "p95": 577.0699577609695,
+      "max": 841.3774574160576
+    },
+    {
+      "weekday": 4,
+      "four_hour_block": 2,
+      "patients": 1866,
+      "category_counts": {
+        "other_or_uncategorised": 379,
+        "chest_pain_or_heart_symptoms": 272,
+        "breathing_problems": 265,
+        "abdominal_or_stomach_problems": 250,
+        "head_injury_or_neurological_symptoms": 302,
+        "cuts_or_wounds": 310,
+        "fracture_sprain_or_dislocation": 451
+      },
+      "count": 1866,
+      "mean": 181.0299335759254,
+      "median": 127.69319797356923,
+      "p90": 403.8523676653703,
+      "p95": 435.1388988504807,
+      "max": 750.0477590878804
+    },
+    {
+      "weekday": 4,
+      "four_hour_block": 3,
+      "patients": 2233,
+      "category_counts": {
+        "chest_pain_or_heart_symptoms": 327,
+        "cuts_or_wounds": 413,
+        "abdominal_or_stomach_problems": 270,
+        "other_or_uncategorised": 508,
+        "breathing_problems": 325,
+        "fracture_sprain_or_dislocation": 437,
+        "head_injury_or_neurological_symptoms": 380
+      },
+      "count": 2233,
+      "mean": 144.0950394875257,
+      "median": 86.3395224014918,
+      "p90": 336.59328358888627,
+      "p95": 372.4049606815975,
+      "max": 1013.7356086452802
+    },
+    {
+      "weekday": 4,
+      "four_hour_block": 4,
+      "patients": 2419,
+      "category_counts": {
+        "abdominal_or_stomach_problems": 334,
+        "other_or_uncategorised": 499,
+        "breathing_problems": 406,
+        "fracture_sprain_or_dislocation": 457,
+        "chest_pain_or_heart_symptoms": 371,
+        "cuts_or_wounds": 449,
+        "head_injury_or_neurological_symptoms": 375
+      },
+      "count": 2419,
+      "mean": 169.32442245770375,
+      "median": 58.517442071437834,
+      "p90": 616.6494997398074,
+      "p95": 845.1553252760568,
+      "max": 1180.5229963580766
+    },
+    {
+      "weekday": 4,
+      "four_hour_block": 5,
+      "patients": 1514,
+      "category_counts": {
+        "head_injury_or_neurological_symptoms": 302,
+        "abdominal_or_stomach_problems": 205,
+        "fracture_sprain_or_dislocation": 290,
+        "breathing_problems": 191,
+        "chest_pain_or_heart_symptoms": 220,
+        "cuts_or_wounds": 308,
+        "other_or_uncategorised": 297
+      },
+      "count": 1514,
+      "mean": 327.3638119905964,
+      "median": 236.87820467948913,
+      "p90": 810.4775497972965,
+      "p95": 857.2031996393204,
+      "max": 1130.7375793854396
+    },
+    {
+      "weekday": 5,
+      "four_hour_block": 0,
+      "patients": 760,
+      "category_counts": {
+        "cuts_or_wounds": 158,
+        "breathing_problems": 112,
+        "other_or_uncategorised": 140,
+        "fracture_sprain_or_dislocation": 140,
+        "head_injury_or_neurological_symptoms": 147,
+        "chest_pain_or_heart_symptoms": 103,
+        "abdominal_or_stomach_problems": 123
+      },
+      "count": 760,
+      "mean": 419.0207340447056,
+      "median": 381.5594381769498,
+      "p90": 720.8948306953907,
+      "p95": 755.507582928141,
+      "max": 987.9350371479989
+    },
+    {
+      "weekday": 5,
+      "four_hour_block": 1,
+      "patients": 541,
+      "category_counts": {
+        "cuts_or_wounds": 94,
+        "abdominal_or_stomach_problems": 133,
+        "chest_pain_or_heart_symptoms": 61,
+        "breathing_problems": 75,
+        "fracture_sprain_or_dislocation": 113,
+        "other_or_uncategorised": 96,
+        "head_injury_or_neurological_symptoms": 82
+      },
+      "count": 541,
+      "mean": 277.07903408908726,
+      "median": 249.81605074803034,
+      "p90": 492.64728420972824,
+      "p95": 594.918058915933,
+      "max": 842.412802819411
+    },
+    {
+      "weekday": 5,
+      "four_hour_block": 2,
+      "patients": 1794,
+      "category_counts": {
+        "other_or_uncategorised": 318,
+        "abdominal_or_stomach_problems": 434,
+        "head_injury_or_neurological_symptoms": 295,
+        "fracture_sprain_or_dislocation": 306,
+        "cuts_or_wounds": 293,
+        "chest_pain_or_heart_symptoms": 245,
+        "breathing_problems": 271
+      },
+      "count": 1794,
+      "mean": 194.28703907879034,
+      "median": 166.71542265415192,
+      "p90": 352.9867016442617,
+      "p95": 425.0635631080464,
+      "max": 694.4710105776787
+    },
+    {
+      "weekday": 5,
+      "four_hour_block": 3,
+      "patients": 2208,
+      "category_counts": {
+        "abdominal_or_stomach_problems": 268,
+        "head_injury_or_neurological_symptoms": 373,
+        "cuts_or_wounds": 425,
+        "chest_pain_or_heart_symptoms": 329,
+        "other_or_uncategorised": 478,
+        "fracture_sprain_or_dislocation": 398,
+        "breathing_problems": 351
+      },
+      "count": 2208,
+      "mean": 154.41383686795075,
+      "median": 133.2386610945066,
+      "p90": 297.377100764513,
+      "p95": 334.13902082383635,
+      "max": 868.2032783031464
+    },
+    {
+      "weekday": 5,
+      "four_hour_block": 4,
+      "patients": 2267,
+      "category_counts": {
+        "fracture_sprain_or_dislocation": 433,
+        "cuts_or_wounds": 440,
+        "other_or_uncategorised": 461,
+        "abdominal_or_stomach_problems": 328,
+        "head_injury_or_neurological_symptoms": 354,
+        "breathing_problems": 363,
+        "chest_pain_or_heart_symptoms": 346
+      },
+      "count": 2267,
+      "mean": 153.94752056405852,
+      "median": 97.13004076480865,
+      "p90": 358.00081161181134,
+      "p95": 702.1874624105293,
+      "max": 1050.710731724898
+    },
+    {
+      "weekday": 5,
+      "four_hour_block": 5,
+      "patients": 1477,
+      "category_counts": {
+        "head_injury_or_neurological_symptoms": 296,
+        "other_or_uncategorised": 272,
+        "cuts_or_wounds": 313,
+        "breathing_problems": 233,
+        "chest_pain_or_heart_symptoms": 217,
+        "fracture_sprain_or_dislocation": 233,
+        "abdominal_or_stomach_problems": 178
+      },
+      "count": 1477,
+      "mean": 337.87412665766533,
+      "median": 310.121527270476,
+      "p90": 714.5660928153992,
+      "p95": 733.9221159783999,
+      "max": 1022.5708296895027
+    },
+    {
+      "weekday": 6,
+      "four_hour_block": 0,
+      "patients": 684,
+      "category_counts": {
+        "fracture_sprain_or_dislocation": 118,
+        "abdominal_or_stomach_problems": 100,
+        "chest_pain_or_heart_symptoms": 101,
+        "head_injury_or_neurological_symptoms": 132,
+        "other_or_uncategorised": 127,
+        "breathing_problems": 104,
+        "cuts_or_wounds": 125
+      },
+      "count": 684,
+      "mean": 403.1395717162835,
+      "median": 402.6193128903707,
+      "p90": 614.8006545058887,
+      "p95": 657.918959278663,
+      "max": 942.6090943018595
+    },
+    {
+      "weekday": 6,
+      "four_hour_block": 1,
+      "patients": 533,
+      "category_counts": {
+        "cuts_or_wounds": 96,
+        "other_or_uncategorised": 116,
+        "abdominal_or_stomach_problems": 100,
+        "breathing_problems": 82,
+        "chest_pain_or_heart_symptoms": 62,
+        "fracture_sprain_or_dislocation": 108,
+        "head_injury_or_neurological_symptoms": 73
+      },
+      "count": 533,
+      "mean": 269.5747472410727,
+      "median": 265.24336377779645,
+      "p90": 427.1366568827629,
+      "p95": 491.8122202452022,
+      "max": 740.8738636016845
+    },
+    {
+      "weekday": 6,
+      "four_hour_block": 2,
+      "patients": 1724,
+      "category_counts": {
+        "abdominal_or_stomach_problems": 352,
+        "fracture_sprain_or_dislocation": 291,
+        "breathing_problems": 270,
+        "other_or_uncategorised": 344,
+        "cuts_or_wounds": 283,
+        "chest_pain_or_heart_symptoms": 243,
+        "head_injury_or_neurological_symptoms": 287
+      },
+      "count": 1724,
+      "mean": 177.16914284435566,
+      "median": 175.31820903619132,
+      "p90": 306.82335879007974,
+      "p95": 328.48377688546964,
+      "max": 579.2971958557765
+    },
+    {
+      "weekday": 6,
+      "four_hour_block": 3,
+      "patients": 1975,
+      "category_counts": {
+        "cuts_or_wounds": 353,
+        "head_injury_or_neurological_symptoms": 337,
+        "fracture_sprain_or_dislocation": 362,
+        "other_or_uncategorised": 437,
+        "chest_pain_or_heart_symptoms": 294,
+        "breathing_problems": 307,
+        "abdominal_or_stomach_problems": 278
+      },
+      "count": 1975,
+      "mean": 125.31066229866929,
+      "median": 106.04127281506857,
+      "p90": 214.3031141249339,
+      "p95": 249.7783575840791,
+      "max": 640.4332083463669
+    },
+    {
+      "weekday": 6,
+      "four_hour_block": 4,
+      "patients": 2131,
+      "category_counts": {
+        "breathing_problems": 348,
+        "head_injury_or_neurological_symptoms": 364,
+        "cuts_or_wounds": 404,
+        "fracture_sprain_or_dislocation": 401,
+        "abdominal_or_stomach_problems": 281,
+        "chest_pain_or_heart_symptoms": 312,
+        "other_or_uncategorised": 456
+      },
+      "count": 2131,
+      "mean": 91.53748364748388,
+      "median": 49.085886951287584,
+      "p90": 185.5264352361361,
+      "p95": 270.6182039658229,
+      "max": 953.6011541366577
+    },
+    {
+      "weekday": 6,
+      "four_hour_block": 5,
+      "patients": 1354,
+      "category_counts": {
+        "abdominal_or_stomach_problems": 191,
+        "cuts_or_wounds": 254,
+        "breathing_problems": 204,
+        "fracture_sprain_or_dislocation": 272,
+        "other_or_uncategorised": 296,
+        "chest_pain_or_heart_symptoms": 208,
+        "head_injury_or_neurological_symptoms": 236
+      },
+      "count": 1354,
+      "mean": 199.02728974493428,
+      "median": 104.31992958982786,
+      "p90": 533.4444974541673,
+      "p95": 594.0434555451075,
+      "max": 966.0483794609705
+    }
+  ]
+}

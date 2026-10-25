@@ -13,3 +13,13 @@ python3 -m unittest discover -s simulation/tests -v
 Defaults use three warmup days, 30 measured days and five repetitions of the same patient cohort. `--help` lists optional settings. Current results retain five raw waits per completed patient and ceil their mean to an integer. Emergency exits have no hospital or wait. The archive contains a rejected strict-priority diagnostic, not the selected model.
 
 The additive Supabase migration is `supabase/migrations/202610250002_specialist_catalog.sql`. The checked, rerunnable seed is `results/specialist-v7/seed.sql`. Apply migration before seed; these are prepared artifacts, not an assertion of live deployment. The seed includes capacity/staffing and summary metadata; full visits remain in `dataset.json.gz` for a separate optional import. Existing active monthly data is preserved.
+
+## New single-run demand evaluation
+
+`demand_patterns.py` adds unequal catchment demand, recurring weekday/category patterns, stochastic arrivals, lower ordinary urgency and a separate bed-priority tier. Run once with three warmup days and 30 measured days:
+
+```sh
+python3 simulation/demand_patterns.py simulation/input.json /tmp/new-demand-run
+```
+
+Read [v8 actual results](results/demand-v8/REPORT.md): median 119.6 minutes, mean 176.6 minutes. The two-hour mean target was missed; no forced normal waits or repeated stochastic runs were used to conceal this. V8 remains an offline evaluation, with previous v7 live adapters and seed unchanged.
