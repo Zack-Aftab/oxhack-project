@@ -50,7 +50,7 @@ The supplied foundation included `comparison-view.test.mts` importing an absent 
 
 Five new backend tests cover live-row mapping, inclusive date conversion, missing/corrupt data with no fallback, REST headers/redirect/cache settings and credential/403 failures. The live route was also requested against Supabase rather than only mocked.
 
-Executed checks: `npm run lint` passed; `npm run typecheck` passed; `npm run test` passed **12 tests**. `npm run check` reached the production build, which is currently blocked by the cloud network denying the existing Inter Google Font request. This is an environment prerequisite, not a passing build. GitHub publishing details are completed in the PR/handoff after access is available. The build needs `fonts.googleapis.com` / `fonts.gstatic.com`; GitHub PR/comment publishing needs `api.github.com`. Network HTTP 403 blocks are distinct from database readiness and repository Git access.
+Executed checks: `NODE_USE_ENV_PROXY=1 npm run check` passed in full: lint, typecheck, **12 tests**, and the production Next.js build. The initial network 403 restrictions were resolved by allowing `api.github.com`, `fonts.googleapis.com` and `fonts.gstatic.com` in the cloud environment. No TLS/signature verification was disabled. The production build identifies `/api/catalog` as a dynamic route. GitHub publishing uses a fork PR because direct upstream Git push was denied to Zack-Aftab.
 
 ## Follow-on contract work (not implemented here)
 
