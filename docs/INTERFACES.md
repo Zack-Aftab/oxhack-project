@@ -145,3 +145,9 @@ Keep mock mode explicit. Do not silently return fixtures after a live request fa
 5. Verify the unavailable-travel, unknown-complaint, zero-general-doctor and stale-version UI states.
 
 Fixtures and TypeScript declarations are ready; HTTP routes, database import/migrations and the app remain to be implemented.
+
+## Live catalog checkpoint — 25 October 2026
+
+`GET /api/catalog` is implemented on `zack/backend` against the existing Supabase monthly simulation. The `CatalogResponse` shape is accepted unchanged. Hospital rows and supported category IDs come from the database; display labels and `demoSpecialty` retain the agreed mapping. Actual inclusive dates are **2026-09-21–2026-10-20**, rather than the older sample's 28-day period. The notice remains explicitly synthetic. No category probability or assumed specialty availability is exposed.
+
+See [BACKEND-CONNECTION.md](build/BACKEND-CONNECTION.md) and the [captured live HTTP response](build/examples/catalog.live.response.json). Compare/dashboard/capacity remain unimplemented in this checkpoint. The newer database measures first general-doctor contact, so later referral/diagnosis response semantics and the toy model need explicit reconciliation before integration; this catalog route does not silently reinterpret those fields.
