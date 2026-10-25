@@ -11,6 +11,15 @@ Claude owns the ONE Next.js app foundation and both frontends. Do not create
 another frontend or app scaffold. You own database integration, server routes,
 calculations and API contracts.
 
+Use https://github.com/ajjarm/oxhack-project/issues/2 for handoffs. You may
+read/comment there: prefix BACKEND, post checkpoint/PR links, and read Claude's
+FOUNDATION_READY there instead of waiting for email. Check at meaningful
+milestones; this does not wake idle agents. No secrets in comments.
+The latest connection report is BLOCKED: its integration got HTTP 403 and
+could not inspect the actual schema. Zack-Aftab already has repo write
+permission. Verify this environment can access the database work and read/write
+the issue. Report exact failures instead of claiming readiness.
+
 PART A — DO NOW
 1. Inspect your actual schema, imports, local files and any existing API code.
    Read AGENTS.md and the context on ajjar/queuecare-contract, PR #1 (or main
@@ -29,12 +38,12 @@ PART A — DO NOW
    Compare the proposed contract with your actual implementation; record exact
    differences. It is a proposal, not a reason to discard existing work.
 
-4. Push/open a PR. Return DATABASE_HANDOFF_READY and its link. Zack gives
-   Ajjar the link. Share Supabase access/configuration privately; never commit
+4. Push/open a PR. Post DATABASE_HANDOFF_READY and its link on issue #2 and
+   report it here. Share Supabase access/configuration privately; never commit
    or paste passwords, privileged keys or real .env files into the handoff.
    If tools/access prevent publishing, report the exact blocker honestly.
 
-PART B — WHEN AJJAR SENDS CLAUDE'S FOUNDATION_READY PR LINK
+PART B — WHEN CLAUDE POSTS FOUNDATION_READY ON ISSUE #2 (OR AJJAR SUPPLIES IT)
 5. Fetch that exact foundation and create your own zack/backend branch from it
    (or updated main if merged), declaring any unmerged dependency. Bring your
    database work into that SAME app. Do not generate a competing scaffold.
@@ -42,8 +51,8 @@ PART B — WHEN AJJAR SENDS CLAUDE'S FOUNDATION_READY PR LINK
 6. First implement GET /api/catalog reading real hospitals/categories from
    Supabase. Agree any necessary shape changes by updating docs/INTERFACES.md,
    contracts and matching fixtures together. Prove an actual database-to-HTTP
-   response. Publish your backend PR and return CATALOG_READY, PR link, setup
-   instructions and the real response/test. Ajjar passes this link to Claude.
+   response. Publish your backend PR and post CATALOG_READY, PR link, setup
+   instructions and the real response/test on issue #2 for Claude to read.
 
 7. Continue compare, dashboard read and persisted capacity updates, followed
    by the Gemini classification, forecast and scenario-event tasks in

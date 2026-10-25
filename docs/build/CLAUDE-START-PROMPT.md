@@ -1,6 +1,6 @@
 # Prompt for Claude Code — foundation and both frontends
 
-Supply the patient design exports/screenshots with this prompt. Zack gets [his matching prompt](ZACK-START-PROMPT.md). Ajjar passes the PR links between the two sessions; neither agent can assume it has read the other's chat.
+Supply the patient design exports/screenshots with this prompt. Zack gets [his matching prompt](ZACK-START-PROMPT.md). The [shared handoff issue](https://github.com/ajjarm/oxhack-project/issues/2) replaces copying responses between chats when both agents have access.
 
 ```text
 Build our unnamed hackathon app's frontend in:
@@ -8,6 +8,13 @@ https://github.com/ajjarm/oxhack-project
 
 YOU own the single Next.js app foundation and both frontends. Zack owns
 Supabase, backend routes/calculations and API contracts. Ownership is fixed.
+
+Use https://github.com/ajjarm/oxhack-project/issues/2 for handoff updates.
+You may read/comment there for this project: prefix FRONTEND, post checkpoints
+and PR links, and check latest comments at meaningful milestones. Read Zack's
+backend PR from that thread instead of waiting for me to relay it. This does
+not wake idle agents. Report read/write errors honestly; keep independent UI
+work moving. No secrets in comments.
 
 Hospital screens already exist as coded HTML:
 docs/build/inputs/hospital-dashboard.html
@@ -32,7 +39,8 @@ Zack reports Supabase is ready, but its schema/API details are pending.
    patient/hospital page shells, typed API client, explicit sample/live modes,
    and actual setup/check commands. Supabase and Route Handlers belong to this
    same app; Vercel is the deployment target. Return FOUNDATION_READY, PR URL,
-   branch/commit and run/check commands. I will send that link to Zack.
+   branch/commit and run/check commands. Post that checkpoint on issue #2 for
+   Zack to read; don't wait for me to forward it.
 
 4. Continue frontend work on a SEPARATE task branch based on the foundation;
    keep later UI commits out of the foundation PR Zack uses. Build the patient
@@ -45,7 +53,7 @@ Zack reports Supabase is ready, but its schema/API details are pending.
    API client. Follow BUILD-PLAN.md's five-tab mapping for missing source fields.
    No separate frontend ranking/forecast formula or fake functioning controls.
 
-6. When I provide Zack's CATALOG_READY/backend PR link, read
+6. When Zack posts CATALOG_READY/backend PR on issue #2 (or I supply it), read
    docs/build/BACKEND-CONNECTION.md and the
    actual routes/types. Bring the reviewed backend into your branch preserving
    work. Connect catalog first, then compare/capacity, then classification,
