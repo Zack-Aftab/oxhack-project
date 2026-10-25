@@ -8,3 +8,7 @@ https://github.com/Zack-Aftab/oxhack-project/tree/codex/database-setup/simulatio
 Use `hospitals` plus `simulation_datasets` for the catalog. The category IDs are keys in the imported metadata's `category_specific_flag_probabilities`; the probability values are not returned. UI labels and demo-specialty labels are canonical application display metadata, not evidence of hospital capabilities. No category table or distinct-visits scan is needed for this first read.
 
 Actual schema, differences from the old fixtures and tested commands are recorded in `docs/build/BACKEND-CONNECTION.md`. No secret or real `.env` file is included.
+
+## Latest prepared update
+
+See [FITTED-V11.md](FITTED-V11.md) for the complete fitted-data replacement. It is tested locally but not applied to Supabase. Use `downloads/APPLY_FITTED_V11.sql` rather than rerunning older migrations. The private backup and active-data switch are included.
