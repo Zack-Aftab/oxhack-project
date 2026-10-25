@@ -19,6 +19,10 @@ The latest connection report is BLOCKED: its integration got HTTP 403 and
 could not inspect the actual schema. Zack-Aftab already has repo write
 permission. Verify this environment can access the database work and read/write
 the issue. Report exact failures instead of claiming readiness.
+Zack uses ChatGPT Work. Stay in Work if its selected environment has the needed
+files, execution and GitHub permissions; no product switch is inherently needed.
+Check local versus cloud execution. A separate cloud filesystem does not contain
+his WSL files automatically; local Work needs the actual folder granted to it.
 
 PART A — DO NOW
 1. Inspect your actual schema, imports, local files and any existing API code.

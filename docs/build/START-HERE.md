@@ -24,6 +24,8 @@ Start [Zack's prompt](ZACK-START-PROMPT.md) and [Claude's prompt](CLAUDE-START-P
 
 **Communication update:** post the checkpoints/PR links above on [issue #2](https://github.com/ajjarm/oxhack-project/issues/2); each active agent reads the other role's update there instead of waiting for Ajjar to forward it. The old manual relay is a fallback, not a requirement. A stopped agent needs a new instruction to check the issue. The latest [backend connection report](inputs/BACKEND-CONNECTION-REPORT.md) is blocked: its agent cannot inspect Zack's actual Supabase schema and its GitHub integration cannot write. Owner-side checks show Zack-Aftab already has repo write permission. The issue records these blockers; it does not resolve them automatically.
 
+Zack uses **ChatGPT Work**, as clarified by Ajjar. Work can run code against accessible repositories; a product switch is not inherently required. Check its local/cloud execution context and actual file/GitHub permissions. See [official Work environment guidance](https://learn.chatgpt.com/docs/use-chatgpt#choose-cloud-or-local-work).
+
 These matching prompts replace the earlier vague instruction to choose or coordinate a scaffold owner. If a newer app already exists, preserve/reuse it and identify its branch rather than generating another.
 
 ## What exists: checked 25 October 2026
