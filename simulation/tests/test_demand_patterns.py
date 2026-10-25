@@ -33,3 +33,14 @@ class DemandPatternTests(TestCase):
     if v['likely_bed_occupancy']:
      self.assertEqual(v['urgency_rating'],10);self.assertEqual(v['queue_priority_tier'],15)
     else:self.assertLessEqual(v['urgency_rating'],7.5)
+ def test_additional_doctor_is_exactly_one_eight_hour_shift_and_beds_increase(self):
+  data=json.loads(gzip.decompress((root/'results/capacity-v9/dataset.json.gz').read_bytes()))
+  for p in data['hospital_specialties'].values():
+   before=p['baseline_general_doctors_by_four_hour_block'];after=p['general_doctors_by_four_hour_block']
+   self.assertEqual([b-a for a,b in zip(before,after)],[0,0,1,1,0,0])
+   self.assertEqual(4*(sum(after)-sum(before)),8)
+   self.assertGreaterEqual(p['support_beds'],p['baseline_support_beds'])
+  for v in data['visits']:
+   if not v['is_emergency']:
+    self.assertEqual(len(v['simulation_waits_minutes']),1)
+    self.assertIn(v['hospital_id'],d.m.eligible(v['complaint_categories']))

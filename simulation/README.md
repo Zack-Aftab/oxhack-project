@@ -23,3 +23,11 @@ python3 simulation/demand_patterns.py simulation/input.json /tmp/new-demand-run
 ```
 
 Read [v8 actual results](results/demand-v8/REPORT.md): median 119.6 minutes, mean 176.6 minutes. The two-hour mean target was missed; no forced normal waits or repeated stochastic runs were used to conceal this. V8 remains an offline evaluation, with previous v7 live adapters and seed unchanged.
+
+## Additional-doctor capacity check
+
+[Capacity v9 results](results/capacity-v9/REPORT.md) retain the same v8 patients and service seed. One additional 08–16 doctor/site/day and a 65% planned bed-occupancy target yield mean 108.7 and median 70.1 minutes; the requested 120/100 target is not fully reached. The initial 24-hour extra-doctor check is disclosed in the report.
+
+```sh
+python3 simulation/demand_patterns.py simulation/input.json /tmp/capacity-v9 --extra-general-doctors 1 --doctor-shift-start 8 --bed-target-occupancy .65
+```

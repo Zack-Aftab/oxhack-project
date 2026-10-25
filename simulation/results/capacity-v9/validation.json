@@ -1,0 +1,10 @@
+{
+  "same_cohort_arrivals_categories_routing_pain_urgency_and_bed_flags_as_v8": true,
+  "patients_checked": 67676,
+  "completed_patients": 67473,
+  "single_wait_with_integer_ceiling": true,
+  "target_mean_minutes": 120,
+  "target_median_minutes": 100,
+  "actual_mean_minutes": 108.67273475940708,
+  "actual_median_minutes": 70.07891807953517
+}

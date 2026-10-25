@@ -1,0 +1,52 @@
+{
+  "synthetic_data": true,
+  "model_version": "demand_capacity_v9",
+  "measured_start": "2026-09-21",
+  "measured_end_exclusive": "2026-10-21",
+  "runs": 1,
+  "warmup_days": 3,
+  "seed": 20261027,
+  "origin_daily_targets": {
+    "H001": 562.5,
+    "H002": 450.0,
+    "H003": 360.0,
+    "H004": 405.0,
+    "H005": 472.5
+  },
+  "day_multipliers": [
+    0.99,
+    1,
+    1,
+    1,
+    1.04,
+    1.02,
+    0.95
+  ],
+  "four_hour_arrival_shares": [
+    0.08,
+    0.06,
+    0.2,
+    0.24,
+    0.26,
+    0.16
+  ],
+  "patterns": "Invented Monday 08\u201312 fracture x1.8; other weekday 08\u201312 x1.35; Saturday 04\u201312 abdominal x1.9; Sunday x1.5; Friday/Saturday late and early head/wounds x1.25. No causal evidence about bikes or alcohol.",
+  "randomness": "Poisson within-block arrivals, shared-city daily 4%, local daily 5%, block 4% mean-one lognormal factors; lognormal service durations.",
+  "priority": "Bed class 15 ahead of ordinary; stored bed urgency remains 10. Ordinary urgency truncated normal mean about 3, max7.5; queue aging one point per2min. Nonpreemptive.",
+  "planning": "Deterministic expected weekly case-work and eligibility routing; integer rosters locally calibrated toward 105\u2013140min fluid waits with >=1.5% weekly capacity reserve. This is target calibration, not NHS validation; only one stochastic month is run.",
+  "general_service": "20min case-mix mean direct work +15% of occupied time for documentation/other duties; total mean23.53min.",
+  "bed_support": "5% independent synthetic bed need; mean12h hold; capacity planned at65% nominal occupancy.",
+  "distribution": "No sampled wait floor or forced normal waiting-time distribution. Waits emerge from queues.",
+  "live_database_changed": false,
+  "capacity_change": {
+    "extra_general_doctors_when_on_duty": 1,
+    "doctor_shift_start": 8,
+    "doctor_shift_hours": 8,
+    "bed_target_occupancy": 0.65
+  },
+  "comparison_target": {
+    "mean_minutes": 120,
+    "median_minutes": 100,
+    "is_guaranteed": false
+  }
+}

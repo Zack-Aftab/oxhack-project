@@ -90,6 +90,21 @@ def plan(source):
   print(h,'planned roster',roster,'expected intake',round(n),'fluid wait',round(mean,1),flush=True)
  return raw,arrivals,work,spec,scale,profiles
 
+def adjust_capacity(profiles,extra_general_doctors=0,bed_target_occupancy=.72,doctor_shift_start=None):
+ if extra_general_doctors<0 or not 0<bed_target_occupancy<=1:raise ValueError('Invalid capacity adjustment')
+ for h,p in profiles.items():
+  before=p['general_doctors_by_four_hour_block'].copy()
+  p['baseline_general_doctors_by_four_hour_block']=before
+  p['baseline_support_beds']=p['support_beds']
+  blocks=set(range(6)) if doctor_shift_start is None else {doctor_shift_start//4,(doctor_shift_start//4+1)%6}
+  p['general_doctors_by_four_hour_block']=[n+extra_general_doctors*(i in blocks) for i,n in enumerate(before)]
+  p['support_beds']=max(8,math.ceil(p['expected_daily_arrivals']*.05*.5/bed_target_occupancy))
+  p['expected_general_doctor_utilisation']*=sum(before)/sum(p['general_doctors_by_four_hour_block'])
+  p['baseline_fluid_planning_mean_minutes']=p.pop('fluid_planning_mean_minutes')
+  p['baseline_fluid_planning_under_30_fraction']=p.pop('fluid_planning_under_30_fraction')
+  p['baseline_fluid_end_backlog_work_minutes']=p.pop('fluid_end_backlog_work_minutes')
+
+
 def population(source,seed,settings):
  raw,_,_,_,scale,profiles=settings;result=[]
  for dayno in range(-3,30):
@@ -120,9 +135,12 @@ def population(source,seed,settings):
  return result
 
 def main():
- p=argparse.ArgumentParser(description=__doc__);p.add_argument('source',type=Path);p.add_argument('output',type=Path);p.add_argument('--seed',type=int,default=20261027);args=p.parse_args()
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('source',type=Path);p.add_argument('output',type=Path);p.add_argument('--seed',type=int,default=20261027);p.add_argument('--extra-general-doctors',type=int,default=0);p.add_argument('--bed-target-occupancy',type=float,default=.72);p.add_argument('--doctor-shift-start',type=int,choices=[0,4,8,12,16,20]);args=p.parse_args()
  if args.output.exists():p.error('Choose a new output directory')
  source=json.loads(args.source.read_text());settings=plan(source);profiles=settings[-1]
+ adjusted=args.extra_general_doctors!=0 or args.bed_target_occupancy!=.72
+ version='demand_capacity_v9' if adjusted else 'demand_patterns_v8'
+ if adjusted:adjust_capacity(profiles,args.extra_general_doctors,args.bed_target_occupancy,args.doctor_shift_start)
  cohort=population(source,args.seed,settings)
  # Cap urgency's queue advantage to about two minutes per point for ordinary patients.
  original_priority=m.queue_priority;m.queue_priority=lambda v:original_priority(v,aging_minutes=2)
@@ -130,7 +148,7 @@ def main():
  rows=[m.output_patient(v,[waits[v['visit_id']]] if not v['is_emergency'] else []) for v in cohort if not v['is_warmup']]
  completed=[v for v in rows if not v['is_emergency']];regular=[v for v in completed if not v['likely_bed_occupancy']];beds=[v for v in completed if v['likely_bed_occupancy']]
  values=lambda group:[v['simulation_waits_minutes'][0] for v in group]
- summary={'model_version':'demand_patterns_v8','seed':args.seed,'runs':1,'warmup_days':3,'measured_days':30,'generated_patients':len(rows),'warmup_patients':sum(v['is_warmup'] for v in cohort),'completed_hospital_patients':len(completed),'emergency_exits':sum(v['is_emergency'] for v in rows),'bed_flag_patients':sum(v['likely_bed_occupancy'] for v in rows),'individual_waits':m.stats(values(completed)),'stored_integer_waits':m.stats([v['mean_wait_to_first_doctor_minutes'] for v in completed]),'non_bed_waits':m.stats(values(regular)),'bed_waits':m.stats(values(beds)),'non_bed_over_30_percent':100*sum(w>30 for w in values(regular))/len(regular),'bed_under_20_percent':100*sum(w<20 for w in values(beds))/len(beds),'non_bed_urgency_at_least_8':sum(v['urgency_rating']>=8 for v in regular),'wait_bins':m.bins(values(completed)),'profiles':profiles,'by_hospital':[],'origin_intake':{h:sum(v['origin_hospital_id']==h for v in rows)/30 for h in profiles},'by_weekday_block':[]}
+ summary={'model_version':version,'seed':args.seed,'runs':1,'warmup_days':3,'measured_days':30,'generated_patients':len(rows),'warmup_patients':sum(v['is_warmup'] for v in cohort),'completed_hospital_patients':len(completed),'emergency_exits':sum(v['is_emergency'] for v in rows),'bed_flag_patients':sum(v['likely_bed_occupancy'] for v in rows),'individual_waits':m.stats(values(completed)),'stored_integer_waits':m.stats([v['mean_wait_to_first_doctor_minutes'] for v in completed]),'non_bed_waits':m.stats(values(regular)),'bed_waits':m.stats(values(beds)),'non_bed_over_30_percent':100*sum(w>30 for w in values(regular))/len(regular),'bed_under_20_percent':100*sum(w<20 for w in values(beds))/len(beds),'non_bed_urgency_at_least_8':sum(v['urgency_rating']>=8 for v in regular),'wait_bins':m.bins(values(completed)),'profiles':profiles,'by_hospital':[],'origin_intake':{h:sum(v['origin_hospital_id']==h for v in rows)/30 for h in profiles},'by_weekday_block':[]}
  for h in profiles:
   group=[v for v in completed if v['hospital_id']==h];z=areas[h]
   summary['by_hospital'].append({'hospital_id':h,'patients':len(group),'daily_hospital_arrivals':len(group)/30,'general_doctor_utilisation':z['general_busy_seconds']/z['general_capacity_seconds'],'bed_utilisation':z['bed_busy_seconds']/z['bed_capacity_seconds'],**m.stats(values(group))})
@@ -138,7 +156,7 @@ def main():
   for block in range(6):
    group=[v for v in completed if (t:=dt.datetime.fromisoformat(v['arrival_at'])).weekday()==wd and t.hour//4==block]
    summary['by_weekday_block'].append({'weekday':wd,'four_hour_block':block,'patients':len(group),'category_counts':dict(collections.Counter(c for v in group for c in v['complaint_categories'])),**m.stats(values(group))})
- metadata={'synthetic_data':True,'model_version':'demand_patterns_v8','measured_start':START.date().isoformat(),'measured_end_exclusive':END.date().isoformat(),'runs':1,'warmup_days':3,'seed':args.seed,'origin_daily_targets':{h:450*f for h,f in ORIGIN_FACTORS.items()},'day_multipliers':m.WEEKDAY,'four_hour_arrival_shares':m.SHARES,'patterns':'Invented Monday 08–12 fracture x1.8; other weekday 08–12 x1.35; Saturday 04–12 abdominal x1.9; Sunday x1.5; Friday/Saturday late and early head/wounds x1.25. No causal evidence about bikes or alcohol.','randomness':'Poisson within-block arrivals, shared-city daily 4%, local daily 5%, block 4% mean-one lognormal factors; lognormal service durations.','priority':'Bed class 15 ahead of ordinary; stored bed urgency remains 10. Ordinary urgency truncated normal mean about 3, max7.5; queue aging one point per2min. Nonpreemptive.','planning':'Deterministic expected weekly case-work and eligibility routing; integer rosters locally calibrated toward 105–140min fluid waits with >=1.5% weekly capacity reserve. This is target calibration, not NHS validation; only one stochastic month is run.','general_service':'20min case-mix mean direct work +15% of occupied time for documentation/other duties; total mean23.53min.','bed_support':'5% independent synthetic bed need; mean12h hold; capacity planned at72% nominal occupancy.','distribution':'No sampled wait floor or forced normal waiting-time distribution. Waits emerge from queues.','live_database_changed':False}
+ metadata={'synthetic_data':True,'model_version':version,'measured_start':START.date().isoformat(),'measured_end_exclusive':END.date().isoformat(),'runs':1,'warmup_days':3,'seed':args.seed,'origin_daily_targets':{h:450*f for h,f in ORIGIN_FACTORS.items()},'day_multipliers':m.WEEKDAY,'four_hour_arrival_shares':m.SHARES,'patterns':'Invented Monday 08–12 fracture x1.8; other weekday 08–12 x1.35; Saturday 04–12 abdominal x1.9; Sunday x1.5; Friday/Saturday late and early head/wounds x1.25. No causal evidence about bikes or alcohol.','randomness':'Poisson within-block arrivals, shared-city daily 4%, local daily 5%, block 4% mean-one lognormal factors; lognormal service durations.','priority':'Bed class 15 ahead of ordinary; stored bed urgency remains 10. Ordinary urgency truncated normal mean about 3, max7.5; queue aging one point per2min. Nonpreemptive.','planning':'Deterministic expected weekly case-work and eligibility routing; integer rosters locally calibrated toward 105–140min fluid waits with >=1.5% weekly capacity reserve. This is target calibration, not NHS validation; only one stochastic month is run.','general_service':'20min case-mix mean direct work +15% of occupied time for documentation/other duties; total mean23.53min.','bed_support':f'5% independent synthetic bed need; mean12h hold; capacity planned at{100*args.bed_target_occupancy:g}% nominal occupancy.','distribution':'No sampled wait floor or forced normal waiting-time distribution. Waits emerge from queues.','live_database_changed':False,'capacity_change':{'extra_general_doctors_when_on_duty':args.extra_general_doctors,'doctor_shift_start':args.doctor_shift_start,'doctor_shift_hours':24 if args.doctor_shift_start is None else 8,'bed_target_occupancy':args.bed_target_occupancy},'comparison_target':{'mean_minutes':120,'median_minutes':100,'is_guaranteed':False}}
  args.output.mkdir(parents=True);dataset={'dataset_metadata':metadata,'hospitals':source['hospitals'],'hospital_specialties':profiles,'visits':rows}
  (args.output/'dataset.json.gz').write_bytes(gzip.compress(json.dumps(dataset,separators=(',',':')).encode(),mtime=0));(args.output/'summary.json').write_text(json.dumps(summary,indent=2));(args.output/'metadata.json').write_text(json.dumps(metadata,indent=2))
  for v in completed:
