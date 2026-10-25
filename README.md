@@ -1,6 +1,6 @@
 # OxHack · Hospital Comparison & Capacity Simulation
 
-**A hackathon project exploring how hospital capability, demand and staffing affect where a patient can be seen—and how long they may wait.**
+**Helping patients receive care sooner and helping clinical teams make better use of their time.**
 
 Built with **Next.js · React · TypeScript · Tailwind CSS · Supabase Postgres · Python**, with a separate **Gemini intake prototype**.
 
@@ -8,16 +8,22 @@ Built with **Next.js · React · TypeScript · Tailwind CSS · Supabase Postgres
 
 > This is a synthetic demonstration, not a clinical triage service. Hospital names are real labels; specialist coverage, staffing, patient records and operating assumptions are invented. The final wait distribution is explicitly fitted to demo targets, not measured NHS performance.
 
-## The idea
+## Why we built it
 
-A short journey to a hospital is only useful if that hospital can handle the patient's complaint. Our project combines **specialist eligibility**, **illustrative travel time**, **patient demand** and **resource-constrained waiting times** to explore that decision.
+**Our motivation is time:** the time a patient spends travelling and waiting for care, and the clinical time that can be freed by allocating resources more efficiently.
 
-The intended experience has two sides:
+For a patient, the closest hospital may still mean a longer wait before receiving care. The patient side compares **travel time plus expected waiting time** across hospitals that can handle their complaint, helping them find where they can receive care fastest. A longer journey can be worthwhile when it leads to an earlier doctor assessment.
 
-- **Patient:** describe a complaint, optionally add an image and pain score, confirm categories, then compare eligible hospitals.
-- **Hospital:** understand incoming demand and explore how changing doctor or bed capacity affects waiting times.
+The clinician side works towards the same goal through **efficient resource allocation**. By understanding demand and the availability of doctors, specialists and beds, clinical teams can identify bottlenecks, explore staffing changes and plan capacity where it is needed. The aim is to reduce delays, free up capacity and make better use of clinicians' schedules.
 
-This repository contains the application foundation, typed API contracts, comparison logic, reproducible simulations and a deployed synthetic database. The complete patient journey and hospital dashboard are still integration work.
+The intended experience connects these two sides:
+
+- **Patient:** describe a complaint, optionally add an image and pain score, confirm categories, and compare eligible hospitals by the estimated time until care.
+- **Clinician:** review demand and resource pressure, then explore allocations that shorten patient waits and use staff time more effectively.
+
+The current comparison measures journey time plus the wait from reception to **first general-doctor contact**. It does not estimate how long completing treatment will take.
+
+This repository contains the application foundation, typed API contracts, comparison logic, reproducible simulations and a deployed synthetic database. The complete patient journey and hospital dashboard are still integration work; real-world time savings have not been measured.
 
 ## What we accomplished
 
@@ -25,7 +31,7 @@ This repository contains the application foundation, typed API contracts, compar
 | --- | --- |
 | Web foundation | Next.js App Router pages for `/`, `/patient` and `/hospital`, shared components, loading/error states and a typed API client. |
 | Sample mode | Committed fixtures and an in-memory scenario adapter for offline development, including example capacity changes. |
-| Backend | A Supabase-backed catalog route and an opt-in multi-category comparison route with specialist checks, manual-category handling and an emergency stop. |
+| Backend | A Supabase-backed catalog and an opt-in comparison route that ranks eligible hospitals by travel plus waiting time, with specialist checks, manual-category handling and an emergency stop. |
 | Simulation | A discrete-event model of reception-to-first-general-doctor waits, with resource queues, changing rosters, specialist pathways and support beds. |
 | Demand modelling | Unequal hospital catchments, recurring weekday/time-of-day patterns and random variation in arrivals and service durations. |
 | Demo calibration | A separately labelled fitted wait model matching the requested distribution, mean and median while retaining raw queue results. |
