@@ -46,3 +46,7 @@ Not chosen yet. Decide who owns deployment configuration and which services or d
 ## Selected simulation and database workflow
 
 Use [simulation/README.md](../simulation/README.md). Python standard library runs the simulator; Node.js 24 built-ins back up and import Supabase data. These tools do not require an application scaffold or running web server. The chosen 30-day compressed dataset and its summaries are committed under `simulation/results/month-v5/`.
+
+## Standalone Gemini intake demo
+
+The edited Express server and page are runnable with Node.js 24 and npm. See [DEMO-SETUP.md](../DEMO-SETUP.md) for credentials, model configuration, required files and checks. This does not scaffold the agreed Next.js app or save intake data to Supabase.

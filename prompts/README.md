@@ -14,7 +14,7 @@ After validation, `intakeAction` selects:
 | `ask_follow_up` | Show one clarification question; do not display a fabricated urgency result. |
 | `confirm_categories` | Ask the patient to confirm/change categories. `is_emergency=false` means no warning signs identified from the input, not medical clearance. |
 
-Keep access to emergency-help information available independently of the model response. Handle a Gemini timeout, malformed JSON or rejected response as an unavailable assessment, never as low urgency or `is_emergency=false`. A prompt alone cannot guarantee emergency detection. No Gemini API call, real clinical validation or app UI integration is implemented here.
+Keep access to emergency-help information available independently of the model response. Handle a Gemini timeout, malformed JSON or rejected response as an unavailable assessment, never as low urgency or `is_emergency=false`. A prompt alone cannot guarantee emergency detection. This folder provides the prompt and validation; the runnable Express adapter is documented below. Model accuracy has not been clinically validated.
 
 Pain is self-reported input, not a proxy for urgency. Low pain must not rule out emergency warning signs. The category IDs and a normal-looking image cannot establish safety. Gemini's urgency score is separate from the simulation's `likely_bed_occupancy` flag and does not automatically change the stored simulated wait.
 
@@ -33,3 +33,7 @@ node --test prompts/validate-intake.test.mjs
 ```
 
 Tests cover output validation, missing information, independent pain/urgency and emergency UI actions using fabricated model outputs. They do not test Gemini's medical performance.
+
+## Runnable server
+
+The Express prototype now uses the same instruction text from root `category-rules.txt`, with this folder’s schema and validator. See [DEMO-SETUP.md](../DEMO-SETUP.md). The `/classify` adapter uses these actions to drive the page, without changing the shared comparison endpoints or storing data.

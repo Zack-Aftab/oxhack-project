@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QueueCare demo intake</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      font: 16px Arial, sans-serif;
+      max-width: 580px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f3f6fa;
+      color: #193047;
+    }
+
+    p { line-height: 1.5; }
+
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    textarea, select {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      font: inherit;
+    }
+
+    button {
+      padding: 10px 15px;
+      margin: 8px 0;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: wait;
+    }
+
+    #dropzone {
+      border: 2px dashed #2675cc;
+      border-radius: 12px;
+      padding: 25px;
+      text-align: center;
+      background: white;
+    }
+
+    #dropzone.over { background: #dcecff; }
+
+    #preview {
+      display: block;
+      max-width: 100%;
+      max-height: 250px;
+      margin: 20px auto;
+    }
+
+    #tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 15px 0;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #deecff;
+      border-radius: 20px;
+      padding: 7px 12px;
+    }
+
+    .tag button {
+      border: 0;
+      background: transparent;
+      padding: 3px;
+      margin: 0;
+      font-weight: bold;
+    }
+
+    [hidden] { display: none !important; }
+    .panel { background: white; padding: 18px; border-radius: 12px; margin: 20px 0; }
+    #emergency { border: 3px solid #a71919; background: #fff0f0; padding: 20px; margin: 20px 0; }
+    #emergency a { color: #8b1111; font-weight: bold; }
+    #assessment dd { margin: 5px 0 15px; }
+    .hint { font-size: 0.9rem; }
+
+  </style>
+</head>
+
+<body>
+  <h1>Describe your symptoms</h1>
+  <p>Add a description, an image, or both. Use fictional examples for this demo.</p>
+  <p class="hint">AI estimates are not clinical triage and cannot rule out an emergency.
+    For a possible life-threatening emergency, <a href="tel:999">call 999</a> without waiting for this form.</p>
+  <section id="emergency" role="alert" hidden>
+    <h2 id="emergencyHeading" tabindex="-1">Possible medical emergency</h2>
+    <p>Call 999 now. Do not wait for hospital comparisons in this app.</p>
+    <a href="tel:999">Call 999</a>
+  </section>
+
+  <label for="symptoms">Description</label>
+  <textarea
+    id="symptoms"
+    rows="4"
+    maxlength="2000"
+    placeholder="For example: I fell off my bike, scraped my elbow and cannot move my arm."
+  ></textarea>
+
+  <label for="pain">Your pain score</label>
+  <select id="pain" aria-describedby="painHelp">
+    <option value="">Not reported</option>
+  </select>
+  <p id="painHelp" class="hint">1 = minimal pain; 10 = worst imaginable pain. Low pain does not rule out an emergency.</p>
+
+  <div id="dropzone">
+    <p>Drag an optional image here</p>
+    <button id="choose" type="button">Choose image</button>
+    <input
+      id="file"
+      type="file"
+      accept="image/jpeg,image/png,image/webp"
+      hidden
+    >
+    <p>JPG, PNG or WebP, up to 3 MB</p>
+  </div>
+
+  <img id="preview" alt="Selected image preview" hidden>
+  <button id="remove" type="button" hidden>Remove image</button>
+
+  <div>
+    <button id="analyse" type="button">Assess demo symptoms</button>
+  </div>
+
+  <p id="status" role="status" aria-live="polite">Ready when you are.</p>
+
+  <section id="assessment" class="panel" aria-labelledby="assessmentHeading" hidden>
+    <h2 id="assessmentHeading">AI demo estimate</h2>
+    <dl>
+      <dt>Pain you reported</dt><dd id="painResult"></dd>
+      <dt>Urgency estimate (10 = greatest concern)</dt><dd id="urgencyResult"></dd>
+    </dl>
+    <p id="emergencyResult"></p>
+    <p id="reason"></p>
+    <p id="followUp" role="status" hidden></p>
+  </section>
+
+  <h2>Selected categories</h2>
+  <p>Check the suggestions. Remove tags or add categories below.</p>
+
+  <div id="tags"></div>
+
+  <label for="addCategory">Add category</label>
+  <select id="addCategory"></select>
+
+  <button id="confirm" type="button">Confirm categories</button>
+  <p id="confirmation" role="status"></p>
+  <button id="reset" type="button">Start a new fictional example</button>
+
+  <script>
+    const labels = {
+      fracture_sprain_or_dislocation: 'Fracture, sprain or dislocation',
+      cuts_or_wounds: 'Cuts or wounds',
+      head_injury_or_neurological_symptoms: 'Head injury or neurological symptoms',
+      breathing_problems: 'Breathing problems',
+      chest_pain_or_heart_symptoms: 'Chest pain or heart symptoms',
+      abdominal_or_stomach_problems: 'Abdominal or stomach problems',
+      other_or_uncategorised: 'Other / uncategorised', unknown: 'Unknown'
+    };
+    const byId = id => document.getElementById(id);
+    const symptoms = byId('symptoms'), pain = byId('pain'), dropzone = byId('dropzone');
+    const input = byId('file'), choose = byId('choose'), preview = byId('preview'), remove = byId('remove');
+    const analyse = byId('analyse'), status = byId('status'), tags = byId('tags'), addCategory = byId('addCategory');
+    const confirm = byId('confirm'), confirmation = byId('confirmation'), reset = byId('reset');
+    let selectedImage = null, previewUrl, busy = false, selectedCategories = [], assessment = null, emergencyActive = false;
+    for (let n = 1; n <= 10; n++) pain.add(new Option(String(n), String(n)));
+
+    function updateControls() {
+      for (const c of [symptoms, pain, input, choose, remove, reset]) c.disabled = busy;
+      analyse.disabled = busy || emergencyActive;
+      addCategory.disabled = busy || emergencyActive;
+      confirm.disabled = busy || emergencyActive || !selectedCategories.length || assessment?.needsMoreInformation === true;
+    }
+    function renderCategories() {
+      tags.replaceChildren();
+      if (!selectedCategories.length) {
+        const text = document.createElement('p'); text.textContent = 'No categories selected.'; tags.append(text);
+      }
+      for (const id of selectedCategories) {
+        const tag = document.createElement('span'); tag.className = 'tag';
+        const name = document.createElement('span'); name.textContent = labels[id];
+        const button = document.createElement('button'); button.type = 'button'; button.textContent = '×';
+        button.disabled = busy || emergencyActive; button.setAttribute('aria-label', 'Remove ' + labels[id]);
+        button.onclick = () => {
+          if (busy || emergencyActive) return;
+          selectedCategories = selectedCategories.filter(x => x !== id); confirmation.textContent = ''; renderCategories();
+        };
+        tag.append(name, button); tags.append(tag);
+      }
+      addCategory.replaceChildren(new Option('Choose a category…', ''));
+      for (const [id, label] of Object.entries(labels)) if (!selectedCategories.includes(id)) addCategory.add(new Option(label, id));
+      updateControls();
+    }
+    function invalidateAssessment() {
+      assessment = null; selectedCategories = []; confirmation.textContent = '';
+      byId('assessment').hidden = true;
+      // An emergency warning is sticky for this example, including after edits/errors.
+      status.textContent = emergencyActive ? 'Call 999. Comparisons and category confirmation are stopped for this example.' : 'Details changed. Assess again when ready.';
+      renderCategories();
+    }
+    symptoms.oninput = invalidateAssessment;
+    pain.onchange = invalidateAssessment;
+    addCategory.onchange = () => {
+      if (busy || emergencyActive) return;
+      const id = addCategory.value; if (!id) return;
+      if (id === 'unknown') selectedCategories = ['unknown'];
+      else selectedCategories = [...selectedCategories.filter(x => x !== 'unknown'), id];
+      confirmation.textContent = ''; renderCategories();
+    };
+    function selectImage(file) {
+      if (busy) return;
+      if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size === 0 || file.size > 3 * 1024 * 1024) {
+        status.textContent = 'Choose a JPG, PNG or WebP image up to 3 MB.'; return;
+      }
+      selectedImage = file; invalidateAssessment();
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      previewUrl = URL.createObjectURL(file); preview.src = previewUrl;
+      preview.hidden = false; remove.hidden = false;
+      if (!emergencyActive) status.textContent = 'Image selected. Assess when ready.';
+    }
+    choose.onclick = () => input.click();
+    input.onchange = () => { if (input.files[0]) selectImage(input.files[0]); input.value = ''; };
+    function clearImage() {
+      selectedImage = null; if (previewUrl) URL.revokeObjectURL(previewUrl); previewUrl = undefined;
+      preview.removeAttribute('src'); preview.hidden = true; remove.hidden = true; input.value = '';
+    }
+    remove.onclick = () => { if (busy) return; clearImage(); invalidateAssessment(); };
+    window.addEventListener('dragover', e => e.preventDefault());
+    window.addEventListener('drop', e => e.preventDefault());
+    dropzone.ondragover = e => { e.preventDefault(); if (!busy) dropzone.classList.add('over'); };
+    dropzone.ondragleave = () => dropzone.classList.remove('over');
+    dropzone.ondrop = e => {
+      e.preventDefault(); dropzone.classList.remove('over');
+      if (e.dataTransfer.files[0]) selectImage(e.dataTransfer.files[0]);
+    };
+    function setBusy(value) { busy = value; renderCategories(); }
+    function checkedResponse(data, submittedPain) {
+      const scores = v => v === null || (Number.isInteger(v) && v >= 1 && v <= 10);
+      const cats = data.suggestedCategories;
+      if (!Array.isArray(cats) || !cats.length || cats.length > 8 || new Set(cats).size !== cats.length ||
+          !cats.every(id => Object.hasOwn(labels, id)) || (cats.includes('unknown') && cats.length > 1) ||
+          !scores(data.urgencyRating) || data.painScore !== submittedPain ||
+          !(data.isEmergency === null || typeof data.isEmergency === 'boolean') ||
+          typeof data.needsMoreInformation !== 'boolean' || typeof data.reason !== 'string') throw new Error('Invalid assessment response. No assessment is available.');
+      const action = data.isEmergency === true ? 'show_999' : data.needsMoreInformation ? 'ask_follow_up' : 'confirm_categories';
+      if (data.action !== action || data.requiresConfirmation !== (action === 'confirm_categories') ||
+          (action === 'show_999' && (data.urgencyRating !== 10 || data.needsMoreInformation || data.followUpQuestion !== null)) ||
+          (action === 'ask_follow_up' && (typeof data.followUpQuestion !== 'string' || !data.followUpQuestion.trim())) ||
+          (action === 'confirm_categories' && (data.urgencyRating === null || data.isEmergency !== false || data.followUpQuestion !== null))) {
+        throw new Error('Invalid assessment response. No assessment is available.');
+      }
+      return data;
+    }
+    function showAssessment(data) {
+      assessment = data;
+      byId('assessment').hidden = false;
+      byId('painResult').textContent = data.painScore === null ? 'Not reported' : data.painScore + '/10';
+      byId('urgencyResult').textContent = data.urgencyRating === null ? 'Not enough information' : data.urgencyRating + '/10';
+      byId('reason').textContent = data.reason;
+      byId('followUp').textContent = data.followUpQuestion ?? ''; byId('followUp').hidden = !data.needsMoreInformation;
+      byId('emergencyResult').textContent = data.isEmergency === true ? 'Possible emergency identified.' : data.isEmergency === null ? 'Emergency status could not be assessed.' : 'No emergency warning signs identified from this input. This is not medical clearance.';
+      if (data.action === 'show_999') {
+        emergencyActive = true; selectedCategories = []; byId('emergency').hidden = false;
+        byId('emergencyHeading').focus();
+        status.textContent = 'Call 999 now. Do not wait for hospital comparisons.';
+      } else {
+        selectedCategories = [...data.suggestedCategories];
+        status.textContent = data.needsMoreInformation ? 'More information is needed. Update your description and assess again.' : 'Confirm or change the suggested categories. The urgency number is an AI demo estimate.';
+      }
+    }
+    analyse.onclick = async () => {
+      if (busy || emergencyActive) return;
+      const description = symptoms.value.trim();
+      if (!selectedImage && !description) { status.textContent = 'Add an image or description first.'; return; }
+      const submittedPain = pain.value === '' ? null : Number(pain.value);
+      invalidateAssessment(); setBusy(true); status.textContent = 'Assessing demo symptoms…';
+      const form = new FormData(); form.append('symptoms', description); form.append('pain_score', pain.value);
+      if (selectedImage) form.append('image', selectedImage);
+      try {
+        const response = await fetch('/classify', { method: 'POST', body: form, signal: AbortSignal.timeout(60000) });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Assessment unavailable.');
+        showAssessment(checkedResponse(data, submittedPain));
+      } catch (error) {
+        assessment = null; byId('assessment').hidden = true;
+        status.textContent = error.name === 'TimeoutError' ? 'Assessment timed out. Urgency and emergency status are unavailable. Try again.' : error.message + ' You can select categories manually; urgency and emergency status remain unassessed.';
+      } finally { setBusy(false); }
+    };
+    confirm.onclick = () => {
+      if (busy || emergencyActive || assessment?.needsMoreInformation || !selectedCategories.length) return;
+      confirmation.textContent = 'Confirmed categories for this page: ' + selectedCategories.map(id => labels[id]).join('; ') +
+        (assessment ? '. This does not confirm medical safety.' : '. No AI urgency or emergency assessment is available.');
+    };
+    reset.onclick = () => {
+      if (busy) return;
+      emergencyActive = false; byId('emergency').hidden = true; symptoms.value = ''; pain.value = ''; clearImage();
+      invalidateAssessment(); status.textContent = 'Ready for a new fictional example.';
+    };
+    renderCategories();
+  </script>
+</body>
+</html>
