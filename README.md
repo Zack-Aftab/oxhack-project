@@ -2,7 +2,7 @@
 
 One project. Three people. Everyone can use their own coding tools and work at the same time.
 
-**Start here:** We are building a synthetic hospital-comparison and capacity-scenario demo. The app has no name yet. The application still needs to be built.
+**Start here:** We are building a synthetic hospital-comparison and capacity-scenario demo. The app has no name yet. A runnable Next.js foundation now exists (see [SETUP.md](docs/SETUP.md)); patient and hospital screens are being built on top of it.
 
 **Starting development with Claude Code?** Open the [build handoff](docs/build/START-HERE.md), then use the [Claude starting prompt](docs/build/CLAUDE-START-PROMPT.md) with your exported design file. It includes the scope and the backend teammate's report. The [API proposal](docs/INTERFACES.md) and [small samples](fixtures/queuecare/README.md) let UI work begin before a backend is available; backend-owner agreement is still needed.
 
@@ -24,7 +24,7 @@ Between us we use Antigravity, Codex and Claude Code. Everyone can choose the to
 - **[Ready to build something?](docs/WORKING-TOGETHER.md)** Make your own task folder and work alongside everyone else.
 - **[Something confusing or broken?](docs/HELP.md)** Plain-English explanations and safe first steps.
 - **[What are we building?](docs/PROJECT.md)** Our product and technical choices.
-- **[How do we run the app?](docs/SETUP.md)** The selected stack and setup status; runnable commands still need adding.
+- **[How do we run the app?](docs/SETUP.md)** Install, run and check commands for the Next.js app, plus data-mode and deployment notes.
 
 ## How we work together
 

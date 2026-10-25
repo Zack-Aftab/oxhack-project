@@ -1,0 +1,300 @@
+@import "tailwindcss";
+
+/* =========================================================================
+   Design tokens — "Soft glass" (docs/build/inputs/hospital-DESIGN.md §2–5).
+   Write colours, radii and shadows through these variables only.
+   ========================================================================= */
+:root {
+  --ink: #0b0b0c;
+  --ink-2: #3a3a3f;
+  --muted: #6e6e73;
+  --muted-2: #8a8a90;
+  --hairline: #d9d9de;
+  --hairline-2: #c9c9ce;
+  --chevron: #b5b5ba;
+  --dot-off: #e2e2e6;
+  --dot-past: #a3a3a9;
+  --ground: #f2f2f4;
+  --ground-tint: #e2ebf8;
+  --surface: #ffffff;
+
+  --accent: #005eb8;
+  --accent-soft: #7faee0;
+  --accent-rgb: 0, 94, 184;
+
+  --sev-1: #e9b949;
+  --sev-2: #f28c28;
+  --sev-3: #d9661f;
+  --sev-1-bg: #fbf1d1;
+  --sev-1-fg: #6e5410;
+  --sev-2-bg: #fdebd9;
+  --sev-2-fg: #8a4410;
+  --sev-3-bg: #f8dfd0;
+  --sev-3-fg: #7a3410;
+
+  --emergency: #d12e2e;
+  --emergency-text: #b3261e;
+
+  --attn-red-bg: #fbe4df;
+  --attn-amber-bg: #f8edd7;
+  --attn-green-bg: #d9efe8;
+  --ok: #1f6b4f;
+
+  --r-pill: 999px;
+  --r-card-lg: 26px;
+  --r-card: 22px;
+  --r-inset: 16px;
+  --r-tile: 14px;
+  --r-badge: 10px;
+
+  --shadow-glass: 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 8px 24px rgba(20, 30, 50, 0.06);
+  --shadow-glass-lg: 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 16px 40px rgba(20, 30, 50, 0.1);
+  --shadow-dock: 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 14px 36px rgba(20, 30, 50, 0.1);
+  --shadow-button: 0 12px 30px rgba(0, 0, 0, 0.2);
+  --shadow-white-inset: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --glow-accent: 0 0 16px rgba(0, 94, 184, 0.5);
+
+  --glass-bg: rgba(255, 255, 255, 0.62);
+  --glass-bg-strong: rgba(255, 255, 255, 0.72);
+  --glass-bg-hover: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.85);
+  --glass-blur: blur(24px);
+  --hatch: repeating-linear-gradient(135deg, var(--hairline-2) 0 1.5px, transparent 1.5px 5px);
+
+  --dot: 7px;
+  --dot-gap: 3px;
+
+  --font-sans: var(--font-inter), Inter, system-ui, sans-serif;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-muted-2: var(--muted-2);
+  --color-hairline: var(--hairline);
+  --color-ground: var(--ground);
+  --color-surface: var(--surface);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-emergency: var(--emergency);
+  --font-sans: var(--font-sans);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--ground);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 21px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  background: radial-gradient(90% 40% at 50% 0%, var(--ground-tint) 0%, transparent 70%), var(--ground);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+}
+
+button,
+select {
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--r-badge);
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+.eyebrow {
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+/* Materials */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-glass);
+}
+
+.glass-strong {
+  background: var(--glass-bg-strong);
+  backdrop-filter: var(--glass-blur) saturate(160%);
+  -webkit-backdrop-filter: var(--glass-blur) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: var(--shadow-glass-lg);
+}
+
+.inset-white {
+  background: var(--surface);
+  border-radius: var(--r-inset);
+  box-shadow: var(--shadow-white-inset);
+}
+
+.dashed {
+  border: 1px dashed var(--hairline-2);
+  border-radius: 20px;
+  color: var(--muted);
+}
+
+/* Motion (DESIGN.md §7) */
+@keyframes popC {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes writeC {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes tickC {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes growC {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes riseC {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+@keyframes dropC {
+  from {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes pulseC {
+  from {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  to {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+@keyframes blinkC {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+@keyframes rippleC {
+  from {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  to {
+    transform: scale(1.18);
+    opacity: 0;
+  }
+}
+@keyframes edgeC {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes flashX {
+  from {
+    background: #d6e6f8;
+  }
+  to {
+    background: transparent;
+  }
+}
+@keyframes driveC {
+  from {
+    left: 0;
+  }
+  to {
+    left: calc(27% - 14px);
+  }
+}
+
+.pop {
+  animation: popC 0.45s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-motion] {
+    animation: none !important;
+  }
+}
