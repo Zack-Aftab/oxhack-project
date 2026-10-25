@@ -34,7 +34,7 @@ python3 simulation/demand_patterns.py simulation/input.json /tmp/capacity-v9 --e
 
 ## User-approved fitted demo distribution
 
-Latest display estimates: [fitted v11 report](results/fitted-v11/REPORT.md). They explicitly fit the requested 5% / 5% / proportional remaining bands, mean120 and median100. Raw queue results remain separate under `results/distribution-v10`; fitted values do not claim to be raw simulation event times. Freeze the transformation for capacity comparisons rather than refitting each scenario. Nothing was imported into Supabase.
+Latest display estimates: [fitted v11 report](results/fitted-v11/REPORT.md). They explicitly fit the requested 5% / 5% / proportional remaining bands, mean120 and median100. Raw queue results remain separate under `results/distribution-v10`; fitted values do not claim to be raw simulation event times. Freeze the transformation for capacity comparisons rather than refitting each scenario. The fitted dataset was subsequently imported and activated in Supabase on25 October2026; see `supabase/verification/fitted-v11-live.json`.
 
 ```sh
 python3 simulation/calibrate_distribution.py simulation/input.json /tmp/replay-queue --rounds 0 --trials-from simulation/results/distribution-v10

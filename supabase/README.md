@@ -11,4 +11,4 @@ Actual schema, differences from the old fixtures and tested commands are recorde
 
 ## Latest prepared update
 
-See [FITTED-V11.md](FITTED-V11.md) for the complete fitted-data replacement. It is tested locally but not applied to Supabase. Use `downloads/APPLY_FITTED_V11.sql` rather than rerunning older migrations. The private backup and active-data switch are included.
+See [FITTED-V11.md](FITTED-V11.md) for the complete fitted-data replacement. It was applied and independently verified live on25 October2026; see `verification/fitted-v11-live.json`. Use `downloads/APPLY_FITTED_V11.sql` rather than rerunning older migrations. The private backup and active-data switch are included.

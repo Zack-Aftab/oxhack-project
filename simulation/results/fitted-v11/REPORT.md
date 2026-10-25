@@ -1,6 +1,6 @@
 # User-approved fitted demo waits — v11
 
-**This is an explicitly fitted synthetic distribution, not raw queue output or measured NHS waiting times.** The user selected “Fit the synthetic wait distribution to my targets.” The fitted estimate and raw queue wait are separate fields. No live Supabase table or existing API shape was changed.
+**This is an explicitly fitted synthetic distribution, not raw queue output or measured NHS waiting times.** The user selected “Fit the synthetic wait distribution to my targets.” The fitted estimate and raw queue wait are separate fields. The fitted data was activated in Supabase and independently verified on25 October2026. Existing API response shapes were not changed.
 
 ## Requested distribution and actual result
 
@@ -63,4 +63,4 @@ python3 simulation/fit_demo_distribution.py /tmp/replay-queue /tmp/replay-fitted
 python3 -m unittest discover -s simulation/tests -v
 ```
 
-Output folders must not exist. A fresh calibration search can instead use --hourly --rounds 24, but the stored trial selection reproduces the published capacity profile. Four search passes (coarse, resumed coarse, hourly, and a high-short-wait-weight diagnostic) preceded the final selection; each capacity configuration used one fixed synthetic month. This was calibration, not repeated independent validation. No fitted records have been imported into Supabase or substituted into the app.
+Output folders must not exist. A fresh calibration search can instead use --hourly --rounds 24, but the stored trial selection reproduces the published capacity profile. Four search passes (coarse, resumed coarse, hourly, and a high-short-wait-weight diagnostic) preceded the final selection; each capacity configuration used one fixed synthetic month. This was calibration, not repeated independent validation. The fitted records have now been imported and activated in Supabase; see supabase/verification/fitted-v11-live.json. Application deployment is separate.

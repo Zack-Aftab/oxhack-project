@@ -1,6 +1,6 @@
 # Activate the fitted demo dataset
 
-Status: prepared and locally tested; **not applied to the live project**. The saved Supabase key is rejected with HTTP401. The user selected SQL Editor for applying schema/data changes.
+Status: **applied and independently verified live on 25 October 2026**. The management API ran the small setup, all67,676 records were uploaded in batches, and the service-only activation RPC switched the active dataset to fitted-v11. Live SQL and REST verification passed. See [verification/fitted-v11-live.json](verification/fitted-v11-live.json). Prior68,705 visits and3,600 staffing rows remain in the private backup schema.
 
 Run the complete generated `downloads/APPLY_FITTED_V11.sql` in the existing project's SQL Editor. The script imports all data, validates it, archives prior tables in the private `queuecare_before_fitted_v11` schema, and activates the new public views in one transaction. Re-running the full script is safe. Do not rerun old migrations001/003.
 
@@ -42,4 +42,4 @@ Then the assistant can run:
 NODE_USE_ENV_PROXY=1 node simulation/import_fitted_v11.mjs --apply
 ```
 
-The importer upserts 1,000 records per HTTP request and calls the validated activation function only after all batches succeed. It retains epoch microseconds as decimal strings to avoid JavaScript integer precision loss. `--dry-run` prepares records without making any network request. No database update has happened merely because these files exist.
+The importer upserts 1,000 records per HTTP request and calls the validated activation function only after all batches succeed. It retains epoch microseconds as decimal strings to avoid JavaScript integer precision loss. `--dry-run` prepares records without making any network request. The import and activation have now been completed; file generation alone does not perform an update.

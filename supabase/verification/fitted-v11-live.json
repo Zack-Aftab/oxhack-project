@@ -1,0 +1,50 @@
+{
+  "dataset_id": "fitted-v11",
+  "wait_bands": [
+    {
+      "band": 1,
+      "patients": 3374,
+      "percentage": 5.000519
+    },
+    {
+      "band": 2,
+      "patients": 3373,
+      "percentage": 4.999037
+    },
+    {
+      "band": 3,
+      "patients": 15069,
+      "percentage": 22.333378
+    },
+    {
+      "band": 4,
+      "patients": 19425,
+      "percentage": 28.789293
+    },
+    {
+      "band": 5,
+      "patients": 15028,
+      "percentage": 22.272613
+    },
+    {
+      "band": 6,
+      "patients": 11204,
+      "percentage": 16.605161
+    }
+  ],
+  "verified_at": "2026-10-25T04:36:20.84091+00:00",
+  "emergency_exits": 203,
+  "capability_cells": 35,
+  "hospital_patients": 67473,
+  "fitted_mean_minutes": 120.000000000001,
+  "hourly_capacity_rows": 3600,
+  "archived_prior_visits": 68705,
+  "fitted_median_minutes": 100,
+  "anon_can_select_visits": false,
+  "bed_urgency_violations": 0,
+  "archived_prior_staffing": 3600,
+  "unsupported_assignments": 0,
+  "specialist_staffing_rows": 25200,
+  "stored_integer_mean_minutes": 120.50396454878248,
+  "rest_read_verified": true
+}
