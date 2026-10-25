@@ -51,15 +51,16 @@ A teammate's `localhost` is their laptop. For a phone demo use a reachable deplo
 | --- | --- | --- |
 | `npm run lint` | ESLint with `eslint-config-next` (core-web-vitals + TypeScript rules) | nothing external |
 | `npm run typecheck` | `tsc --noEmit` over `src/` and `contracts/` | nothing external |
+| `npm run test` | Dependency-free unit tests with `node --test` (`src/**/*.test.mts`, Node type stripping) | nothing external |
 | `npm run build` | Production Next.js build (Turbopack) | Google Fonts for Inter at build time |
-| `npm run check` | All three in order | as above |
+| `npm run check` | All four in order | as above |
 | `python3 scripts/prepare_queuecare_fixtures.py "/path/to/QueueCare Mock Dataset.json" --check` | Committed fixtures match the external source | the original dataset, outside the repo |
 
-There is no unit-test runner yet; add one with the first server-side model or route code. Browser walk-throughs are recorded in each PR.
+Unit tests use Node's built-in runner, so no test dependency is needed; add route and model tests the same way. Browser walk-throughs are recorded in each PR.
 
 ## Automated GitHub checks
 
-`.github/workflows/ci.yml` runs on pull requests and pushes to `main`: `npm ci`, `npm run lint`, `npm run typecheck`, `npm run build` on Node 24 with `NEXT_PUBLIC_DATA_MODE=sample`. The check appears as **checks / lint, typecheck, build**. Make it required in branch protection only after it has run green on a PR.
+`.github/workflows/ci.yml` runs on pull requests and pushes to `main`: `npm ci`, `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build` on Node 24 with `NEXT_PUBLIC_DATA_MODE=sample`. The check appears as **checks / lint, typecheck, build**. Make it required in branch protection only after it has run green on a PR.
 
 ## Demo deployment
 
