@@ -1,3 +1,4 @@
+import { compareMultiple } from "./multi";
 import type {
   CapacityRequest,
   CatalogResponse,
@@ -43,6 +44,7 @@ const json = (value: unknown): RequestInit => ({
 export function createLiveClient(): ApiClient {
   return {
     mode: "live",
+    compareMultiple,
     getCatalog: () => request<CatalogResponse>("/api/catalog"),
     compare: (body) => request<CompareResponse>("/api/compare", { method: "POST", ...json(body) }),
     getDashboard: (scenarioId, simulationAt) => {

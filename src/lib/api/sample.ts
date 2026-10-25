@@ -1,3 +1,10 @@
+import type { MultiCompareRequest, MultiCompareResponse } from "@contracts/multi-compare";
+import multiRequest from "@fixtures/specialist-v7/multi.request.json";
+import multiResponse from "@fixtures/specialist-v7/multi.response.json";
+import bedRequest from "@fixtures/specialist-v7/bed-max.request.json";
+import bedResponse from "@fixtures/specialist-v7/bed-max.response.json";
+import manualResponse from "@fixtures/specialist-v7/manual.response.json";
+import emergencyResponse from "@fixtures/specialist-v7/emergency.response.json";
 import type {
   CapacityRequest,
   CatalogResponse,
@@ -87,6 +94,17 @@ function currentDashboard(): DashboardResponse {
 export function createSampleClient(): ApiClient {
   return {
     mode: "sample",
+
+    async compareMultiple(request: MultiCompareRequest): Promise<MultiCompareResponse> {
+      await latency();
+      if (request.isEmergency) return clone(emergencyResponse) as MultiCompareResponse;
+      if (request.complaintCategories.length===1 && request.complaintCategories[0]==="unknown") return clone(manualResponse) as MultiCompareResponse;
+      for (const [expected, response] of [[multiRequest,multiResponse],[bedRequest,bedResponse]] as const) {
+        const same=request.urgencyRating===expected.urgencyRating && request.likelyBedOccupancy===expected.likelyBedOccupancy && request.simulationAt===expected.simulationAt && request.originId===expected.originId && request.travelMode===expected.travelMode && [...request.complaintCategories].sort().join(",")===[...expected.complaintCategories].sort().join(",");
+        if(same) return clone(response) as MultiCompareResponse;
+      }
+      throw new ApiError("SAMPLE_UNAVAILABLE", "Specialist sample mode supports the committed examples only. Live mode requires the specialist dataset seed.", 501);
+    },
 
     async getCatalog() {
       await latency();

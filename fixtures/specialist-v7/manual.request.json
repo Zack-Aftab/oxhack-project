@@ -1,0 +1,11 @@
+{
+  "complaintCategories": [
+    "unknown"
+  ],
+  "urgencyRating": null,
+  "likelyBedOccupancy": false,
+  "isEmergency": false,
+  "simulationAt": "2026-09-25T18:00:00+01:00",
+  "originId": "london-demo",
+  "travelMode": "demo"
+}

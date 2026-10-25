@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "queuecare.multi.v1",
+  "syntheticData": true,
+  "notice": "Synthetic demo. All category-specialist links, coverage, staffing, urgency, travel and waits are invented; hospital names are not evidence of actual service availability.",
+  "action": "recommendations",
+  "message": "Only sites covering every confirmed category are ranked. Travel and waits are demo estimates.",
+  "effectiveUrgencyRating": 4.25,
+  "complaintCategories": [
+    "fracture_sprain_or_dislocation",
+    "chest_pain_or_heart_symptoms"
+  ],
+  "hospitals": [
+    {
+      "hospitalId": "H001",
+      "name": "The Royal London Hospital",
+      "requiredSpecialties": [
+        "orthopaedics",
+        "cardiology"
+      ],
+      "doctorsOnDuty": {
+        "orthopaedics": 3,
+        "cardiology": 3
+      },
+      "travelMinutes": 24,
+      "estimatedWaitMinutes": 52,
+      "totalMinutes": 76,
+      "estimateSource": "simulation_urgency_band",
+      "sampleCount": 5986
+    }
+  ],
+  "excludedHospitals": [
+    {
+      "hospitalId": "H002",
+      "missingSpecialties": [
+        "cardiology"
+      ]
+    },
+    {
+      "hospitalId": "H003",
+      "missingSpecialties": [
+        "orthopaedics"
+      ]
+    },
+    {
+      "hospitalId": "H004",
+      "missingSpecialties": [
+        "orthopaedics"
+      ]
+    },
+    {
+      "hospitalId": "H005",
+      "missingSpecialties": [
+        "cardiology"
+      ]
+    }
+  ]
+}

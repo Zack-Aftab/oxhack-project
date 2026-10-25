@@ -1,0 +1,9 @@
+{
+  "patients_checked": 67346,
+  "counts_reconcile": true,
+  "all_completed_patients_specialty_matched": true,
+  "all_bed_flags_max_urgency": true,
+  "every_completed_patient_has_five_samples_and_integer_mean": true,
+  "explicit_boolean_coverage_cells": 35,
+  "hub_covers_all_known_combinations": true
+}

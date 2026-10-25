@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "queuecare.multi.v1",
+  "syntheticData": true,
+  "notice": "Synthetic demo: category-specialist links, availability, urgency and waits are not verified clinical data.",
+  "hospitals": [],
+  "excludedHospitals": [],
+  "action": "self_categorise",
+  "message": "Select and confirm your categories manually before hospital recommendations.",
+  "effectiveUrgencyRating": null,
+  "complaintCategories": [
+    "unknown"
+  ]
+}

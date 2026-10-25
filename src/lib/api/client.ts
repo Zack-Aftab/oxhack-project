@@ -1,3 +1,4 @@
+import type { MultiCompareRequest, MultiCompareResponse } from "@contracts/multi-compare";
 import type {
   CapacityRequest,
   CatalogResponse,
@@ -22,6 +23,8 @@ export interface ApiClient {
   readonly mode: DataMode;
   getCatalog(): Promise<CatalogResponse>;
   compare(request: CompareRequest): Promise<CompareResponse>;
+  /** Opt-in specialist/urgency contract; legacy single-category comparison is unchanged. */
+  compareMultiple(request: MultiCompareRequest): Promise<MultiCompareResponse>;
   getDashboard(scenarioId: string, simulationAt: string): Promise<DashboardResponse>;
   updateCapacity(scenarioId: string, hospitalId: string, request: CapacityRequest): Promise<DashboardResponse>;
   /** Proposed POST /api/classify. */

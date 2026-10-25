@@ -1,0 +1,12 @@
+{
+  "complaintCategories": [
+    "fracture_sprain_or_dislocation",
+    "chest_pain_or_heart_symptoms"
+  ],
+  "urgencyRating": 4.25,
+  "likelyBedOccupancy": false,
+  "isEmergency": true,
+  "simulationAt": "2026-09-25T18:00:00+01:00",
+  "originId": "london-demo",
+  "travelMode": "demo"
+}

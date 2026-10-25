@@ -1,0 +1,86 @@
+{
+  "dataset_metadata": {
+    "synthetic_data": true,
+    "original_source_sha256": "b25f8250d941f7ce6f1a3cd88b7740838f8724ff95a66b608c12c100051c3f05",
+    "notice": "Invented case mix and operating data; real hospital locations are demo labels only."
+  },
+  "hospitals": [
+    {
+      "hospital_id": "H001",
+      "name": "The Royal London Hospital",
+      "address": "Whitechapel Road, Whitechapel, London E1 1FR",
+      "latitude": 51.518,
+      "longitude": -0.0588
+    },
+    {
+      "hospital_id": "H002",
+      "name": "St Mary\u2019s Hospital",
+      "address": "Praed Street, London W2 1NY",
+      "latitude": 51.51722,
+      "longitude": -0.17306
+    },
+    {
+      "hospital_id": "H003",
+      "name": "University College Hospital",
+      "address": "235 Euston Road, London NW1 2BU",
+      "latitude": 51.52524,
+      "longitude": -0.1344
+    },
+    {
+      "hospital_id": "H004",
+      "name": "St Thomas\u2019 Hospital",
+      "address": "Westminster Bridge Road, London SE1 7EH",
+      "latitude": 51.49802,
+      "longitude": -0.11801
+    },
+    {
+      "hospital_id": "H005",
+      "name": "King\u2019s College Hospital",
+      "address": "Denmark Hill, London SE5 9RS",
+      "latitude": 51.46867,
+      "longitude": -0.09233
+    }
+  ],
+  "case_mix": [
+    {
+      "complaint_category": "abdominal_or_stomach_problems",
+      "count": 4635,
+      "required_specialty_for_demo_model": "general_surgery_or_gastroenterology"
+    },
+    {
+      "complaint_category": "breathing_problems",
+      "count": 5106,
+      "required_specialty_for_demo_model": "respiratory_medicine"
+    },
+    {
+      "complaint_category": "chest_pain_or_heart_symptoms",
+      "count": 4982,
+      "required_specialty_for_demo_model": "cardiology"
+    },
+    {
+      "complaint_category": "cuts_or_wounds",
+      "count": 6090,
+      "required_specialty_for_demo_model": "wound_care_or_plastics"
+    },
+    {
+      "complaint_category": "fracture_sprain_or_dislocation",
+      "count": 6416,
+      "required_specialty_for_demo_model": "orthopaedics"
+    },
+    {
+      "complaint_category": "head_injury_or_neurological_symptoms",
+      "count": 5737,
+      "required_specialty_for_demo_model": "neurology_or_neurosurgery"
+    },
+    {
+      "complaint_category": "other_or_uncategorised",
+      "count": 6991,
+      "required_specialty_for_demo_model": "emergency_medicine"
+    },
+    {
+      "complaint_category": "unknown",
+      "count": 2043,
+      "required_specialty_for_demo_model": "emergency_medicine"
+    }
+  ]
+}

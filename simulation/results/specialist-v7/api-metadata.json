@@ -1,0 +1,278 @@
+{
+  "synthetic_data": true,
+  "model_version": "specialist_urgency_v7",
+  "seed": 20261026,
+  "measured_start": "2026-09-21",
+  "measured_end_exclusive": "2026-10-21",
+  "source_sha256": "561b00513d7128835886e3a8b6ab7cbcd1187551b1f42ce5176f26539673c4d2",
+  "category_mapping": {
+    "fracture_sprain_or_dislocation": "orthopaedics",
+    "cuts_or_wounds": "wound_care_or_plastics",
+    "head_injury_or_neurological_symptoms": "neurology_or_neurosurgery",
+    "breathing_problems": "respiratory_medicine",
+    "chest_pain_or_heart_symptoms": "cardiology",
+    "abdominal_or_stomach_problems": "general_surgery_or_gastroenterology",
+    "other_or_uncategorised": "emergency_medicine",
+    "unknown": "emergency_medicine"
+  },
+  "profile_source": "invented demo capability and staffing profiles, not verified hospital facts",
+  "urgency_source": "synthetic patient attributes, not Gemini inference or clinical triage",
+  "bed_flag_implies_urgency": 10.0,
+  "expected_bed_fraction": 0.05,
+  "expected_emergency_fraction": 0.003,
+  "expected_multi_category_fraction": 0.2,
+  "self_category_rule": "Unknown requires a fictional explicit self-selection before any recommendation; unsupported unknown requests are rejected by matching.",
+  "staffing_rule": "Analytical expected routing and case-specific clinician-work distribution, rounded base roster and minimum nominal capacity at 98.5% expected work; no realised future arrivals used.",
+  "routing_rule": "Retain origin if it covers all confirmed categories; otherwise seeded uniform choice among eligible sites BEFORE arrival. This is not a live travel/wait-optimal redirection policy.",
+  "service_means": {
+    "general": 20,
+    "triage": 4.5,
+    "each_specialist_review": 20,
+    "flagged_bed_hold": 720
+  },
+  "queue_rule": "Bed flag class always first; other patients ordered by urgency plus one priority point per 30 minutes waiting, FCFS tie-break, nonpreemptive. The original urgency rating stays unchanged. General contact precedes all required specialist reviews.",
+  "limits": "No true clinical assessment, real travel, ambulance pathway, inpatient system, patient abandonment or operating response to overcrowding. One hub supports every modelled specialty, not every medical specialty.",
+  "notice": "Synthetic demo. All category-specialist links, coverage, staffing, urgency, travel and waits are invented; hospital names are not evidence of actual service availability.",
+  "comparison_estimates": {
+    "H001": {
+      "bands": {
+        "1": {
+          "mean": 105.68525560496568,
+          "count": 238
+        },
+        "2": {
+          "mean": 91.99467626026308,
+          "count": 2552
+        },
+        "3": {
+          "mean": 70.84359845954826,
+          "count": 5274
+        },
+        "4": {
+          "mean": 51.522122887678464,
+          "count": 5986
+        },
+        "5": {
+          "mean": 37.008840947406064,
+          "count": 5176
+        },
+        "6": {
+          "mean": 25.979832000776682,
+          "count": 3268
+        },
+        "7": {
+          "mean": 22.65958864412996,
+          "count": 1413
+        },
+        "8": {
+          "mean": 16.112293448600894,
+          "count": 255
+        },
+        "9": {
+          "mean": 14.129554058710735,
+          "count": 10
+        },
+        "10": {
+          "mean": 6.594346306473827,
+          "count": 1411
+        }
+      },
+      "pooled": {
+        "mean": 49.40767204848362,
+        "count": 25583
+      }
+    },
+    "H002": {
+      "bands": {
+        "1": {
+          "mean": 117.88534503126586,
+          "count": 108
+        },
+        "2": {
+          "mean": 96.32713972267517,
+          "count": 1143
+        },
+        "3": {
+          "mean": 81.75621897656569,
+          "count": 2364
+        },
+        "4": {
+          "mean": 62.34890901634539,
+          "count": 2736
+        },
+        "5": {
+          "mean": 48.174329299116465,
+          "count": 2349
+        },
+        "6": {
+          "mean": 39.22165486782249,
+          "count": 1451
+        },
+        "7": {
+          "mean": 37.612118177259234,
+          "count": 637
+        },
+        "8": {
+          "mean": 26.514832125674676,
+          "count": 131
+        },
+        "9": {
+          "mean": 22.65221781174342,
+          "count": 5
+        },
+        "10": {
+          "mean": 7.758128019775557,
+          "count": 428
+        }
+      },
+      "pooled": {
+        "mean": 60.57347406637173,
+        "count": 11352
+      }
+    },
+    "H003": {
+      "bands": {
+        "1": {
+          "mean": 176.99515534992312,
+          "count": 68
+        },
+        "2": {
+          "mean": 180.2484034909959,
+          "count": 707
+        },
+        "3": {
+          "mean": 157.33401449663194,
+          "count": 1512
+        },
+        "4": {
+          "mean": 142.56610351537518,
+          "count": 1791
+        },
+        "5": {
+          "mean": 116.31632214778132,
+          "count": 1396
+        },
+        "6": {
+          "mean": 91.11748640747014,
+          "count": 901
+        },
+        "7": {
+          "mean": 77.34797282401603,
+          "count": 402
+        },
+        "8": {
+          "mean": 60.165703986601166,
+          "count": 62
+        },
+        "9": {
+          "mean": 38.948987913926445,
+          "count": 1
+        },
+        "10": {
+          "mean": 31.16671359437277,
+          "count": 428
+        }
+      },
+      "pooled": {
+        "mean": 127.32156236200272,
+        "count": 7268
+      }
+    },
+    "H004": {
+      "bands": {
+        "1": {
+          "mean": 91.06489859822831,
+          "count": 93
+        },
+        "2": {
+          "mean": 83.13437350207067,
+          "count": 978
+        },
+        "3": {
+          "mean": 69.62939148366928,
+          "count": 2164
+        },
+        "4": {
+          "mean": 52.34445381526121,
+          "count": 2429
+        },
+        "5": {
+          "mean": 39.16100180078247,
+          "count": 2060
+        },
+        "6": {
+          "mean": 28.90941821220367,
+          "count": 1348
+        },
+        "7": {
+          "mean": 24.43523278329454,
+          "count": 573
+        },
+        "8": {
+          "mean": 18.473540493515845,
+          "count": 127
+        },
+        "9": {
+          "mean": 5.965102722114987,
+          "count": 3
+        },
+        "10": {
+          "mean": 8.195401637987818,
+          "count": 449
+        }
+      },
+      "pooled": {
+        "mean": 49.61696522626954,
+        "count": 10224
+      }
+    },
+    "H005": {
+      "bands": {
+        "1": {
+          "mean": 301.992575841729,
+          "count": 101
+        },
+        "2": {
+          "mean": 276.90086549332165,
+          "count": 1255
+        },
+        "3": {
+          "mean": 249.3262060165079,
+          "count": 2655
+        },
+        "4": {
+          "mean": 226.57309262290127,
+          "count": 2996
+        },
+        "5": {
+          "mean": 203.10801161197543,
+          "count": 2599
+        },
+        "6": {
+          "mean": 172.82530599933705,
+          "count": 1619
+        },
+        "7": {
+          "mean": 161.6018185103757,
+          "count": 700
+        },
+        "8": {
+          "mean": 138.7258198978778,
+          "count": 123
+        },
+        "9": {
+          "mean": 84.04260343220498,
+          "count": 6
+        },
+        "10": {
+          "mean": 25.29421915479575,
+          "count": 644
+        }
+      },
+      "pooled": {
+        "mean": 210.54072082057084,
+        "count": 12698
+      }
+    }
+  }
+}

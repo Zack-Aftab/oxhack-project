@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "queuecare.multi.v1",
+  "syntheticData": true,
+  "notice": "Synthetic demo: category-specialist links, availability, urgency and waits are not verified clinical data.",
+  "hospitals": [],
+  "excludedHospitals": [],
+  "action": "call_999",
+  "message": "Possible medical emergency. Call 999 now. Do not wait for hospital comparisons.",
+  "effectiveUrgencyRating": 10,
+  "complaintCategories": []
+}
