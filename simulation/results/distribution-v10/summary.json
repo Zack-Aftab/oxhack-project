@@ -1,0 +1,660 @@
+{
+  "model_version": "distribution_capacity_v10",
+  "seed": 20261027,
+  "runs_per_capacity_configuration": 1,
+  "warmup_days": 3,
+  "measured_days": 30,
+  "generated_patients": 67676,
+  "completed_hospital_patients": 67473,
+  "emergency_exits": 203,
+  "target_percentages": [
+    5.0,
+    5.0,
+    22.333169472778668,
+    28.788865675310316,
+    22.27233624185818,
+    16.605628610052847
+  ],
+  "wait_bins": [
+    {
+      "label": "10 minutes or less",
+      "count": 6483,
+      "percent": 9.608287759548263
+    },
+    {
+      "label": "Over 10\u201324 minutes",
+      "count": 3633,
+      "percent": 5.3843759726112665
+    },
+    {
+      "label": "Over 24\u201360 minutes",
+      "count": 11077,
+      "percent": 16.416937145228463
+    },
+    {
+      "label": "Over 1\u20132 hours",
+      "count": 17346,
+      "percent": 25.70806100217865
+    },
+    {
+      "label": "Over 2\u20134 hours",
+      "count": 17251,
+      "percent": 25.567263942614083
+    },
+    {
+      "label": "Over 4 hours",
+      "count": 11683,
+      "percent": 17.315074177819277
+    }
+  ],
+  "individual_waits": {
+    "count": 67473,
+    "mean": 140.44710336149936,
+    "median": 98.87307041883469,
+    "p90": 327.43700404564544,
+    "p95": 433.30872136592825,
+    "max": 852.8522883733114
+  },
+  "calibration_loss": 141.09377803022315,
+  "trial_counts": {
+    "H001": 122,
+    "H002": 96,
+    "H003": 124,
+    "H004": 107,
+    "H005": 125
+  },
+  "profiles": {
+    "H001": {
+      "hospital_id": "H001",
+      "supported_specialties": [
+        "cardiology",
+        "emergency_medicine",
+        "general_surgery_or_gastroenterology",
+        "neurology_or_neurosurgery",
+        "orthopaedics",
+        "respiratory_medicine",
+        "wound_care_or_plastics"
+      ],
+      "support": {
+        "cardiology": true,
+        "emergency_medicine": true,
+        "general_surgery_or_gastroenterology": true,
+        "neurology_or_neurosurgery": true,
+        "orthopaedics": true,
+        "respiratory_medicine": true,
+        "wound_care_or_plastics": true
+      },
+      "specialist_doctors_on_duty": {
+        "cardiology": 3,
+        "emergency_medicine": 0,
+        "general_surgery_or_gastroenterology": 3,
+        "neurology_or_neurosurgery": 4,
+        "orthopaedics": 4,
+        "respiratory_medicine": 3,
+        "wound_care_or_plastics": 4
+      },
+      "general_doctors_by_four_hour_block": [
+        3,
+        5,
+        20,
+        24,
+        34,
+        13
+      ],
+      "triage_nurses_by_four_hour_block": [
+        3,
+        2,
+        6,
+        7,
+        7,
+        5
+      ],
+      "support_beds": 36,
+      "expected_daily_arrivals": 933.5111745237411,
+      "expected_general_doctor_utilisation": 0.975859935822988,
+      "baseline_general_doctors_by_four_hour_block": [
+        3,
+        5,
+        19,
+        23,
+        34,
+        13
+      ],
+      "baseline_support_beds": 33,
+      "baseline_fluid_planning_mean_minutes": 105.20756918628464,
+      "baseline_fluid_planning_under_30_fraction": 0.25399994238046647,
+      "baseline_fluid_end_backlog_work_minutes": 534.3070283049401,
+      "general_doctors_by_hour": [
+        14,
+        12,
+        5,
+        12,
+        13,
+        10,
+        9,
+        2,
+        8,
+        12,
+        16,
+        18,
+        19,
+        21,
+        21,
+        23,
+        23,
+        24,
+        24,
+        25,
+        24,
+        22,
+        17,
+        16
+      ]
+    },
+    "H002": {
+      "hospital_id": "H002",
+      "supported_specialties": [
+        "emergency_medicine",
+        "orthopaedics",
+        "respiratory_medicine",
+        "wound_care_or_plastics"
+      ],
+      "support": {
+        "cardiology": false,
+        "emergency_medicine": true,
+        "general_surgery_or_gastroenterology": false,
+        "neurology_or_neurosurgery": false,
+        "orthopaedics": true,
+        "respiratory_medicine": true,
+        "wound_care_or_plastics": true
+      },
+      "specialist_doctors_on_duty": {
+        "cardiology": 0,
+        "emergency_medicine": 0,
+        "general_surgery_or_gastroenterology": 0,
+        "neurology_or_neurosurgery": 0,
+        "orthopaedics": 3,
+        "respiratory_medicine": 2,
+        "wound_care_or_plastics": 3
+      },
+      "general_doctors_by_four_hour_block": [
+        2,
+        2,
+        8,
+        12,
+        5,
+        6
+      ],
+      "triage_nurses_by_four_hour_block": [
+        2,
+        2,
+        3,
+        3,
+        3,
+        2
+      ],
+      "support_beds": 15,
+      "expected_daily_arrivals": 376.6476401625005,
+      "expected_general_doctor_utilisation": 0.9910308127526293,
+      "baseline_general_doctors_by_four_hour_block": [
+        2,
+        2,
+        7,
+        11,
+        5,
+        6
+      ],
+      "baseline_support_beds": 14,
+      "baseline_fluid_planning_mean_minutes": 105.6179854964821,
+      "baseline_fluid_planning_under_30_fraction": 0.21696996820664868,
+      "baseline_fluid_end_backlog_work_minutes": 577.2000964689504,
+      "general_doctors_by_hour": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        7,
+        7,
+        6,
+        8,
+        9,
+        8,
+        8,
+        15,
+        3,
+        8,
+        7,
+        5,
+        7,
+        5,
+        5,
+        5
+      ]
+    },
+    "H003": {
+      "hospital_id": "H003",
+      "supported_specialties": [
+        "cardiology",
+        "emergency_medicine",
+        "respiratory_medicine"
+      ],
+      "support": {
+        "cardiology": true,
+        "emergency_medicine": true,
+        "general_surgery_or_gastroenterology": false,
+        "neurology_or_neurosurgery": false,
+        "orthopaedics": false,
+        "respiratory_medicine": true,
+        "wound_care_or_plastics": false
+      },
+      "specialist_doctors_on_duty": {
+        "cardiology": 2,
+        "emergency_medicine": 0,
+        "general_surgery_or_gastroenterology": 0,
+        "neurology_or_neurosurgery": 0,
+        "orthopaedics": 0,
+        "respiratory_medicine": 2,
+        "wound_care_or_plastics": 0
+      },
+      "general_doctors_by_four_hour_block": [
+        2,
+        4,
+        3,
+        4,
+        8,
+        2
+      ],
+      "triage_nurses_by_four_hour_block": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "support_beds": 8,
+      "expected_daily_arrivals": 199.85533217759445,
+      "expected_general_doctor_utilisation": 0.9391536997458014,
+      "baseline_general_doctors_by_four_hour_block": [
+        3,
+        3,
+        2,
+        5,
+        6,
+        3
+      ],
+      "baseline_support_beds": 8,
+      "baseline_fluid_planning_mean_minutes": 119.03128964206296,
+      "baseline_fluid_planning_under_30_fraction": 0.05016771977779365,
+      "baseline_fluid_end_backlog_work_minutes": 656.0543572345562
+    },
+    "H004": {
+      "hospital_id": "H004",
+      "supported_specialties": [
+        "cardiology",
+        "emergency_medicine",
+        "general_surgery_or_gastroenterology",
+        "wound_care_or_plastics"
+      ],
+      "support": {
+        "cardiology": true,
+        "emergency_medicine": true,
+        "general_surgery_or_gastroenterology": true,
+        "neurology_or_neurosurgery": false,
+        "orthopaedics": false,
+        "respiratory_medicine": false,
+        "wound_care_or_plastics": true
+      },
+      "specialist_doctors_on_duty": {
+        "cardiology": 2,
+        "emergency_medicine": 0,
+        "general_surgery_or_gastroenterology": 2,
+        "neurology_or_neurosurgery": 0,
+        "orthopaedics": 0,
+        "respiratory_medicine": 0,
+        "wound_care_or_plastics": 2
+      },
+      "general_doctors_by_four_hour_block": [
+        2,
+        2,
+        6,
+        8,
+        13,
+        3
+      ],
+      "triage_nurses_by_four_hour_block": [
+        2,
+        2,
+        2,
+        3,
+        3,
+        2
+      ],
+      "support_beds": 13,
+      "expected_daily_arrivals": 318.39206279482033,
+      "expected_general_doctor_utilisation": 0.9895611739343881,
+      "baseline_general_doctors_by_four_hour_block": [
+        2,
+        2,
+        5,
+        7,
+        13,
+        3
+      ],
+      "baseline_support_beds": 12,
+      "baseline_fluid_planning_mean_minutes": 114.25414216056636,
+      "baseline_fluid_planning_under_30_fraction": 0.1787778936482631,
+      "baseline_fluid_end_backlog_work_minutes": 463.101815590332,
+      "general_doctors_by_hour": [
+        2,
+        4,
+        2,
+        5,
+        4,
+        3,
+        2,
+        2,
+        2,
+        6,
+        4,
+        4,
+        8,
+        6,
+        7,
+        7,
+        8,
+        8,
+        8,
+        9,
+        6,
+        6,
+        6,
+        5
+      ]
+    },
+    "H005": {
+      "hospital_id": "H005",
+      "supported_specialties": [
+        "emergency_medicine",
+        "general_surgery_or_gastroenterology",
+        "neurology_or_neurosurgery",
+        "orthopaedics"
+      ],
+      "support": {
+        "cardiology": false,
+        "emergency_medicine": true,
+        "general_surgery_or_gastroenterology": true,
+        "neurology_or_neurosurgery": true,
+        "orthopaedics": true,
+        "respiratory_medicine": false,
+        "wound_care_or_plastics": false
+      },
+      "specialist_doctors_on_duty": {
+        "cardiology": 0,
+        "emergency_medicine": 0,
+        "general_surgery_or_gastroenterology": 2,
+        "neurology_or_neurosurgery": 3,
+        "orthopaedics": 3,
+        "respiratory_medicine": 0,
+        "wound_care_or_plastics": 0
+      },
+      "general_doctors_by_four_hour_block": [
+        2,
+        3,
+        10,
+        7,
+        16,
+        4
+      ],
+      "triage_nurses_by_four_hour_block": [
+        2,
+        2,
+        3,
+        3,
+        3,
+        2
+      ],
+      "support_beds": 16,
+      "expected_daily_arrivals": 415.59178967445456,
+      "expected_general_doctor_utilisation": 0.9670424980012914,
+      "baseline_general_doctors_by_four_hour_block": [
+        2,
+        2,
+        7,
+        10,
+        17,
+        4
+      ],
+      "baseline_support_beds": 15,
+      "baseline_fluid_planning_mean_minutes": 143.13933826391445,
+      "baseline_fluid_planning_under_30_fraction": 0.16195598398198172,
+      "baseline_fluid_end_backlog_work_minutes": 579.5454780639249
+    }
+  },
+  "by_hospital": [
+    {
+      "hospital_id": "H001",
+      "patients": 27991,
+      "wait_bins": [
+        {
+          "label": "10 minutes or less",
+          "count": 2961,
+          "percent": 10.578400200064307
+        },
+        {
+          "label": "Over 10\u201324 minutes",
+          "count": 1359,
+          "percent": 4.8551320067164445
+        },
+        {
+          "label": "Over 24\u201360 minutes",
+          "count": 4878,
+          "percent": 17.427030116823264
+        },
+        {
+          "label": "Over 1\u20132 hours",
+          "count": 6794,
+          "percent": 24.272087456682506
+        },
+        {
+          "label": "Over 2\u20134 hours",
+          "count": 7165,
+          "percent": 25.597513486477798
+        },
+        {
+          "label": "Over 4 hours",
+          "count": 4834,
+          "percent": 17.26983673323568
+        }
+      ],
+      "general_doctor_utilisation": 0.9731604476456063,
+      "bed_utilisation": 0.6608213097792915,
+      "count": 27991,
+      "mean": 143.86940960103107,
+      "median": 92.26338507731755,
+      "p90": 340.90587937434515,
+      "p95": 447.4294554571311,
+      "max": 852.8522883733114
+    },
+    {
+      "hospital_id": "H002",
+      "patients": 11300,
+      "wait_bins": [
+        {
+          "label": "10 minutes or less",
+          "count": 1072,
+          "percent": 9.486725663716815
+        },
+        {
+          "label": "Over 10\u201324 minutes",
+          "count": 767,
+          "percent": 6.787610619469026
+        },
+        {
+          "label": "Over 24\u201360 minutes",
+          "count": 2142,
+          "percent": 18.95575221238938
+        },
+        {
+          "label": "Over 1\u20132 hours",
+          "count": 2920,
+          "percent": 25.84070796460177
+        },
+        {
+          "label": "Over 2\u20134 hours",
+          "count": 2818,
+          "percent": 24.938053097345133
+        },
+        {
+          "label": "Over 4 hours",
+          "count": 1581,
+          "percent": 13.991150442477876
+        }
+      ],
+      "general_doctor_utilisation": 0.9859530686786591,
+      "bed_utilisation": 0.6040632051986984,
+      "count": 11300,
+      "mean": 125.8876083435636,
+      "median": 89.83130770723025,
+      "p90": 289.282452677091,
+      "p95": 409.4560999329884,
+      "max": 594.1678350687027
+    },
+    {
+      "hospital_id": "H003",
+      "patients": 6077,
+      "wait_bins": [
+        {
+          "label": "10 minutes or less",
+          "count": 629,
+          "percent": 10.350501892381109
+        },
+        {
+          "label": "Over 10\u201324 minutes",
+          "count": 290,
+          "percent": 4.772091492512753
+        },
+        {
+          "label": "Over 24\u201360 minutes",
+          "count": 765,
+          "percent": 12.588448247490538
+        },
+        {
+          "label": "Over 1\u20132 hours",
+          "count": 1479,
+          "percent": 24.33766661181504
+        },
+        {
+          "label": "Over 2\u20134 hours",
+          "count": 1677,
+          "percent": 27.595853217047885
+        },
+        {
+          "label": "Over 4 hours",
+          "count": 1237,
+          "percent": 20.355438538752676
+        }
+      ],
+      "general_doctor_utilisation": 0.9498596197265213,
+      "bed_utilisation": 0.6486581618606837,
+      "count": 6077,
+      "mean": 154.04418733566698,
+      "median": 113.4626694003741,
+      "p90": 370.320683307648,
+      "p95": 467.9781913113594,
+      "max": 686.427326353391
+    },
+    {
+      "hospital_id": "H004",
+      "patients": 9463,
+      "wait_bins": [
+        {
+          "label": "10 minutes or less",
+          "count": 653,
+          "percent": 6.9005600760858075
+        },
+        {
+          "label": "Over 10\u201324 minutes",
+          "count": 609,
+          "percent": 6.435591250132093
+        },
+        {
+          "label": "Over 24\u201360 minutes",
+          "count": 1351,
+          "percent": 14.27665645144246
+        },
+        {
+          "label": "Over 1\u20132 hours",
+          "count": 2576,
+          "percent": 27.221811264926558
+        },
+        {
+          "label": "Over 2\u20134 hours",
+          "count": 2558,
+          "percent": 27.03159674521822
+        },
+        {
+          "label": "Over 4 hours",
+          "count": 1716,
+          "percent": 18.133784212194865
+        }
+      ],
+      "general_doctor_utilisation": 0.9934299155209334,
+      "bed_utilisation": 0.6172030091069476,
+      "count": 9463,
+      "mean": 138.34231886093923,
+      "median": 105.97502351999283,
+      "p90": 290.24081233263047,
+      "p95": 358.4316975045204,
+      "max": 681.6931532700856
+    },
+    {
+      "hospital_id": "H005",
+      "patients": 12642,
+      "wait_bins": [
+        {
+          "label": "10 minutes or less",
+          "count": 1168,
+          "percent": 9.2390444549913
+        },
+        {
+          "label": "Over 10\u201324 minutes",
+          "count": 608,
+          "percent": 4.809365606707799
+        },
+        {
+          "label": "Over 24\u201360 minutes",
+          "count": 1941,
+          "percent": 15.353583293782629
+        },
+        {
+          "label": "Over 1\u20132 hours",
+          "count": 3577,
+          "percent": 28.294573643410853
+        },
+        {
+          "label": "Over 2\u20134 hours",
+          "count": 3033,
+          "percent": 23.99145704793545
+        },
+        {
+          "label": "Over 4 hours",
+          "count": 2315,
+          "percent": 18.311975953171967
+        }
+      ],
+      "general_doctor_utilisation": 0.9779960710234428,
+      "bed_utilisation": 0.6880391605032068,
+      "count": 12642,
+      "mean": 140.9230261719507,
+      "median": 104.42381155888239,
+      "p90": 340.07310949325563,
+      "p95": 424.75626328965024,
+      "max": 606.4100282510121
+    }
+  ]
+}

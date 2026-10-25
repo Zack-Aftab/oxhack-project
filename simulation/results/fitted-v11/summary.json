@@ -1,0 +1,136 @@
+{
+  "model_version": "fitted_demo_v11",
+  "synthetic_data": true,
+  "waiting_time_method": "Explicit statistical fit of the user-approved demo distribution, not raw queue waiting time.",
+  "generated_patients": 67676,
+  "hospital_patients": 67473,
+  "emergency_exits": 203,
+  "source_queue_statistics": {
+    "count": 67473,
+    "mean": 140.44710336149936,
+    "median": 98.87307041883469,
+    "p90": 327.43700404564544,
+    "p95": 433.30872136592825,
+    "max": 852.8522883733114
+  },
+  "fitted_wait_statistics": {
+    "count": 67473,
+    "mean": 119.99999999999993,
+    "median": 100.0,
+    "p90": 262.35546876800004,
+    "p95": 292.9097089662399,
+    "max": 681.6099600552
+  },
+  "stored_integer_wait_statistics": {
+    "count": 67473,
+    "mean": 120.50396454878248,
+    "median": 100,
+    "p90": 263.0,
+    "p95": 293.0,
+    "max": 682
+  },
+  "target_percentages": [
+    5.0,
+    5.0,
+    22.333169472778668,
+    28.788865675310316,
+    22.27233624185818,
+    16.605628610052847
+  ],
+  "wait_bins": [
+    {
+      "label": "10 minutes or less",
+      "count": 3374,
+      "percent": 5.000518726008922
+    },
+    {
+      "label": "Over 10\u201324 minutes",
+      "count": 3373,
+      "percent": 4.9990366516977165
+    },
+    {
+      "label": "Over 24\u201360 minutes",
+      "count": 15069,
+      "percent": 22.33337779556267
+    },
+    {
+      "label": "Over 1\u20132 hours",
+      "count": 19425,
+      "percent": 28.789293495175848
+    },
+    {
+      "label": "Over 2\u20134 hours",
+      "count": 15028,
+      "percent": 22.272612748803226
+    },
+    {
+      "label": "Over 4 hours",
+      "count": 11204,
+      "percent": 16.60516058275162
+    }
+  ],
+  "by_hospital": [
+    {
+      "hospital_id": "H001",
+      "count": 27991,
+      "mean": 119.28397947699104,
+      "median": 94.9018527497,
+      "p90": 266.0340875563,
+      "p95": 299.35755227515,
+      "max": 681.6099600552
+    },
+    {
+      "hospital_id": "H002",
+      "count": 11300,
+      "mean": 110.49955552178717,
+      "median": 93.0566676,
+      "p90": 252.64180336767,
+      "p95": 284.325260649905,
+      "max": 351.3887511366
+    },
+    {
+      "hospital_id": "H003",
+      "count": 6077,
+      "mean": 131.15550190637327,
+      "median": 109.7947247056,
+      "p90": 273.6293186998001,
+      "p95": 306.96300675854,
+      "max": 375.393801732
+    },
+    {
+      "hospital_id": "H004",
+      "count": 9463,
+      "mean": 123.58677951356518,
+      "median": 105.3298558791,
+      "p90": 252.88515458094005,
+      "p95": 270.86990435766995,
+      "max": 373.483976272
+    },
+    {
+      "hospital_id": "H005",
+      "count": 12642,
+      "mean": 122.03001688351893,
+      "median": 104.12743222685,
+      "p90": 265.74245542621,
+      "p95": 289.65594763417994,
+      "max": 353.9737942262
+    }
+  ],
+  "bed_waits": {
+    "count": 3450,
+    "mean": 24.779750571736898,
+    "median": 16.22408963585,
+    "p90": 31.25573162635,
+    "p95": 97.81368185906997,
+    "max": 375.393801732
+  },
+  "non_bed_waits": {
+    "count": 64023,
+    "mean": 125.13112257356735,
+    "median": 104.3171550927,
+    "p90": 264.51792400280004,
+    "p95": 295.1269242252499,
+    "max": 681.6099600552
+  },
+  "live_database_changed": false
+}

@@ -31,3 +31,14 @@ Read [v8 actual results](results/demand-v8/REPORT.md): median 119.6 minutes, mea
 ```sh
 python3 simulation/demand_patterns.py simulation/input.json /tmp/capacity-v9 --extra-general-doctors 1 --doctor-shift-start 8 --bed-target-occupancy .65
 ```
+
+## User-approved fitted demo distribution
+
+Latest display estimates: [fitted v11 report](results/fitted-v11/REPORT.md). They explicitly fit the requested 5% / 5% / proportional remaining bands, mean120 and median100. Raw queue results remain separate under `results/distribution-v10`; fitted values do not claim to be raw simulation event times. Freeze the transformation for capacity comparisons rather than refitting each scenario. Nothing was imported into Supabase.
+
+```sh
+python3 simulation/calibrate_distribution.py simulation/input.json /tmp/replay-queue --rounds 0 --trials-from simulation/results/distribution-v10
+python3 simulation/fit_demo_distribution.py /tmp/replay-queue /tmp/replay-fitted
+```
+
+All candidate searches and their limits are disclosed in the report. Stored trial records reproduce the selected source capacity without repeating the search. `fit_demo_distribution.py` uses only the Python standard library.

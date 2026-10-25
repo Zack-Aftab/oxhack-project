@@ -157,13 +157,16 @@ def simulate(visits,start,end,seed,run,service_scale,profiles):
   order=1 if kind=='shift' else 2 if kind=='arrival' else 0
   heapq.heappush(events,(at,order,serial,kind,value,h));serial+=1
  for i,v in enumerate(patients):push(stamp(v['arrival_at']),'arrival',i,v['hospital_id'])
+ for profile in profiles.values():
+  if 'general_doctors_by_hour' in profile and (len(profile['general_doctors_by_hour'])!=24 or any(type(n) is not int or n<1 for n in profile['general_doctors_by_hour'])):raise ValueError('Hourly general roster requires 24 positive integer counts')
+ hourly=any('general_doctors_by_hour' in p for p in profiles.values())
  t=start-dt.timedelta(days=3)
  while t<end+dt.timedelta(days=30):
-  for h in profiles:push(t.timestamp(),'shift',t.hour//4,h)
-  t+=dt.timedelta(hours=4)
+  for h in profiles:push(t.timestamp(),'shift',t.hour if hourly else t.hour//4,h)
+  t+=dt.timedelta(hours=1 if hourly else 4)
  queues={h:{'triage':[],'general':[],'specialist':collections.defaultdict(list)} for h in profiles}
  busy={h:{'triage':0,'general':0,'beds':0,'specialist':collections.Counter()} for h in profiles}
- caps={};last={h:(start-dt.timedelta(days=3)).timestamp() for h in profiles};integrals={h:collections.Counter() for h in profiles}
+ caps={};general_caps={};last={h:(start-dt.timedelta(days=3)).timestamp() for h in profiles};integrals={h:collections.Counter() for h in profiles}
  first={};finished={};triaged={};general_done=set();hold_done=set();special_done=set();spec_index=collections.Counter();work={}
  for i,v in enumerate(patients):
   r=rng(seed,f'work:{run}:{v["visit_id"]}')
@@ -176,7 +179,7 @@ def simulate(visits,start,end,seed,run,service_scale,profiles):
   elapsed=max(0,min(now,end.timestamp())-max(last[h],start.timestamp()))
   if h in caps:
    z=integrals[h];b=busy[h];p=profiles[h]
-   z['general_busy_seconds']+=elapsed*b['general'];z['general_capacity_seconds']+=elapsed*p['general_doctors_by_four_hour_block'][caps[h]]
+   z['general_busy_seconds']+=elapsed*b['general'];z['general_capacity_seconds']+=elapsed*general_caps[h]
    z['bed_busy_seconds']+=elapsed*b['beds'];z['bed_capacity_seconds']+=elapsed*p['support_beds']
    z['specialist_busy_seconds']+=elapsed*sum(b['specialist'].values());z['specialist_capacity_seconds']+=elapsed*sum(p['specialist_doctors_on_duty'].values())
   last[h]=now
@@ -190,7 +193,9 @@ def simulate(visits,start,end,seed,run,service_scale,profiles):
  while events:
   now,_,_,kind,value,h=heapq.heappop(events);advance(h,now)
   q=queues[h];b=busy[h];profile=profiles[h]
-  if kind=='shift':caps[h]=value
+  if kind=='shift':
+   caps[h]=value//4 if hourly else value
+   general_caps[h]=profile['general_doctors_by_hour'][value] if 'general_doctors_by_hour' in profile else profile['general_doctors_by_four_hour_block'][caps[h]]
   elif kind=='arrival':heapq.heappush(q['triage'],priority(value))
   elif kind=='triaged':
    b['triage']-=1;triaged[value]=now;heapq.heappush(q['general'],priority(value))
@@ -207,7 +212,7 @@ def simulate(visits,start,end,seed,run,service_scale,profiles):
    while line and b['specialist'][s]<profile['specialist_doctors_on_duty'][s]:
     i=heapq.heappop(line)[-1];b['specialist'][s]+=1;push(now+work[i]['specialist'][s],'specialist_done',(i,s),h)
   blocked=[]
-  while q['general'] and b['general']<profile['general_doctors_by_four_hour_block'][block]:
+  while q['general'] and b['general']<general_caps[h]:
    item=heapq.heappop(q['general']);i=item[-1];v=patients[i]
    if v['likely_bed_occupancy'] and b['beds']>=profile['support_beds']:blocked.append(item);continue
    b['general']+=1;b['beds']+=int(v['likely_bed_occupancy']);first[i]=now

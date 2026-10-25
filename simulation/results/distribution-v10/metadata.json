@@ -1,0 +1,21 @@
+{
+  "synthetic_data": true,
+  "model_version": "distribution_capacity_v10",
+  "seed": 20261027,
+  "measured_start": "2026-09-21",
+  "measured_end_exclusive": "2026-10-21",
+  "warmup_days": 3,
+  "measured_days": 30,
+  "target_percentages": [
+    5.0,
+    5.0,
+    22.333169472778668,
+    28.788865675310316,
+    22.27233624185818,
+    16.605628610052847
+  ],
+  "target_source": "User-requested 5% at <=10, 5% over10 to24, remaining90% proportional to v9 longer-wait bands. Not measured hospital statistics.",
+  "calibration": "Integer general roster and bed search against one fixed synthetic month; all trial results disclosed. Future demand and other seeds may differ. Same cohort, durations, categories, triage/specialists, priorities and flags as v8/v9.",
+  "waiting_time_generation": "Unmodified event-queue simulation; no post-hoc wait editing, rejection sampling, forced minimum, or patient reassignment.",
+  "live_database_changed": false
+}

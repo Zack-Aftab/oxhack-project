@@ -1,0 +1,25 @@
+{
+  "model_version": "fitted_demo_v11",
+  "synthetic_data": true,
+  "user_approved_method": "Fit the synthetic wait distribution to my targets.",
+  "notice": "Designer distribution for a demo, not a clinical prediction or validated NHS statistic. Raw queue waits are retained separately.",
+  "source_model_version": "distribution_capacity_v10",
+  "measured_start": "2026-09-21",
+  "measured_end_exclusive": "2026-10-21",
+  "warmup_days": 3,
+  "source_simulation_runs": 1,
+  "target_percentages": [
+    5.0,
+    5.0,
+    22.333169472778668,
+    28.788865675310316,
+    22.27233624185818,
+    16.605628610052847
+  ],
+  "target_mean_minutes": 120,
+  "target_median_minutes": 100,
+  "method": "One shared monotone empirical-CDF-to-quantile mapping across all sites; preserves queue-derived ordering and ties. Power-shaped within-band quantiles, exponential tail; tail scale fitted to mean120; fourth-band power fitted to median100. Integer stored estimate is ceil(fitted wait).",
+  "capacity_use": "Queue rankings already include doctor rosters, beds, urgency, staffing, specialties and recurring/random intake. Hold this fitted mapping fixed when evaluating different raw queue outcomes; automatic refitting would erase changes to the overall distribution.",
+  "limitations": "Fitted to one synthetic month. Per-site distributions are not independently forced. Raw queue values above the fitted support are rejected so severe overload cannot silently be capped. Does not reproduce treatment-resource event timings. No validated causal or clinical interpretation.",
+  "live_database_changed": false
+}

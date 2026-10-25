@@ -1,0 +1,7 @@
+{
+  "hospital_patients_checked": 67473,
+  "fitted_mean_matches_120": true,
+  "fitted_median_matches_100": true,
+  "all_bins_within_0_002_percentage_points_of_targets": true,
+  "live_database_changed": false
+}
